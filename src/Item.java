@@ -13,7 +13,10 @@ public class Item {
     private int quantity;
     private String imageURL;
 
-    public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, int quantity, String imageURL){
+    public Item(String name, String description, String brand,
+                String condition, String color, String gender, Integer size,
+                Double cost, int quantity, String imageURL){
+
         this.name = name;
         this.description = description;
         this.brand = brand;
@@ -81,6 +84,20 @@ public class Item {
         //ItemWindow window = new ItemWindow(this);
         //return window;
         return null;
+    }
+
+    @Override
+    public String toString() {
+        String desc = (description.length() > 25) ?
+        (description.substring(0, 25)) : (description);
+
+        String shortURL = (imageURL.length() > 10) ?
+                (imageURL.substring(0,10)) : (imageURL);
+
+        return ( "Item Contents:\nName:" + name + " Description:" + desc
+                + " Color:" + color + " Gender:" + gender + " Size:" + size
+                + " Cost:" + cost + " Quantity:" + quantity + " ImgURL:"
+                        + shortURL);
     }
 
     public static void main(String args[]){
