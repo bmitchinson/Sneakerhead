@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AddItemFrame/AddItemFrame.iml" filepath="$PROJECT_DIR$/AddItemFrame/AddItemFrame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Client/Client.iml" filepath="$PROJECT_DIR$/Client/Client.iml" />
       <module fileurl="file://$PROJECT_DIR$/ItemViewFrame/ItemViewFrame.iml" filepath="$PROJECT_DIR$/ItemViewFrame/ItemViewFrame.iml" />
       <module fileurl="file://$PROJECT_DIR$/old_blackjack/old_blackjack.iml" filepath="$PROJECT_DIR$/old_blackjack/old_blackjack.iml" />
       <module fileurl="file://$PROJECT_DIR$/team37_swd.iml" filepath="$PROJECT_DIR$/team37_swd.iml" />
