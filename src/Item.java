@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.net.URL;
 
 public class Item {
     private String name;
@@ -9,8 +10,9 @@ public class Item {
     private String color;
     private String gender;
     private Double cost;
+    private String imageURL;
 
-    public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost){
+    public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, String imageURL){
         this.name = name;
         this.description = description;
         this.brand = brand;
@@ -19,6 +21,7 @@ public class Item {
         this.color = color;
         this.gender = gender;
         this.cost = cost;
+        this.imageURL = imageURL;
     }
 
     public String getName() {
@@ -77,7 +80,8 @@ public class Item {
                 "Blue",
                 "Male",
                 8,
-                60.);
+                60.,
+                "https://i.imgur.com/C6iJSYy.jpg");
 
         System.out.println(testItem.getCost());
     }
