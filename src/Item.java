@@ -8,8 +8,9 @@ public class Item {
     private Integer size;
     private String color;
     private String gender;
+    private Double cost;
 
-    public Item(String name, String description, String brand, String condition, String color, String gender, Integer size){
+    public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost){
         this.name = name;
         this.description = description;
         this.brand = brand;
@@ -17,6 +18,7 @@ public class Item {
         this.size = size;
         this.color = color;
         this.gender = gender;
+        this.cost = cost;
     }
 
     public String getName() {
@@ -43,6 +45,12 @@ public class Item {
         return gender;
     }
 
+    //TODO: Verify how we want cost returned from getCost method
+    public String getCost() {
+        String costString = String.format("%.2f", cost);
+        return costString;
+    }
+
     //TODO: Verify how we want size returned from the getSize method
     public String getSize() {
         return size.toString();
@@ -62,4 +70,15 @@ public class Item {
         return null;
     }
 
+    public static void main(String args[]){
+        Item testItem = new Item("Nike Air Max",
+                "These are shoes I bouht but coudn't ever wear. They are basically like new and I'm willing to negotiate on the price","Nike",
+                "New",
+                "Blue",
+                "Male",
+                8,
+                60.);
+
+        System.out.println(testItem.getCost());
+    }
 }

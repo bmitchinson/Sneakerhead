@@ -11,6 +11,7 @@ public class LoginFrame extends JFrame {
     private final JButton registerButton;
     private final JLabel usernameLabel;
     private final JLabel passwordLabel;
+    private final JComboBox userTypeBox;
 
     public LoginFrame(){
         usernameField = new JTextField();
@@ -50,6 +51,10 @@ public class LoginFrame extends JFrame {
         passwordLabel.setSize(new Dimension(150,25));
         passwordLabel.setAlignmentX(CENTER_ALIGNMENT);
 
+        String[] types = {"Buyer", "Seller", "Buyer & Seller"};
+        userTypeBox = new JComboBox(types);
+        userTypeBox.setMaximumSize(new Dimension(150,50));
+
         add(Box.createRigidArea(new Dimension(500,100)));
         add(usernameLabel);
         add(Box.createRigidArea(new Dimension(500,10)));
@@ -60,7 +65,9 @@ public class LoginFrame extends JFrame {
         add(passwordField);
         add(Box.createRigidArea(new Dimension(500,50)));
         add(buttonPanel);
-        add(Box.createRigidArea(new Dimension(500,290)));
+        add(Box.createRigidArea(new Dimension(500,20)));
+        add(userTypeBox);
+        add(Box.createRigidArea(new Dimension(500,220)));
 
 
         setLayout(new BoxLayout(getContentPane(),BoxLayout.PAGE_AXIS));
