@@ -13,14 +13,6 @@ public class Item {
     private int quantity;
     private String imageURL;
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public String getImageURL() {
-        return imageURL;
-    }
-
     public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, int quantity, String imageURL){
         this.name = name;
         this.description = description;
@@ -73,6 +65,15 @@ public class Item {
         //ItemTile tile = new ItemTile(this);
         //return tile;
         return null;
+    }
+
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getImageURL() {
+        return imageURL;
     }
 
     //TODO: Create an ItemWindow Class that shows the item in its own JFrame
