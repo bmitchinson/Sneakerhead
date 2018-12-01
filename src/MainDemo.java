@@ -5,10 +5,10 @@
 public class MainDemo {
     public static void main(String[] args){
         System.out.println("team 37 is the best team");
+
+        Server server = new Server();
+
         /* something like:
-
-        server = new Server()
-
         // Below to be replaced by a loop
         client_one = new Client()
         client_two = new Client()
