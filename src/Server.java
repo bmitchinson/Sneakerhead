@@ -21,7 +21,7 @@ public class Server {
 
     // Space for InternalClients to be held upon each connection
     private List<InternalClient> allInternalClients = new ArrayList<>();
-    private int clientCount;
+    private int clientIndex;
 
     // Thread Management
     private ExecutorService runClients;
@@ -30,6 +30,7 @@ public class Server {
 
     // Database
     // Wrapper db = new Wrapper();
+    Object db = new Object();
 
     public Server() {
         print("Constructing Server");
@@ -48,34 +49,51 @@ public class Server {
         } finally {
             print("Server opened on port 23517");
         }
+
+        execute();
     }
 
     public void execute() {
-        print("Server beginning infinite loop of waiting for clients to connect");
+        print("Server beginning infinite loop of waiting for clients  to connect");
         while (true) {
             try {
-                print("Waiting for connection #" + (clientCount + 1));
+                print("Waiting for connection #" + (clientIndex + 1));
                 allInternalClients.add(
-                        new InternalClient(server.accept(), clientCount)
+                        new InternalClient(server.accept(), clientIndex)
                 );
-                runClients.execute(allInternalClients.get(clientCount));
+                runClients.execute(allInternalClients.get(clientIndex));
             } catch (IOException e) {
                 print("Connection failed in server execute");
                 e.printStackTrace();
                 System.exit(1);
             } finally {
-                clientCount++;
+                clientIndex++;
             }
 
         }
     }
 
-    public void dev(){
-        // TODO: A dummy execute() to simulate GUI's connecting?
-    }
-
     public void print(String message) {
         System.out.println(LocalTime.now().format(timeFormat) + message);
+    }
+
+    private void processMessage(String message) {
+        // System.out.println("Client received the following:\nMessage:" + message);
+        synchronized (db) {
+
+            // Simulating time it takes to access the database
+            for (int i = 5; i > 0; i--) {
+                System.out.print(i + "..");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("\nNotifying all others who may be waiting");
+            db.notifyAll();
+        }
+        System.out.println("Exiting synchronized");
     }
 
     private class InternalClient implements Runnable {
@@ -89,25 +107,26 @@ public class Server {
         private int num;
 
         public InternalClient(Socket socket, int num) {
-
-            print("Client " + num + " initialized");
+            print("Client " + (num + 1) + " initialized");
             this.connection = socket;
             this.num = num;
 
-            // Initialize streams out of connection
-
+            try {
+                scannerInput = new Scanner(connection.getInputStream());
+            } catch (IOException e) {
+                System.out.println("Somehow a Scanner object couldn't be created" +
+                        "from the input stream from connection");
+                e.printStackTrace();
+            }
         }
 
         public void run() {
-            // Initial object delivery
-
-            // Loop of while connection is open?
-            // Wait for incoming string messages
-        }
-
-        private void processMessage(String message) {
-            System.out.println("Client-" + num +
-                    " received the following:\nMessage:");
+            print("Client " + (num + 1) + " waiting for input");
+            while (true) {
+                if (scannerInput.hasNextLine()) {
+                    processMessage(scannerInput.nextLine());
+                }
+            }
         }
 
     }
