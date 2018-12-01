@@ -7,6 +7,10 @@ import java.util.Formatter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/* Purpose of this class is just to start a new server on it's own thread,
+and run two sample buttons acting as "clients" that interact with the server,
+proving it's capability to lock database access and queue requests.
+ */
 public class MockServerInteraction {
 
     public static void main(String[] args) {
@@ -15,10 +19,11 @@ public class MockServerInteraction {
         // new server and 2 buttons to interact and test thread transfer
         new testButton(1);
         new testButton(2);
-        new testButton(3);
-        new testButton(4);
     }
 
+    /*
+    A class that's only meant to send a signal to the server as an example
+     */
     private static class testButton extends JFrame {
 
         private int num;

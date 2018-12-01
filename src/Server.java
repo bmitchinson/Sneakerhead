@@ -14,7 +14,10 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+// TODO: Need to fill in comments with this
+
 public class Server {
+
     // Networking
     private ServerSocket server;
     private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mm:ss.SSS - ");
