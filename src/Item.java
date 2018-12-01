@@ -13,6 +13,14 @@ public class Item {
     private int quantity;
     private String imageURL;
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
     public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, int quantity, String imageURL){
         this.name = name;
         this.description = description;
@@ -76,7 +84,7 @@ public class Item {
 
     public static void main(String args[]){
         Item testItem = new Item("Nike Air Max",
-                "These are shoes I bouht but coudn't ever wear. They are basically like new and I'm willing to negotiate on the price","Nike",
+                "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price","Nike",
                 "New",
                 "Blue",
                 "Male",
