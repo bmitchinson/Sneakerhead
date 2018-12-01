@@ -10,9 +10,10 @@ public class Item {
     private String color;
     private String gender;
     private Double cost;
+    private int quantity;
     private String imageURL;
 
-    public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, String imageURL){
+    public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, int quantity, String imageURL){
         this.name = name;
         this.description = description;
         this.brand = brand;
@@ -21,6 +22,7 @@ public class Item {
         this.color = color;
         this.gender = gender;
         this.cost = cost;
+        this.quantity = quantity;
         this.imageURL = imageURL;
     }
 
@@ -48,7 +50,6 @@ public class Item {
         return gender;
     }
 
-    //TODO: Verify how we want cost returned from getCost method
     public String getCost() {
         String costString = String.format("%.2f", cost);
         return costString;
@@ -81,6 +82,7 @@ public class Item {
                 "Male",
                 8,
                 60.,
+                2,
                 "https://i.imgur.com/C6iJSYy.jpg");
 
         System.out.println(testItem.getCost());
