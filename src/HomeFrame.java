@@ -8,7 +8,6 @@ public class HomeFrame extends JFrame {
     private final JPanel itemPanel;
     private final JScrollPane scrollPane;
 
-
     public HomeFrame(){
         sellButton = new JButton("Sell Item");
         sellButton.setMinimumSize(new Dimension(100,25));
@@ -30,7 +29,6 @@ public class HomeFrame extends JFrame {
         scrollPane = new JScrollPane(itemPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setMaximumSize(new Dimension(480,510));
         scrollPane.setAlignmentX(CENTER_ALIGNMENT);
-        
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
@@ -49,23 +47,12 @@ public class HomeFrame extends JFrame {
     //TODO: Get Items from wrapper and add them to the JPanel ItemPanel. Item Panel is then added to scrollPane
     //TODO: Remove temporary panels used for initializing after a set size for ItemPanel is determined
     private void initializeItemPanel(){
-        JPanel[] panels = new JPanel[5];
+        Item[] items = Item.getTestItems();
+        itemPanel.setPreferredSize(new Dimension(460,100 * items.length));
+        itemPanel.setLayout(new GridLayout(items.length,1));
 
-        for(int i=0; i<panels.length; i++){
-            Random random = new Random();
-            int r = random.nextInt(256);
-            int g = random.nextInt(256);
-            int b = random.nextInt(256);
-
-            panels[i] = new JPanel();
-            panels[i].setPreferredSize(new Dimension(480,170));
-            panels[i].setBackground(new Color(r,g,b));
-        }
-
-        itemPanel.setPreferredSize(new Dimension(460,170 * panels.length));
-        itemPanel.setLayout(new GridLayout(panels.length,1));
-        for(int i=0; i<panels.length; i++){
-            itemPanel.add(panels[i]);
+        for(int i=0; i<items.length; i++){
+            itemPanel.add(items[i].getItemTile());
         }
     }
 

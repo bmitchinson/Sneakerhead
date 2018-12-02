@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class ItemTile extends JPanel{
     private final JLabel itemPictureLabel;
@@ -8,45 +11,47 @@ public class ItemTile extends JPanel{
     private final JLabel sellerLabel;
     private final JLabel quantityLabel;
     private final JTextArea descriptionArea;
+    private final Item item;
+    private static int colorDecider = 0;
 
-    public ItemTile(){
-        Item testItem = new Item("Nike Air Max",
-                "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price","Nike",
-                "New",
-                "Blue",
-                "Male",
-                8,
-                60.,
-                2,
-                "https://i.imgur.com/C6iJSYy.jpg", "Sam");
-
+    public ItemTile(Item item){
+        this.item = item;
         setPreferredSize(new Dimension(480,100));
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+        if(colorDecider == 0){
+            setBackground(Color.GRAY);
+            colorDecider = 1;
+        }
+        else if(colorDecider == 1){
+            setBackground(Color.LIGHT_GRAY);
+            colorDecider = 0;
+        }
 
         //Create image JLabel
         ImageIcon itemImageIcon = new ImageIcon();
-        itemImageIcon.setImage(ScaledImage.getScaledImage(testItem.getImageURL(),100,100));
+        itemImageIcon.setImage(ScaledImage.getScaledImage(item.getImageURL(),100,100));
         itemPictureLabel = new JLabel(itemImageIcon);
         itemPictureLabel.setMinimumSize(new Dimension(100,100));
 
-        nameLabel = new JLabel(testItem.getName());
+        nameLabel = new JLabel(item.getName());
         nameLabel.setAlignmentX(LEFT_ALIGNMENT);
 
-        costLabel = new JLabel("Cost: " + testItem.getCost());
+        costLabel = new JLabel("Cost: " + item.getCost());
         costLabel.setAlignmentX(RIGHT_ALIGNMENT);
 
-        sellerLabel = new JLabel("Seller: " + testItem.getSeller());
+        sellerLabel = new JLabel("Seller: " + item.getSeller());
         sellerLabel.setAlignmentX(LEFT_ALIGNMENT);
 
-        quantityLabel = new JLabel("Quantity: " + testItem.getQuantity());
+        quantityLabel = new JLabel("Quantity: " + item.getQuantity());
         quantityLabel.setAlignmentX(LEFT_ALIGNMENT);
 
         descriptionArea = new JTextArea();
-        initializeDescriptionArea(testItem.getDescription());
+        initializeDescriptionArea(item.getDescription());
 
 
         JPanel bottomPanel = new JPanel();
         //bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
+        bottomPanel.setBackground(this.getBackground());
         bottomPanel.add(sellerLabel);
         bottomPanel.add(Box.createHorizontalGlue());
         bottomPanel.add(quantityLabel);
@@ -55,6 +60,7 @@ public class ItemTile extends JPanel{
 
         JPanel rightPanel = new JPanel();
         rightPanel.setAlignmentX(LEFT_ALIGNMENT);
+        rightPanel.setBackground(this.getBackground());
         rightPanel.setPreferredSize(new Dimension(365,100));
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
         rightPanel.add(nameLabel);
@@ -68,6 +74,16 @@ public class ItemTile extends JPanel{
         add(Box.createHorizontalStrut(5));
         add(rightPanel);
         add(Box.createHorizontalStrut(5));
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                JOptionPane.showMessageDialog(getParent(),"This worked" + item.getName());
+            }
+        });
+        PanelListener listener = new PanelListener();
+        addMouseListener(listener);
+        descriptionArea.addMouseListener(listener);
     }
 
     private void initializeDescriptionArea(String description){
@@ -85,9 +101,17 @@ public class ItemTile extends JPanel{
         }
     }
 
+    private class PanelListener extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            JOptionPane.showMessageDialog(getParent(),"This worked" + item.getName());
+        }
+    }
+
     public static void main(String[] args){
         JFrame frame = new JFrame();
-        ItemTile tile = new ItemTile();
+        Item[] items = Item.getTestItems();
+        ItemTile tile = new ItemTile(items[0]);
 
         frame.setLayout(new FlowLayout());
         frame.add(tile);

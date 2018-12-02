@@ -13,6 +13,7 @@ public class Item {
     private int quantity;
     private String imageURL;
     private String seller;
+    private ItemTile itemTile;
 
     public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, int quantity, String imageURL, String seller){
         this.name = name;
@@ -26,6 +27,7 @@ public class Item {
         this.quantity = quantity;
         this.imageURL = imageURL;
         this.seller = seller;
+        itemTile = new ItemTile(this);
     }
 
     public String getName() {
@@ -68,9 +70,7 @@ public class Item {
 
     //TODO: Create an ItemTile Class that shows a condensed version of the Item's data in a (JPanel)
     public JPanel getItemTile(){
-        //ItemTile tile = new ItemTile(this);
-        //return tile;
-        return null;
+        return itemTile;
     }
 
 
@@ -87,6 +87,22 @@ public class Item {
         //ItemWindow window = new ItemWindow(this);
         //return window;
         return null;
+    }
+
+    public static Item[] getTestItems(){
+        Item[] items = new Item[20];
+        for(int i=0; i<items.length; i++){
+            items[i] = new Item("Nike Air Max" + i,
+                    "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price","Nike",
+                    "New",
+                    "Blue",
+                    "Male",
+                    8,
+                    60.,
+                    2,
+                    "https://i.imgur.com/C6iJSYy.jpg", "Sam");
+        }
+        return items;
     }
 
     public static void main(String args[]){
