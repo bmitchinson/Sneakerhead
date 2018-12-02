@@ -8,6 +8,7 @@ public class ItemViewFrame extends JFrame {
     private JPanel itemDetails = new JPanel();
     private JPanel boxedFrame = new JPanel();
     private JTextArea descriptionText = new JTextArea();
+    private JLabel quantityLabel;
     private Item item;
 
     ItemViewFrame(Item item){
@@ -46,6 +47,8 @@ public class ItemViewFrame extends JFrame {
         descriptionText.setLineWrap(true);
         descriptionText.setWrapStyleWord(true);
 
+        quantityLabel = new JLabel("Quantity: " + item.getQuantity());
+
         //JPanel itemDetails = new JPanel();
         itemDetails.setLayout(new GridLayout(10,1));
         itemDetails.setPreferredSize(new Dimension(400,450));
@@ -55,8 +58,8 @@ public class ItemViewFrame extends JFrame {
         itemDetails.add(new JLabel("Condition: " + item.getCondition()));
         itemDetails.add(new JLabel("Size: "+ item.getSize() + " " + item.getGender()));
         itemDetails.add(new JLabel("Color: "+ item.getColor()));
-        itemDetails.add(new JLabel("Price: $" + item.getCost()));
-        itemDetails.add(new JLabel("Quantity: " + item.getQuantity()));
+        itemDetails.add(new JLabel("Price: " + item.getCost()));
+        itemDetails.add(quantityLabel);
         itemDetails.add(new JLabel("Seller: " + item.getSeller()));
         itemDetails.add(new JLabel(""));
         itemDetails.add(buyButton);
@@ -71,7 +74,7 @@ public class ItemViewFrame extends JFrame {
         //add listener to the buyButton
         buyButton.addActionListener(e -> buttonHit());
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(600,510);
         this.setVisible(true);
     }
@@ -86,5 +89,10 @@ public class ItemViewFrame extends JFrame {
         itemDetails.setBackground(Color.LIGHT_GRAY);
         boxedFrame.setBackground(Color.LIGHT_GRAY);
         descriptionText.setBackground(Color.LIGHT_GRAY);
+
+
+        item.decrementQuantity();
+        item.updateTile();
+        quantityLabel.setText("Quantity: " + item.getQuantity());
     }
 }

@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Wrapper {
 
@@ -14,19 +15,25 @@ public class Wrapper {
     }
 
     public Item getItemInfo(int id) {
-        Statement statement = null;
+        Statement itemStatement = null;
+        Statement linkedSellerStatement = null;
+
         try {
-            statement = connection.createStatement();
+            itemStatement = connection.createStatement();
             ResultSet result =
-                    statement.executeQuery("SELECT * FROM Items where ID = " + id);
+                    itemStatement.executeQuery("SELECT * FROM Items where ID = " + id);
 
             result.next();
 
-            for (int i = 1; i <= 11; i++) {
-                if (i > 1) System.out.print(",  ");
-                System.out.print(result.getString(i));
-            }
-            System.out.println("");
+            linkedSellerStatement = connection.createStatement();
+            ResultSet sellerResult = linkedSellerStatement.executeQuery(
+                    "SELECT * FROM Users where ID = " +
+                            result.getInt("Seller")
+            );
+
+            sellerResult.next();
+
+            String name = sellerResult.getString("Username");
 
             Item test = new Item(result.getInt("ID"),
                     result.getString("Name"),
@@ -39,9 +46,8 @@ public class Wrapper {
                     result.getDouble("Price"),
                     result.getInt("Quantity"),
                     result.getString("URL"),
-                    "Sam");
+                    name);
 
-            System.out.println(test);
             return test;
 
         } catch (SQLException e) {
@@ -52,21 +58,27 @@ public class Wrapper {
         return null;
     }
 
-    public Item[] getAllItems(){
+    public ArrayList<Item> getAllItems(){
         Statement statement = null;
+        Statement linkedSellerStatement = null;
+
         try {
             statement = connection.createStatement();
-            ResultSet count = statement.executeQuery("SELECT COUNT(*) FROM Items");
-            count.next();
-            int rows = count.getInt(1);
-            Item[] allItems = new Item[rows];
+            linkedSellerStatement = connection.createStatement();
 
+            ArrayList<Item> allItems = new ArrayList<Item>(1024);
 
             ResultSet result =
                     statement.executeQuery("SELECT * FROM Items" );
 
-            int i = 0;
+            ResultSet sellerResult;
+
             while(result.next()) {
+                sellerResult = linkedSellerStatement.executeQuery(
+                        "SELECT * FROM Users where ID = " +
+                                result.getInt("Seller"));
+                sellerResult.next();
+
                 Item test = new Item(result.getInt("ID"),
                         result.getString("Name"),
                         result.getString("Description"),
@@ -78,10 +90,9 @@ public class Wrapper {
                         result.getDouble("Price"),
                         result.getInt("Quantity"),
                         result.getString("URL"),
-                        result.getString("Seller"));
+                        sellerResult.getString("Username"));
 
-                allItems[i] = test;
-                i++;
+                allItems.add(test);
             }
 
             return allItems;
@@ -100,6 +111,7 @@ public class Wrapper {
             Statement statement = connection.createStatement();
             ResultSet quantity = statement.executeQuery("SELECT Quantity FROM Items WHERE ID =" + itemID);
             quantity.next();
+            System.out.println("Before decrement: " + quantity.getInt(1));
             int q = quantity.getInt(1)-1;
             String query = "UPDATE Items SET Quantity =" + q + " WHERE ID =" + itemID;
             statement.executeUpdate(query);
@@ -170,9 +182,11 @@ public class Wrapper {
 
     /*
     TODO: Methods
-    sellItem(Item) - populate item list with new item with user attached
-    login(name, pass) - true or false, telling gui to use provided username in corner, check to make sure vaild
-    getUserType(name) - return string of user type - 1, buyer 2, seller, 3 both
+    buyItem(ID)
+    sellItem(Item)
+    createUser(Name, Pass, Type (123))
+    login(name, pass) - true or false, telling gui to use provided username in corner
+    getUserType(name) - return string of user type
 
      */
 }
