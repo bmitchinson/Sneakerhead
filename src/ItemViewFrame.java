@@ -77,9 +77,7 @@ public class ItemViewFrame extends JFrame {
     }
 
 
-    public static void main(String[] args){
-        ItemViewFrame frame = new ItemViewFrame(new Item());
-    }
+    //public static void main(String[] args){ ItemViewFrame frame = new ItemViewFrame(new Item()); }
 
     //TODO: decrement the item quantity
     private void buttonHit(){
