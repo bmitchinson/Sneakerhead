@@ -59,19 +59,29 @@ public class Wrapper {
 
     public Item[] getAllItems(){
         Statement statement = null;
+        Statement linkedSellerStatement = null;
+
         try {
             statement = connection.createStatement();
+            linkedSellerStatement = connection.createStatement();
+
             ResultSet count = statement.executeQuery("SELECT COUNT(*) FROM Items");
             count.next();
             int rows = count.getInt(1);
             Item[] allItems = new Item[rows];
 
-
             ResultSet result =
                     statement.executeQuery("SELECT * FROM Items" );
 
+            ResultSet sellerResult;
+
             int i = 0;
             while(result.next()) {
+                sellerResult = linkedSellerStatement.executeQuery(
+                        "SELECT * FROM Users where ID = " +
+                                result.getInt("Seller"));
+                sellerResult.next();
+
                 Item test = new Item(result.getInt("ID"),
                         result.getString("Name"),
                         result.getString("Description"),
@@ -83,7 +93,7 @@ public class Wrapper {
                         result.getDouble("Price"),
                         result.getInt("Quantity"),
                         result.getString("URL"),
-                        result.getString("Seller"));
+                        sellerResult.getString("Username"));
 
                 allItems[i] = test;
                 i++;
@@ -122,8 +132,7 @@ public class Wrapper {
 
     public static void main(String[] args) {
         Wrapper wrapper = new Wrapper();
-        Item test = wrapper.getItemInfo(1);
-        System.out.println(test);
+        Item[] test = wrapper.getAllItems();
     }
 
     /*
