@@ -9,11 +9,12 @@ public class Item {
     private Integer size;
     private String color;
     private String gender;
-    private Double cost;
+    private double cost;
     private int quantity;
     private String imageURL;
+    private String seller;
 
-    public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, int quantity, String imageURL){
+    public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, int quantity, String imageURL, String seller){
         this.name = name;
         this.description = description;
         this.brand = brand;
@@ -24,6 +25,7 @@ public class Item {
         this.cost = cost;
         this.quantity = quantity;
         this.imageURL = imageURL;
+        this.seller = seller;
     }
 
     public String getName() {
@@ -50,8 +52,12 @@ public class Item {
         return gender;
     }
 
+    public String getSeller(){
+        return seller;
+    }
+
     public String getCost() {
-        String costString = String.format("%.2f", cost);
+        String costString = String.format("$%.2f", cost);
         return costString;
     }
 
@@ -68,8 +74,8 @@ public class Item {
     }
 
 
-    public int getQuantity() {
-        return quantity;
+    public String getQuantity() {
+        return String.valueOf(quantity);
     }
 
     public String getImageURL() {
@@ -92,7 +98,7 @@ public class Item {
                 8,
                 60.,
                 2,
-                "https://i.imgur.com/C6iJSYy.jpg");
+                "https://i.imgur.com/C6iJSYy.jpg", "Sam");
 
         System.out.println(testItem.getCost());
     }
