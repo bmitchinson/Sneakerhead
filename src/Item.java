@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class Item {
     private int id;
@@ -7,7 +8,7 @@ public class Item {
     private String description;
     private String brand;
     private String condition;
-    private float size;
+    private double size;
     private String color;
     private String gender;
     private double cost;
@@ -16,9 +17,27 @@ public class Item {
     private String seller;
     private ItemTile itemTile;
 
+    public Item(String name, String description, String brand,
+                String condition, String color, String gender, double size,
+                double cost, int quantity, String imageURL, String seller) {
+        this.id = -1;
+        this.name = name;
+        this.description = description;
+        this.brand = brand;
+        this.condition = condition;
+        this.size = size;
+        this.color = color;
+        this.gender = gender;
+        this.cost = cost;
+        this.quantity = quantity;
+        this.imageURL = imageURL;
+        this.seller = seller;
+        itemTile = new ItemTile(this);
+    }
+
     public Item(int id, String name, String description, String brand,
-                String condition, String color, String gender, float size,
-                Double cost, int quantity, String imageURL, String seller) {
+                String condition, String color, String gender, double size,
+                double cost, int quantity, String imageURL, String seller) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -68,7 +87,7 @@ public class Item {
     }
 
     //TODO: Verify how we want size returned from the getSize method
-    public float getSize() {
+    public double getSize() {
         return size;
     }
 
@@ -78,12 +97,16 @@ public class Item {
     }
 
 
-    public String getQuantity() {
-        return String.valueOf(quantity);
+    public int getQuantity() {
+        return quantity;
     }
 
     public String getImageURL() {
         return imageURL;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 
     public void incrementQuantity() {
@@ -99,12 +122,15 @@ public class Item {
     public void updateTile() {
         SwingUtilities.invokeLater(() -> {
             itemTile.updateQuantityText();
+            itemTile.updateImage();
         });
     }
 
     //TODO: Create an ItemWindow Class that shows the item in its own JFrame
     public void startItemWindow() {
-        ItemViewFrame frame = new ItemViewFrame(this);
+        if(quantity != 0){
+            ItemViewFrame frame = new ItemViewFrame(this);
+        }
     }
 
     @Override
@@ -121,25 +147,40 @@ public class Item {
                 + shortURL + ", Seller:" + seller);
     }
 
-    public static Item[] getTestItems() {
-        Item[] items = new Item[20];
-        for (int i = 0; i < items.length; i++) {
-            items[i] = new Item(i,
-                    "Nike Air Max" + (i + 1),
-                    "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price", "Nike",
-                    "New",
-                    "Blue",
-                    "Male",
-                    8,
-                    60.,
-                    2,
-                    "https://i.imgur.com/C6iJSYy.jpg", "Sam");
-        }
+    public static ArrayList<Item> getTestItems() {
+        ArrayList<Item> items = new ArrayList<Item>(1024);
+
+        items.add(new Item(
+                "Nike Air Max" + 1,
+                "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price", "Nike",
+                "New",
+                "Blue",
+                "Mens",
+                8,
+                40.65,
+                1,
+                "https://i.imgur.com/C6iJSYy.jpg",
+                "Sam"));
+
+
+        items.add(new Item(
+                "Converse High Tops 2",
+                "Converse High Tops feature super grip bottoms so you don't slip around in those icy winters",
+                "Converse",
+                "Like New",
+                "Black",
+                "Womens",
+                4.0,
+                59.95,
+                1,
+                "https://i.imgur.com/daU2fPw.jpg",
+                "BigSeller123"
+                ));
         return items;
     }
 
     public static void main(String args[]) {
-        Item testItem = new Item(0, "Nike Air Max",
+        Item testItem = new Item( "Nike Air Max",
                 "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price", "Nike",
                 "New",
                 "Blue",
