@@ -100,13 +100,9 @@ public class Wrapper {
             Statement statement = connection.createStatement();
             ResultSet quantity = statement.executeQuery("SELECT Quantity FROM Items WHERE ID =" + itemID);
             quantity.next();
-            System.out.println("Before decrement: " + quantity.getInt(1));
             int q = quantity.getInt(1)-1;
-            String query = "UPDATE Items SET Quantity = " + q + "WHERE ID = " + itemID;
+            String query = "UPDATE Items SET Quantity =" + q + " WHERE ID =" + itemID;
             statement.executeUpdate(query);
-            ResultSet result = statement.executeQuery("SELECT Quantity FROM Items WHERE ID =" + itemID);
-            result.next();
-            System.out.println("After decrement: " + result.getInt(1));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -114,21 +110,48 @@ public class Wrapper {
 
     }
 
+    public boolean createUser(String Name,String Pass,int Type){
+
+        boolean createUser = true;
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT Username FROM Users");
+
+            while(result.next()){
+                if(result.getString(1).equals(Name)){
+                    createUser = false;
+                }
+            }
+
+            if(createUser){
+                String insertName = "'"+ Name + "'";
+                String insertPass = "'" + Pass + "'";
+                statement.execute("INSERT INTO Users (Username,Password,Usertype) VALUES ( " + insertName + "," + insertPass + "," + Type + ")");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return createUser;
+    }
+
 
     public static void main(String[] args) {
         Wrapper wrapper = new Wrapper();
         //Item test = wrapper.getItemInfo(2);
         //System.out.println(test);
-        wrapper.buyItem(1);
+        //wrapper.buyItem(1);
+        wrapper.createUser("Mel","123",1);
     }
 
     /*
     TODO: Methods
-    buyItem(ID)
-    sellItem(Item)
+    sellItem(Item) - populate item list with new item with user attached
     createUser(Name, Pass, Type (123))
-    login(name, pass) - true or false, telling gui to use provided username in corner
-    getUserType(name) - return string of user type
+    login(name, pass) - true or false, telling gui to use provided username in corner, check to make sure vaild
+    getUserType(name) - return string of user type - 1, buyer 2, seller, 3 both
 
      */
 }
