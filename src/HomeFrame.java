@@ -7,8 +7,10 @@ public class HomeFrame extends JFrame {
     private final JButton loginButton;
     private final JPanel itemPanel;
     private final JScrollPane scrollPane;
+    private final Wrapper wrapper;
 
     public HomeFrame(){
+        wrapper = new Wrapper();
         sellButton = new JButton("Sell Item");
         sellButton.setMinimumSize(new Dimension(100,25));
         loginButton = new JButton("Login");
@@ -42,12 +44,18 @@ public class HomeFrame extends JFrame {
         this.setSize(500,600);
         this.setResizable(false);
         this.setVisible(true);
+
+
     }
 
     //TODO: Get Items from wrapper and add them to the JPanel ItemPanel. Item Panel is then added to scrollPane
     //TODO: Remove temporary panels used for initializing after a set size for ItemPanel is determined
     private void initializeItemPanel(){
         Item[] items = Item.getTestItems();
+        items[0] = wrapper.getItemInfo(1);
+        items[1] = wrapper.getItemInfo(2);
+        System.out.println(items[0]);
+        System.out.println(items[1]);
         itemPanel.setPreferredSize(new Dimension(460,100 * items.length));
         itemPanel.setLayout(new GridLayout(items.length,1));
 
