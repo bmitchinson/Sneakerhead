@@ -111,7 +111,8 @@ public class Item {
     public static Item[] getTestItems(){
         Item[] items = new Item[20];
         for(int i=0; i<items.length; i++){
-            items[i] = new Item(i,"Nike Air Max" + i + 1,
+            items[i] = new Item(i,
+                    "Nike Air Max" + (i+1),
                     "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price","Nike",
                     "New",
                     "Blue",
