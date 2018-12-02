@@ -81,7 +81,7 @@ public class ItemViewFrame extends JFrame {
         ItemViewFrame frame = new ItemViewFrame(new Item());
     }
 
-    //TODO:
+    //TODO: decrement the item quantity
     private void buttonHit(){
         buyButton.setText("Bought!");
         buyButton.setEnabled(false);
