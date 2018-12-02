@@ -1,11 +1,11 @@
 import java.sql.*;
 import java.util.ArrayList;
 
-public class Wrapper {
+public class Database {
 
     private Connection connection;
 
-    public Wrapper() {
+    public Database() {
         try {
             this.connection = DriverManager.getConnection("jdbc:mysql://s-l112.engr.uiowa.edu/engr_class037", "engr_class037", "mbs123");
         } catch (SQLException e) {
@@ -109,7 +109,7 @@ public class Wrapper {
         return null;
     }
 
-    public void buyItem(int itemID){
+    public boolean buyItem(int itemID){
 
         try {
             Statement statement = connection.createStatement();
@@ -118,11 +118,12 @@ public class Wrapper {
             int q = quantity.getInt(1)-1;
             String query = "UPDATE Items SET Quantity =" + q + " WHERE ID =" + itemID;
             statement.executeUpdate(query);
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-
     }
 
     public boolean createUser(String Name,String Pass,int Type){
@@ -146,7 +147,7 @@ public class Wrapper {
         return false;
     }
 
-    public void sellItem(String username, Item item){
+    public boolean sellItem(String username, Item item){
         try {
             Statement statement = connection.createStatement();
 
@@ -165,8 +166,10 @@ public class Wrapper {
             int id = result.getInt(1);
             String values = "(" + insertName + "," + insertDescrip + "," + insertBrand + "," + item.getQuantity() + "," + insertCondition + "," + insertSize + "," + insertColor + "," + insertGender + "," + insertCost + "," + insertURL + "," + id + ")";
             statement.execute("INSERT INTO `Items` (`Name`,`Description`,`Brand`,`Quantity`,`Condition`,`Size`,`Color`,`Gender`,`Price`,`URL`,`Seller`) VALUES " + values);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -192,8 +195,8 @@ public class Wrapper {
     }
 
     public static void main(String[] args) {
-        Wrapper wrapper = new Wrapper();
-        ArrayList<Item> test = wrapper.getAllItems();
+        Database database = new Database();
+        ArrayList<Item> test = database.getAllItems();
     }
 
     /*

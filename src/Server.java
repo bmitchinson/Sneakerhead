@@ -31,7 +31,7 @@ public class Server {
     private Condition dbFree;
 
     // Database
-    private final Wrapper db = new Wrapper();
+    private final Database db = new Database();
 
     public Server() {
         print("Constructing Server");
@@ -133,6 +133,10 @@ public class Server {
                         AddUserRequest addUserRequest = (AddUserRequest) request;
                         output.writeObject(db.createUser(addUserRequest.getUsername(), addUserRequest.getPassword(), addUserRequest.getType()));
                     }
+                    else if(request instanceof LoginRequest){
+                        LoginRequest loginRequest = (LoginRequest) request;
+                        output.writeObject(db.login(loginRequest.getUsername(), loginRequest.getPassword()));
+                    }
                     else if (request instanceof GetAllItemsRequest){
                         output.writeObject(db.getAllItems());
                     }
@@ -140,6 +144,16 @@ public class Server {
                         GetItemRequest getItemRequest = (GetItemRequest) request;
                         output.writeObject(db.getItemInfo(getItemRequest.getItem()));
                     }
+                    else if(request instanceof BuyItemRequest){
+                        BuyItemRequest buyItemRequest = (BuyItemRequest) request;
+                        output.writeObject(db.buyItem(buyItemRequest.getItem()));
+                    }
+                    else if(request instanceof SellItemRequest){
+                        SellItemRequest sellItemRequest = (SellItemRequest) request;
+                        output.writeObject(db.sellItem(sellItemRequest.getSeller(), sellItemRequest.getItem()));
+                    }
+
+
                 } catch (IOException e) {
                     System.out.println(e);
                 }
