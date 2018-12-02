@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalTime;
@@ -99,6 +101,8 @@ public class Server {
         // Network socket +  needed object streams
         private Socket connection;
         private Scanner scannerInput;
+        private ObjectInputStream input;
+        private ObjectOutputStream output;
         private Formatter formatterOutput;
 
         private int num;
@@ -106,26 +110,33 @@ public class Server {
         public InternalClient(Socket socket, int num) {
             print("Client " + (num + 1) + " initialized");
             this.connection = socket;
-            this.num = num;
 
-            try {
-                scannerInput = new Scanner(connection.getInputStream());
-            } catch (IOException e) {
-                System.out.println("Somehow a Scanner object couldn't be created" +
-                        "from the input stream from connection");
-                e.printStackTrace();
+            try{
+                this.input = new ObjectInputStream(socket.getInputStream());
+                this.output = new ObjectOutputStream(socket.getOutputStream());
+                output.flush();
+            }catch (IOException e){
+                System.out.println(e);
             }
+
+
+            this.num = num;
         }
 
         public void run() {
+            //Request request = Request;
             print("Client " + (num + 1) + " waiting for input");
             while (true) {
-                if (scannerInput.hasNextLine()) {
-                    processMessage(scannerInput.nextLine());
-                }
+               //input.readObject()
             }
         }
 
     }
+
+    public static void main(String[] args){
+
+    }
+
+
 
 }
