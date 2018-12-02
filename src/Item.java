@@ -10,14 +10,15 @@ public class Item {
     private float size;
     private String color;
     private String gender;
-    private Double cost;
+    private double cost;
     private int quantity;
     private String imageURL;
+    private String seller;
+    private ItemTile itemTile;
 
     public Item(int id, String name, String description, String brand,
                 String condition, String color, String gender, float size,
-                Double cost, int quantity, String imageURL){
-
+                Double cost, int quantity, String imageURL, String seller) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -29,6 +30,8 @@ public class Item {
         this.cost = cost;
         this.quantity = quantity;
         this.imageURL = imageURL;
+        this.seller = seller;
+        itemTile = new ItemTile(this);
     }
 
     public String getName() {
@@ -55,8 +58,12 @@ public class Item {
         return gender;
     }
 
+    public String getSeller() {
+        return seller;
+    }
+
     public String getCost() {
-        String costString = String.format("%.2f", cost);
+        String costString = String.format("$%.2f", cost);
         return costString;
     }
 
@@ -66,52 +73,82 @@ public class Item {
     }
 
     //TODO: Create an ItemTile Class that shows a condensed version of the Item's data in a (JPanel)
-    public JPanel getItemTile(){
-        //ItemTile tile = new ItemTile(this);
-        //return tile;
-        return null;
+    public ItemTile getItemTile() {
+        return itemTile;
     }
 
 
-    public int getQuantity() {
-        return quantity;
+    public String getQuantity() {
+        return String.valueOf(quantity);
     }
 
     public String getImageURL() {
         return imageURL;
     }
 
+    public void incrementQuantity() {
+        quantity++;
+    }
+
+    public void decrementQuantity() {
+        if (quantity != 0) {
+            quantity--;
+        }
+    }
+
+    public void updateTile() {
+        SwingUtilities.invokeLater(() -> {
+            itemTile.updateQuantityText();
+        });
+    }
+
     //TODO: Create an ItemWindow Class that shows the item in its own JFrame
-    public JFrame getItemWindow(){
-        //ItemWindow window = new ItemWindow(this);
-        //return window;
-        return null;
+    public void startItemWindow() {
+        ItemViewFrame frame = new ItemViewFrame(this);
     }
 
     @Override
     public String toString() {
         String desc = (description.length() > 25) ?
-        (description.substring(0, 25)) : (description);
+                (description.substring(0, 25)) : (description);
 
         String shortURL = (imageURL.length() > 10) ?
-                (imageURL.substring(0,10)) : (imageURL);
+                (imageURL.substring(0, 10)) : (imageURL);
 
-        return ( "Item Contents:\nName:" + name + " Description:" + desc
+        return ("Item Contents:\nName:" + name + " Description:" + desc
                 + " Color:" + color + " Gender:" + gender + " Size:" + size
                 + " Cost:" + cost + " Quantity:" + quantity + " ImgURL:"
-                        + shortURL);
+                + shortURL);
     }
 
-    public static void main(String args[]){
+    public static Item[] getTestItems() {
+        Item[] items = new Item[20];
+        for (int i = 0; i < items.length; i++) {
+            items[i] = new Item(i,
+                    "Nike Air Max" + (i + 1),
+                    "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price", "Nike",
+                    "New",
+                    "Blue",
+                    "Male",
+                    8,
+                    60.,
+                    2,
+                    "https://i.imgur.com/C6iJSYy.jpg", "Sam");
+        }
+        return items;
+    }
+
+    public static void main(String args[]) {
         Item testItem = new Item(0, "Nike Air Max",
-                "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price","Nike",
+                "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price", "Nike",
                 "New",
                 "Blue",
                 "Male",
                 8,
                 60.,
                 2,
-                "https://i.imgur.com/C6iJSYy.jpg");
+                "https://i.imgur.com/C6iJSYy.jpg",
+                "Sam");
 
         System.out.println(testItem.getCost());
     }
