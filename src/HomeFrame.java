@@ -1,3 +1,6 @@
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.sun.security.ntlm.Server;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,30 +13,26 @@ public class HomeFrame extends JFrame {
     private final JPanel itemPanel;
     private final JScrollPane scrollPane;
     private final JPanel topPanel;
+    private final JPanel bottomPanel;
     private JPanel loginState;
     private ArrayList<Item> items;
-    private final Wrapper wrapper;
-
-    public HomeFrame(String title){
-        super(title);
-        postItem = null;
-        loginButton = null;
-        itemPanel = null;
-        scrollPane = null;
-        topPanel = null;
-        items = null;
-        wrapper = null;
-    }
+    private final ServerRequester serverRequester;
 
     public HomeFrame(){
-        wrapper = new Wrapper();
+        serverRequester = new ServerRequester("localhost");
+
+        if(!serverRequester.start()){
+            System.out.println("Error connecting to server... Please ensure server was started correctly");
+            System.exit(-1);
+        }
+
         postItem = new JButton("Post Item");
         postItem.setMinimumSize(new Dimension(100,25));
         loginButton = new JButton("Login");
         loginButton.setMinimumSize(new Dimension(75,25));
 
         loginState = new JPanel();
-        loginState.setMaximumSize(new Dimension(75,25));
+        loginState.setMaximumSize(new Dimension(75,30));
         loginState.setLayout(new GridLayout(1,1));
         loginState.add(loginButton);
 
@@ -55,29 +54,31 @@ public class HomeFrame extends JFrame {
 
         scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setViewportView(itemPanel);
-        scrollPane.setMaximumSize(new Dimension(480,510));
+        scrollPane.setPreferredSize(new Dimension(480,510));
         scrollPane.setAlignmentX(CENTER_ALIGNMENT);
+
+        bottomPanel = new JPanel();
+        bottomPanel.setSize(new Dimension(400,300));
+        bottomPanel.setBackground(Color.BLUE);
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
-        add(Box.createVerticalStrut(10));
+        add(Box.createVerticalStrut(5));
         add(topPanel);
         add(Box.createVerticalStrut(15));
         add(scrollPane);
         add(Box.createVerticalStrut(15));
+        add(bottomPanel);
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setSize(500,600);
+        this.setSize(500,900);
         this.setResizable(false);
         this.setVisible(true);
     }
 
-    //TODO: Get Items from wrapper and add them to the JPanel ItemPanel. Item Panel is then added to scrollPane
-    //TODO: Remove temporary panels used for initializing after a set size for ItemPanel is determined
     private void initializeItemPanel(){
-        items = Item.getTestItems();
-        items.add(wrapper.getItemInfo(1));
-        items.add(wrapper.getItemInfo(2));
+        items = (ArrayList<Item>) makeRequest(new GetAllItemsRequest());
+        //items = Item.getTestItems();
         itemPanel.setPreferredSize(new Dimension(460,100 * items.size()));
         itemPanel.setLayout(new GridLayout(items.size(),1));
 
@@ -90,14 +91,17 @@ public class HomeFrame extends JFrame {
         return this;
     }
 
-    public void updateLogin(String username){
+    public void updateLogin(String username, String type){
         SwingUtilities.invokeLater(() -> {
             JLabel loggedInLabel = new JLabel(username);
+            JLabel loggedInType = new JLabel(type);
             loggedInLabel.setMinimumSize(new Dimension(75,25));
             loginState.remove(loginButton);
             loginState.revalidate();
             loginState.repaint();
+            loginState.setLayout(new GridLayout(2,1));
             loginState.add(loggedInLabel);
+            loginState.add(loggedInType);
             loginState.revalidate();
             loginState.repaint();
         });
@@ -112,11 +116,18 @@ public class HomeFrame extends JFrame {
         itemPanel.repaint();
     }
 
+    public Object makeRequest(Request request){
+        Object response = null;
+        response = serverRequester.makeRequest(request);
+        return response;
+    }
+
     private class ButtonHandler implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e. getSource() == loginButton){
                 LoginFrame frame = new LoginFrame(getThis());
+
             }
 
             if(e.getSource() == postItem){
