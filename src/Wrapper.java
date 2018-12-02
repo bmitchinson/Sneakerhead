@@ -23,9 +23,13 @@ public class Wrapper {
             ResultSet result =
                     itemStatement.executeQuery("SELECT * FROM Items where ID = " + id);
 
-            result.next();
+            if (result.next() == false){
+                System.out.println("Wrapping returning null");
+                return null;
+            }
 
             linkedSellerStatement = connection.createStatement();
+
             ResultSet sellerResult = linkedSellerStatement.executeQuery(
                     "SELECT * FROM Users where ID = " +
                             result.getInt("Seller")
@@ -173,7 +177,9 @@ public class Wrapper {
 
     public static void main(String[] args) {
         Wrapper wrapper = new Wrapper();
-        ArrayList<Item> test = wrapper.getAllItems();
+        System.out.println(wrapper.getItemInfo(5));
+
+        //ArrayList<Item> test = wrapper.getAllItems();
     }
 
     /*
