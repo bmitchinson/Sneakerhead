@@ -1,4 +1,3 @@
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -30,8 +29,7 @@ public class Server {
     private Condition dbFree;
 
     // Database
-    // Wrapper db = new Wrapper();
-    Object db = new Object();
+    Wrapper db = new Wrapper();
 
     public Server() {
         print("Constructing Server");
@@ -79,7 +77,6 @@ public class Server {
     }
 
     private void processMessage(String message) {
-        // System.out.println("Client received the following:\nMessage:" + message);
         synchronized (db) {
 
             // Simulating time it takes to access the database
@@ -99,9 +96,8 @@ public class Server {
 
     private class InternalClient implements Runnable {
 
-        // Network socket +  needed file streams
+        // Network socket +  needed object streams
         private Socket connection;
-        private FileInputStream fileInput;
         private Scanner scannerInput;
         private Formatter formatterOutput;
 
