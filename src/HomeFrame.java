@@ -31,10 +31,10 @@ public class HomeFrame extends JFrame {
     public HomeFrame(){
         serverRequester = new ServerRequester("localhost");
 
-        if(!serverRequester.start()){
+        /*if(!serverRequester.start()){
             System.out.println("Error connecting to server... Please ensure server was started correctly");
             System.exit(-1);
-        }
+        }*/
 
         postItem = new JButton("Post Item");
         postItem.setMinimumSize(new Dimension(100,25));
@@ -67,6 +67,10 @@ public class HomeFrame extends JFrame {
         scrollPane.setMaximumSize(new Dimension(480,510));
         scrollPane.setAlignmentX(CENTER_ALIGNMENT);
 
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setSize(new Dimension(400,300));
+        bottomPanel.setBackground(Color.BLUE);
+
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
         add(Box.createVerticalStrut(5));
@@ -76,7 +80,7 @@ public class HomeFrame extends JFrame {
         add(Box.createVerticalStrut(15));
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setSize(500,600);
+        this.setSize(500,900);
         this.setResizable(false);
         this.setVisible(true);
     }
