@@ -24,8 +24,9 @@ public class ItemViewFrame extends JFrame {
 
         //JPanel pic = new JPanel();
 
-        ImageIcon pic = new ImageIcon();
-        pic.setImage();
+        ImageIcon picPass = new ImageIcon();
+        picPass.setImage(ScaledImage.getScaledImage(item.getImageURL(),200,200));
+        JLabel pic = new JLabel(picPass);
 
         JTextArea descriptionText = new JTextArea(50,375);
         descriptionText.setBackground(insideBox.getBackground());
@@ -35,7 +36,7 @@ public class ItemViewFrame extends JFrame {
         itemDetails.setLayout(new GridLayout(9,1));
         itemDetails.setMaximumSize(new Dimension(400,450));
         itemDetails.add(new JLabel("Description: " ));
-        itemDetails.add(descriptionText);
+        //itemDetails.add(descriptionText);
         itemDetails.add(new JLabel("Condition: " + item.getCondition()));
         itemDetails.add(new JLabel("Size: "+ item.getSize() + " " + item.getGender()));
         itemDetails.add(new JLabel("Color: "+ item.getColor()));
