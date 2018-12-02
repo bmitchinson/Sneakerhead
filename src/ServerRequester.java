@@ -49,6 +49,8 @@ public class ServerRequester {
     public static void main(String[] args){
         ServerRequester requester = new ServerRequester("172.17.108.210");
         requester.start();
+        AddUserRequest request = new AddUserRequest("BigSeller", "password123");
+        requester.makeRequest(request);
     }
 
 }
