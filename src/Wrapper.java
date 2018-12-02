@@ -14,19 +14,33 @@ public class Wrapper {
     }
 
     public Item getItemInfo(int id) {
-        Statement statement = null;
+        Statement itemStatement = null;
+        Statement linkedSellerStatement = null;
+
         try {
-            statement = connection.createStatement();
+            itemStatement = connection.createStatement();
             ResultSet result =
-                    statement.executeQuery("SELECT * FROM Items where ID = " + id);
+                    itemStatement.executeQuery("SELECT * FROM Items where ID = " + id);
 
             result.next();
 
-            for (int i = 1; i <= 11; i++) {
+            for (int i = 1; i <= 12; i++) {
                 if (i > 1) System.out.print(",  ");
                 System.out.print(result.getString(i));
             }
             System.out.println("");
+
+            int sellerID = result.getInt("Seller");
+
+            linkedSellerStatement = connection.createStatement();
+            ResultSet sellerResult = linkedSellerStatement.executeQuery(
+                    "SELECT * FROM Users where ID = " +
+                            result.getInt("Seller")
+            );
+
+            sellerResult.next();
+
+            String name = sellerResult.getString("Username");
 
             Item test = new Item(result.getInt("ID"),
                     result.getString("Name"),
@@ -38,10 +52,11 @@ public class Wrapper {
                     result.getFloat("Size"),
                     result.getDouble("Price"),
                     result.getInt("Quantity"),
-                    result.getString("URL"));
+                    result.getString("URL"),
+                    name);
 
-            System.out.println(test);
-            return test;
+            //System.out.println(test);
+            return null;
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -12,7 +12,7 @@ public class MainDemo {
         // Below to be replaced by a loop
         client_one = new Client()
         client_two = new Client()
-        client_three = new Client()
+        client_three = new Client()f
         client_four = new Client()
 
         // Execute all of the above since they're runnable
