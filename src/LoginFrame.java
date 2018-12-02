@@ -97,16 +97,20 @@ public class LoginFrame extends JFrame {
                 if(response == 1){
                     System.out.println("Logged in as buyer...");
                     mainFrame.updateLogin(request.getUsername(), "Buyer");
+                    getThis().dispatchEvent(new WindowEvent(getThis(), WindowEvent.WINDOW_CLOSING));
+
                 }
 
                 else if(response == 2){
                     System.out.println("Logged in as seller...");
                     mainFrame.updateLogin(request.getUsername(), "Seller");
+                    getThis().dispatchEvent(new WindowEvent(getThis(), WindowEvent.WINDOW_CLOSING));
                 }
 
                 else if(response == 3){
                     System.out.println("Logged in as buyer/seller");
                     mainFrame.updateLogin(request.getUsername(), "Buyer/Seller");
+                    getThis().dispatchEvent(new WindowEvent(getThis(), WindowEvent.WINDOW_CLOSING));
                 }
 
                 else{
