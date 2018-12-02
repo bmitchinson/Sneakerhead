@@ -29,7 +29,7 @@ public class Item implements Serializable {
         this.gender = "Womens";
         this.cost = 25;
         this.quantity = 1;
-        this.imageURL = "http://www.sneakerexclusive.com/wp-content/uploads/2016/12/Air-Jordan-11-Low-“Barons”-1-672x372.jpg";
+        this.imageURL = "https://i.imgur.com/aQ4IWz6.png";
         this.seller = "Melanie";
     }
 

@@ -16,16 +16,17 @@ public class HomeFrame extends JFrame {
     private final JPanel bottomPanel;
     private JPanel loginState;
     private ArrayList<Item> items;
-    private final ServerRequester serverRequester;
+    private final Wrapper wrapper;
+    private final Color color1 = new Color(245,245,245);
+    private final Color color2 = new Color(240,248,255);
 
     public HomeFrame(){
         serverRequester = new ServerRequester("localhost");
 
-        if(!serverRequester.start()){
-            System.out.println("Error connecting to server... Please ensure server was started correctly");
-            System.exit(-1);
-        }
+    public HomeFrame(){
+        wrapper = new Wrapper();
 
+        getContentPane().setBackground(color1);
         postItem = new JButton("Post Item");
         postItem.setMinimumSize(new Dimension(100,25));
         loginButton = new JButton("Login");
@@ -35,6 +36,7 @@ public class HomeFrame extends JFrame {
         loginState.setMaximumSize(new Dimension(75,30));
         loginState.setLayout(new GridLayout(1,1));
         loginState.add(loginButton);
+        loginState.setBackground(color2);
 
         ButtonHandler handler = new ButtonHandler();
         postItem.addActionListener(handler);
@@ -48,6 +50,7 @@ public class HomeFrame extends JFrame {
         topPanel.add(Box.createHorizontalGlue());
         topPanel.add(loginState);
         topPanel.add(Box.createHorizontalStrut(5));
+        topPanel.setBackground(color2);
 
         itemPanel = new JPanel();
         initializeItemPanel();
@@ -56,6 +59,7 @@ public class HomeFrame extends JFrame {
         scrollPane.setViewportView(itemPanel);
         scrollPane.setPreferredSize(new Dimension(480,510));
         scrollPane.setAlignmentX(CENTER_ALIGNMENT);
+        scrollPane.setBackground(color1);
 
         bottomPanel = new JPanel();
         bottomPanel.setSize(new Dimension(400,300));
