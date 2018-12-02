@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class ItemTile extends JPanel{
     private final JLabel itemPictureLabel;
@@ -12,6 +11,7 @@ public class ItemTile extends JPanel{
     private final JLabel quantityLabel;
     private final JTextArea descriptionArea;
     private final Item item;
+    private JFrame parentFrame = null;
     private static int colorDecider = 0;
 
     public ItemTile(Item item){
@@ -48,7 +48,7 @@ public class ItemTile extends JPanel{
         descriptionArea = new JTextArea();
         initializeDescriptionArea(item.getDescription());
 
-
+        //Panel that holds bottom 3 tables
         JPanel bottomPanel = new JPanel();
         //bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
         bottomPanel.setBackground(this.getBackground());
@@ -58,6 +58,7 @@ public class ItemTile extends JPanel{
         bottomPanel.add(Box.createHorizontalStrut(100));
         bottomPanel.add(costLabel);
 
+        //Panel that holds Name description and bottom Panel, This panel is to the right of the image
         JPanel rightPanel = new JPanel();
         rightPanel.setAlignmentX(LEFT_ALIGNMENT);
         rightPanel.setBackground(this.getBackground());
@@ -69,18 +70,14 @@ public class ItemTile extends JPanel{
         rightPanel.add(Box.createVerticalStrut(10));
         rightPanel.add(bottomPanel);
 
+        //add image and rightPanel to the base JPanel
         add(Box.createHorizontalStrut(5));
         add(itemPictureLabel);
         add(Box.createHorizontalStrut(5));
         add(rightPanel);
         add(Box.createHorizontalStrut(5));
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                JOptionPane.showMessageDialog(getParent(),"This worked" + item.getName());
-            }
-        });
+        //Listeners to start window
         PanelListener listener = new PanelListener();
         addMouseListener(listener);
         descriptionArea.addMouseListener(listener);
@@ -101,10 +98,14 @@ public class ItemTile extends JPanel{
         }
     }
 
+    public void updateQuantityText(){
+        quantityLabel.setText("Quantity: " + item.getQuantity());
+    }
+
     private class PanelListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            JOptionPane.showMessageDialog(getParent(), item.getName());
+            item.startItemWindow();
         }
     }
 
