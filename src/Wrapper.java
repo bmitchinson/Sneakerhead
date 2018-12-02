@@ -162,8 +162,8 @@ public class Wrapper {
 
     public static void main(String[] args) {
         Wrapper wrapper = new Wrapper();
-        //Item test = wrapper.getItemInfo(2);
-        //System.out.println(test);
+        Item test = wrapper.getItemInfo(2);
+        System.out.println(test);
         //wrapper.buyItem(1);
         //wrapper.createUser("Mel","123",1);
     }
