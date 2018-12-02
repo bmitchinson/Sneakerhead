@@ -1,65 +1,92 @@
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicOptionPaneUI;
 import java.awt.*;
-
-
-//TODO: Add space to put description, size, color, price in frame.
-//TODO: Pull the item description from item class.
 
 public class ItemViewFrame extends JFrame {
 
+    private JButton buyButton = new JButton("Buy Shoe!");
+    private JPanel itemDetails = new JPanel();
+    private JPanel boxedFrame = new JPanel();
+    private JTextArea descriptionText = new JTextArea();
+    private Item item;
+
     ItemViewFrame(Item item){
-        super("");
+        //set item
+        this.item = item;
+
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
+        //add a JPanel to initial frame, put a border layout
         JPanel insideBox = new JPanel();
         insideBox.setLayout(new BorderLayout());
-        insideBox.setMaximumSize(new Dimension(475,250));
+        insideBox.setPreferredSize(new Dimension(590,500));
+        insideBox.setBackground(Color.LIGHT_GRAY);
 
-        //components set in border layout
+        //add name label to top of border layout
         String itemName = item.getName();
         JLabel name = new JLabel(itemName);
         name.setHorizontalAlignment(SwingConstants.CENTER);
-        name.setVerticalAlignment(SwingConstants.BOTTOM);
-        name.setFont(new Font("Helvetica", Font.BOLD, 16));
+        name.setFont(new Font("Helvetica", Font.BOLD, 18));
 
-        //JPanel pic = new JPanel();
+        //created new JPanel with 1 row, 2 columns to add to center of border layout
+        //JPanel boxedFrame = new JPanel();
+        boxedFrame.setLayout(new GridLayout(1,2));
+        boxedFrame.setBackground(Color.orange);
 
+        //Put a picture in column 1
         ImageIcon picPass = new ImageIcon();
-        picPass.setImage(ScaledImage.getScaledImage(item.getImageURL(),200,200));
+        picPass.setImage(ScaledImage.getScaledImage(item.getImageURL(),250,250));
         JLabel pic = new JLabel(picPass);
+        boxedFrame.add(pic);
 
-        JTextArea descriptionText = new JTextArea(50,375);
-        descriptionText.setBackground(insideBox.getBackground());
+        //Put item description in column 2
+        //JTextArea descriptionText = new JTextArea();
+        descriptionText.setBackground(boxedFrame.getBackground());
         descriptionText.setText(item.getDescription());
+        descriptionText.setLineWrap(true);
+        descriptionText.setWrapStyleWord(true);
 
-        JPanel itemDetails = new JPanel();
-        itemDetails.setLayout(new GridLayout(9,1));
-        itemDetails.setMaximumSize(new Dimension(400,450));
+        //JPanel itemDetails = new JPanel();
+        itemDetails.setLayout(new GridLayout(10,1));
+        itemDetails.setPreferredSize(new Dimension(400,450));
+        itemDetails.setBackground(Color.orange);
         itemDetails.add(new JLabel("Description: " ));
-        //itemDetails.add(descriptionText);
+        itemDetails.add(descriptionText);
         itemDetails.add(new JLabel("Condition: " + item.getCondition()));
         itemDetails.add(new JLabel("Size: "+ item.getSize() + " " + item.getGender()));
         itemDetails.add(new JLabel("Color: "+ item.getColor()));
         itemDetails.add(new JLabel("Price: $" + item.getCost()));
         itemDetails.add(new JLabel("Quantity: " + item.getQuantity()));
+        itemDetails.add(new JLabel("Seller: " + item.getSeller()));
         itemDetails.add(new JLabel(""));
-        itemDetails.add(new JButton("Buy Shoe!"));
+        itemDetails.add(buyButton);
 
-
+        //add all components
+        boxedFrame.add(pic);
+        boxedFrame.add(itemDetails);
         insideBox.add(name,BorderLayout.NORTH);
-        insideBox.add(pic,BorderLayout.WEST);
-        insideBox.add(itemDetails,BorderLayout.EAST);
-
-        insideBox.setAlignmentX(CENTER_ALIGNMENT);
-        add(Box.createVerticalStrut(10));
+        insideBox.add(boxedFrame,BorderLayout.CENTER);
         add(insideBox);
 
+        //add listener to the buyButton
+        buyButton.addActionListener(e -> buttonHit());
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(600,350);
+        this.setSize(600,510);
         this.setVisible(true);
     }
 
+
     public static void main(String[] args){
         ItemViewFrame frame = new ItemViewFrame(new Item());
+    }
+
+    //TODO:
+    private void buttonHit(){
+        buyButton.setText("Bought!");
+        buyButton.setEnabled(false);
+        itemDetails.setBackground(Color.LIGHT_GRAY);
+        boxedFrame.setBackground(Color.LIGHT_GRAY);
+        descriptionText.setBackground(Color.LIGHT_GRAY);
     }
 }

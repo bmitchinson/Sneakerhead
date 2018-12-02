@@ -12,6 +12,7 @@ public class Item {
     private Double cost;
     private int quantity;
     private String imageURL;
+    private String seller;
 
     public Item(){
         this.name = "Nike Air Max";
@@ -24,10 +25,11 @@ public class Item {
         this.cost = 60.;
         this.quantity = 2;
         this.imageURL = "https://i.imgur.com/C6iJSYy.jpg";
+        this.seller = "Sam";
 
     }
 
-    public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, int quantity, String imageURL){
+    public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, int quantity, String imageURL, String seller){
         this.name = name;
         this.description = description;
         this.brand = brand;
@@ -38,6 +40,7 @@ public class Item {
         this.cost = cost;
         this.quantity = quantity;
         this.imageURL = imageURL;
+        this.seller = seller;
     }
 
     public String getName() {
@@ -63,6 +66,8 @@ public class Item {
     public String getGender() {
         return gender;
     }
+
+    public String getSeller(){ return seller;}
 
     public String getCost() {
         String costString = String.format("%.2f", cost);
@@ -106,7 +111,7 @@ public class Item {
                 8,
                 60.,
                 2,
-                "https://i.imgur.com/C6iJSYy.jpg");
+                "https://i.imgur.com/C6iJSYy.jpg","Sam");
 
         System.out.println(testItem.getCost());
     }
