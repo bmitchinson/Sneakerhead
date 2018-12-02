@@ -104,7 +104,7 @@ public class ItemTile extends JPanel{
     private class PanelListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            JOptionPane.showMessageDialog(getParent(),"This worked" + item.getName());
+            JOptionPane.showMessageDialog(getParent(), item.getName());
         }
     }
 
