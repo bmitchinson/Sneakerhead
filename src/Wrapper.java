@@ -24,14 +24,6 @@ public class Wrapper {
 
             result.next();
 
-            for (int i = 1; i <= 12; i++) {
-                if (i > 1) System.out.print(",  ");
-                System.out.print(result.getString(i));
-            }
-            System.out.println("");
-
-            int sellerID = result.getInt("Seller");
-
             linkedSellerStatement = connection.createStatement();
             ResultSet sellerResult = linkedSellerStatement.executeQuery(
                     "SELECT * FROM Users where ID = " +
@@ -55,8 +47,7 @@ public class Wrapper {
                     result.getString("URL"),
                     name);
 
-            //System.out.println(test);
-            return null;
+            return test;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,7 +63,7 @@ public class Wrapper {
 
     public static void main(String[] args) {
         Wrapper wrapper = new Wrapper();
-        Item test = wrapper.getItemInfo(2);
+        Item test = wrapper.getItemInfo(1);
         System.out.println(test);
     }
 
@@ -85,6 +76,5 @@ public class Wrapper {
     createUser(Name, Pass, Type (123))
     login(name, pass) - true or false, telling gui to use provided username in corner
     getUserType(name) - return string of user type
-
      */
 }

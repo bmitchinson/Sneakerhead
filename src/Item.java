@@ -110,15 +110,15 @@ public class Item {
     @Override
     public String toString() {
         String desc = (description.length() > 25) ?
-                (description.substring(0, 25)) : (description);
+                (description.substring(0, 25) + "...") : (description);
 
         String shortURL = (imageURL.length() > 10) ?
-                (imageURL.substring(0, 10)) : (imageURL);
+                (imageURL.substring(0, 10)+ "...") : (imageURL);
 
-        return ("Item Contents:\nName:" + name + " Description:" + desc
-                + " Color:" + color + " Gender:" + gender + " Size:" + size
-                + " Cost:" + cost + " Quantity:" + quantity + " ImgURL:"
-                + shortURL);
+        return ("Item Contents:\nName:" + name + ", Description:" + desc
+                + ", Color:" + color + ", Gender:" + gender + ", Size:" + size
+                + ", Cost:" + cost + ", Quantity:" + quantity + ", ImgURL:"
+                + shortURL + ", Seller:" + seller);
     }
 
     public static Item[] getTestItems() {
