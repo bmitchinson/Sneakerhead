@@ -131,12 +131,14 @@ public class Server {
                 try {
                     if (request instanceof AddUserRequest) {
                         AddUserRequest addUserRequest = (AddUserRequest) request;
-
-                        if (db.createUser(addUserRequest.getUsername(), addUserRequest.getPassword(), addUserRequest.getType())) {
-                            output.writeObject(new Boolean(true));
-                        } else {
-                            output.writeObject(new Boolean(false));
-                        }
+                        output.writeObject(db.createUser(addUserRequest.getUsername(), addUserRequest.getPassword(), addUserRequest.getType()));
+                    }
+                    else if (request instanceof GetAllItemsRequest){
+                        output.writeObject(db.getAllItems());
+                    }
+                    else if(request instanceof GetItemRequest){
+                        GetItemRequest getItemRequest = (GetItemRequest) request;
+                        output.writeObject(db.getItemInfo(getItemRequest.getItem()));
                     }
                 } catch (IOException e) {
                     System.out.println(e);

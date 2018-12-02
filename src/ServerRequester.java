@@ -16,13 +16,15 @@ public class ServerRequester {
         this.ip = ip;
     }
 
-    public void start(){
+    public boolean start(){
         try{
             connect();
             setupStreams();
         }catch (IOException e){
             System.out.println(e);
+            return false;
         }
+        return true;
     }
 
     public void connect() throws IOException{

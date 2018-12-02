@@ -91,7 +91,27 @@ public class LoginFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == loginButton){
+                LoginRequest request = new LoginRequest(usernameField.getText(), String.valueOf(passwordField.getPassword()));
+                Integer response = (Integer) mainFrame.makeRequest(request);
 
+                if(response == 1){
+                    System.out.println("Logged in as buyer...");
+                }
+
+                else if(response == 2){
+                    System.out.println("Logged in as seller...");
+                }
+
+                else if(response == 3){
+                    System.out.println("Logged in as buyer/seller");
+                }
+
+                else{
+                    JOptionPane.showMessageDialog(null, "Invalid Username/Password. Please check your entries and try again.");
+                    SwingUtilities.invokeLater(() -> {
+                        passwordField.setText("");
+                    });
+                }
             }
             if(e.getSource() == registerButton){
                 AddUserRequest request = new AddUserRequest(usernameField.getText(), String.valueOf(passwordField.getPassword()), userTypeBox.getSelectedIndex()+1);

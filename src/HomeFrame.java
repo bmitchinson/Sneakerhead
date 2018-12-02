@@ -15,7 +15,6 @@ public class HomeFrame extends JFrame {
     private final JPanel topPanel;
     private JPanel loginState;
     private ArrayList<Item> items;
-    private final Wrapper wrapper;
     private final ServerRequester serverRequester;
 
     public HomeFrame(String title){
@@ -26,14 +25,16 @@ public class HomeFrame extends JFrame {
         scrollPane = null;
         topPanel = null;
         items = null;
-        wrapper = null;
         serverRequester = null;
     }
 
     public HomeFrame(){
-        wrapper = new Wrapper();
         serverRequester = new ServerRequester("localhost");
-        serverRequester.start();
+
+        if(!serverRequester.start()){
+            System.out.println("Error connecting to server... Please ensure server was started correctly");
+            System.exit(-1);
+        }
 
         postItem = new JButton("Post Item");
         postItem.setMinimumSize(new Dimension(100,25));
@@ -80,12 +81,8 @@ public class HomeFrame extends JFrame {
         this.setVisible(true);
     }
 
-    //TODO: Get Items from wrapper and add them to the JPanel ItemPanel. Item Panel is then added to scrollPane
-    //TODO: Remove temporary panels used for initializing after a set size for ItemPanel is determined
     private void initializeItemPanel(){
-        items = Item.getTestItems();
-        items.add(wrapper.getItemInfo(1));
-        items.add(wrapper.getItemInfo(2));
+        items = (ArrayList<Item>) makeRequest(new GetAllItemsRequest());
         itemPanel.setPreferredSize(new Dimension(460,100 * items.size()));
         itemPanel.setLayout(new GridLayout(items.size(),1));
 

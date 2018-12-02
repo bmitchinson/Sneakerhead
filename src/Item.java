@@ -1,8 +1,9 @@
 import javax.swing.*;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class Item {
+public class Item implements Serializable {
     private int id;
     private String name;
     private String description;
@@ -52,6 +53,8 @@ public class Item {
         this.seller = seller;
         itemTile = new ItemTile(this);
     }
+
+    public int getId(){return id;};
 
     public String getName() {
         return name;
