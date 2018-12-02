@@ -1,5 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Random;
 
 public class HomeFrame extends JFrame {
@@ -7,22 +11,33 @@ public class HomeFrame extends JFrame {
     private final JButton loginButton;
     private final JPanel itemPanel;
     private final JScrollPane scrollPane;
-    private final Wrapper wrapper;
+    private final JPanel topPanel;
+    private JPanel loginState;
+    //private final Wrapper wrapper;
 
     public HomeFrame(){
-        wrapper = new Wrapper();
+        //wrapper = new Wrapper();
         sellButton = new JButton("Sell Item");
         sellButton.setMinimumSize(new Dimension(100,25));
         loginButton = new JButton("Login");
         loginButton.setMinimumSize(new Dimension(75,25));
 
-        JPanel topPanel = new JPanel();
+        loginState = new JPanel();
+        loginState.setMaximumSize(new Dimension(75,25));
+        loginState.setLayout(new GridLayout(1,1));
+        loginState.add(loginButton);
+
+        ButtonHandler handler = new ButtonHandler();
+        sellButton.addActionListener(handler);
+        loginButton.addActionListener(handler);
+
+        topPanel = new JPanel();
         topPanel.setMaximumSize(new Dimension(500,50));
         topPanel.setLayout(new BoxLayout(topPanel,BoxLayout.LINE_AXIS));
         topPanel.add(Box.createHorizontalStrut(5));
         topPanel.add(sellButton);
         topPanel.add(Box.createHorizontalGlue());
-        topPanel.add(loginButton);
+        topPanel.add(loginState);
         topPanel.add(Box.createHorizontalStrut(5));
 
         itemPanel = new JPanel();
@@ -40,26 +55,54 @@ public class HomeFrame extends JFrame {
         add(Box.createVerticalStrut(15));
         add(scrollPane);
         add(Box.createVerticalStrut(15));
-        
+
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setSize(500,600);
         this.setResizable(false);
         this.setVisible(true);
-
-
     }
 
     //TODO: Get Items from wrapper and add them to the JPanel ItemPanel. Item Panel is then added to scrollPane
     //TODO: Remove temporary panels used for initializing after a set size for ItemPanel is determined
     private void initializeItemPanel(){
         Item[] items = Item.getTestItems();
-        items[0] = wrapper.getItemInfo(1);
-        items[1] = wrapper.getItemInfo(2);
+        //items[0] = wrapper.getItemInfo(1);
+        //items[1] = wrapper.getItemInfo(2);
         itemPanel.setPreferredSize(new Dimension(460,100 * items.length));
         itemPanel.setLayout(new GridLayout(items.length,1));
 
         for(int i=0; i<items.length; i++){
             itemPanel.add(items[i].getItemTile());
+        }
+    }
+
+    private HomeFrame getThis(){
+        return this;
+    }
+
+    public void updateLogin(String username){
+        SwingUtilities.invokeLater(() -> {
+            JLabel loggedInLabel = new JLabel(username);
+            loggedInLabel.setMinimumSize(new Dimension(75,25));
+            loginState.remove(loginButton);
+            loginState.revalidate();
+            loginState.repaint();
+            loginState.add(loggedInLabel);
+            loginState.revalidate();
+            loginState.repaint();
+        });
+    }
+
+    private class ButtonHandler implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e. getSource() == loginButton){
+                LoginFrame frame = new LoginFrame(getThis());
+            }
+
+            if(e.getSource() == sellButton){
+
+            }
         }
     }
 

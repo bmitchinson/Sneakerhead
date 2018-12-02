@@ -118,8 +118,11 @@ public class ItemTile extends JPanel{
     }*/
 
     public void updateImage(){
-        Image image = ScaledImage.getScaledImage(item.getImageURL(), 100, 100);
-        itemPictureLabel.setIcon(new ImageIcon(ScaledImage.getSoldImage(image)));
+        if(item.getQuantity() == 0){
+            Image image = ScaledImage.getScaledImage(item.getImageURL(), 100, 100);
+            itemPictureLabel.setIcon(new ImageIcon(ScaledImage.getSoldImage(image)));
+        }
+
     }
 
 
