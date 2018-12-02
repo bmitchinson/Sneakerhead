@@ -11,6 +11,8 @@ public class ItemViewFrame extends JFrame {
     private JLabel quantityLabel;
     private Item item;
 
+    //TODO: Change cost string
+
     ItemViewFrame(Item item){
         //set item
         this.item = item;
@@ -46,6 +48,7 @@ public class ItemViewFrame extends JFrame {
         descriptionText.setText(item.getDescription());
         descriptionText.setLineWrap(true);
         descriptionText.setWrapStyleWord(true);
+        descriptionText.setEditable(false);
 
         quantityLabel = new JLabel("Quantity: " + item.getQuantity());
 
@@ -80,7 +83,7 @@ public class ItemViewFrame extends JFrame {
     }
 
 
-    //public static void main(String[] args){ ItemViewFrame frame = new ItemViewFrame(new Item()); }
+    public static void main(String[] args){ ItemViewFrame frame = new ItemViewFrame(new Item()); }
 
     //TODO: decrement the item quantity
     private void buttonHit(){
