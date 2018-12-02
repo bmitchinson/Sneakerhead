@@ -13,6 +13,8 @@ public class HomeFrame extends JFrame {
     private JPanel loginState;
     private ArrayList<Item> items;
     private final Wrapper wrapper;
+    private final Color color1 = new Color(245,245,245);
+    private final Color color2 = new Color(240,248,255);
 
     public HomeFrame(String title){
         super(title);
@@ -27,6 +29,8 @@ public class HomeFrame extends JFrame {
 
     public HomeFrame(){
         wrapper = new Wrapper();
+
+        getContentPane().setBackground(color1);
         postItem = new JButton("Post Item");
         postItem.setMinimumSize(new Dimension(100,25));
         loginButton = new JButton("Login");
@@ -36,6 +40,7 @@ public class HomeFrame extends JFrame {
         loginState.setMaximumSize(new Dimension(75,25));
         loginState.setLayout(new GridLayout(1,1));
         loginState.add(loginButton);
+        loginState.setBackground(color2);
 
         ButtonHandler handler = new ButtonHandler();
         postItem.addActionListener(handler);
@@ -49,6 +54,7 @@ public class HomeFrame extends JFrame {
         topPanel.add(Box.createHorizontalGlue());
         topPanel.add(loginState);
         topPanel.add(Box.createHorizontalStrut(5));
+        topPanel.setBackground(color2);
 
         itemPanel = new JPanel();
         initializeItemPanel();
@@ -57,6 +63,7 @@ public class HomeFrame extends JFrame {
         scrollPane.setViewportView(itemPanel);
         scrollPane.setMaximumSize(new Dimension(480,510));
         scrollPane.setAlignmentX(CENTER_ALIGNMENT);
+        scrollPane.setBackground(color1);
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 

@@ -21,11 +21,11 @@ public class ItemTile extends JPanel{
         setPreferredSize(new Dimension(480,100));
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         if(colorDecider == 0){
-            setBackground(Color.GRAY);
+            setBackground(Color.LIGHT_GRAY);
             colorDecider = 1;
         }
         else if(colorDecider == 1){
-            setBackground(Color.LIGHT_GRAY);
+            setBackground(Color.GRAY);
             colorDecider = 0;
         }
 

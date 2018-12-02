@@ -218,8 +218,4 @@ public class Wrapper {
         wrapper.getUserType("Mel");
     }
 
-    /*
-    TODO: Methods
-
-     */
 }
