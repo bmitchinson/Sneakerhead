@@ -1,3 +1,6 @@
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.sun.security.ntlm.Server;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +16,7 @@ public class HomeFrame extends JFrame {
     private JPanel loginState;
     private ArrayList<Item> items;
     private final Wrapper wrapper;
+    private final ServerRequester serverRequester;
 
     public HomeFrame(String title){
         super(title);
@@ -23,17 +27,21 @@ public class HomeFrame extends JFrame {
         topPanel = null;
         items = null;
         wrapper = null;
+        serverRequester = null;
     }
 
     public HomeFrame(){
         wrapper = new Wrapper();
+        serverRequester = new ServerRequester("localhost");
+        serverRequester.start();
+
         postItem = new JButton("Post Item");
         postItem.setMinimumSize(new Dimension(100,25));
         loginButton = new JButton("Login");
         loginButton.setMinimumSize(new Dimension(75,25));
 
         loginState = new JPanel();
-        loginState.setMaximumSize(new Dimension(75,25));
+        loginState.setMaximumSize(new Dimension(75,30));
         loginState.setLayout(new GridLayout(1,1));
         loginState.add(loginButton);
 
@@ -60,7 +68,7 @@ public class HomeFrame extends JFrame {
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
-        add(Box.createVerticalStrut(10));
+        add(Box.createVerticalStrut(5));
         add(topPanel);
         add(Box.createVerticalStrut(15));
         add(scrollPane);
@@ -90,14 +98,17 @@ public class HomeFrame extends JFrame {
         return this;
     }
 
-    public void updateLogin(String username){
+    public void updateLogin(String username, String type){
         SwingUtilities.invokeLater(() -> {
             JLabel loggedInLabel = new JLabel(username);
+            JLabel loggedInType = new JLabel(type);
             loggedInLabel.setMinimumSize(new Dimension(75,25));
             loginState.remove(loginButton);
             loginState.revalidate();
             loginState.repaint();
+            loginState.setLayout(new GridLayout(2,1));
             loginState.add(loggedInLabel);
+            loginState.add(loggedInType);
             loginState.revalidate();
             loginState.repaint();
         });
@@ -112,11 +123,18 @@ public class HomeFrame extends JFrame {
         itemPanel.repaint();
     }
 
+    public Object makeRequest(Request request){
+        Object response = null;
+        response = serverRequester.makeRequest(request);
+        return response;
+    }
+
     private class ButtonHandler implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e. getSource() == loginButton){
                 LoginFrame frame = new LoginFrame(getThis());
+
             }
 
             if(e.getSource() == postItem){

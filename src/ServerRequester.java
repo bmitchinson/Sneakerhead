@@ -40,17 +40,21 @@ public class ServerRequester {
         Object response = new Object();
         try{
             output.writeObject(request);
+            response = input.readObject();
         }catch (IOException e){
+            System.out.println(e);
+        }catch (ClassNotFoundException e){
             System.out.println(e);
         }
         return response;
     }
 
     public static void main(String[] args){
-        ServerRequester requester = new ServerRequester("172.17.108.210");
+        ServerRequester requester = new ServerRequester("localhost");
         requester.start();
-        AddUserRequest request = new AddUserRequest("BigSeller", "password123");
-        requester.makeRequest(request);
+        AddUserRequest request = new AddUserRequest("BigSeller", "password123", 2);
+        Boolean result = (Boolean) requester.makeRequest(request);
+        System.out.println(result.booleanValue());
     }
 
 }

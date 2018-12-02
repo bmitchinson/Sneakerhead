@@ -31,7 +31,7 @@ public class Server {
     private Condition dbFree;
 
     // Database
-    Wrapper db = new Wrapper();
+    private final Wrapper db = new Wrapper();
 
     public Server() {
         print("Constructing Server");
@@ -60,7 +60,7 @@ public class Server {
             try {
                 print("Waiting for connection #" + (clientIndex + 1));
                 allInternalClients.add(
-                        new InternalClient(server.accept(), clientIndex)
+                        new InternalClient(server.accept())
                 );
                 runClients.execute(allInternalClients.get(clientIndex));
             } catch (IOException e) {
@@ -75,26 +75,13 @@ public class Server {
     }
 
     public void print(String message) {
-        System.out.println(LocalTime.now().format(timeFormat) + message);
+        System.out.println(LocalTime.now().format(timeFormat) + " Server:" + message);
     }
 
-    private void processMessage(String message) {
-        synchronized (db) {
-
-            // Simulating time it takes to access the database
-            for (int i = 5; i > 0; i--) {
-                System.out.print(i + "..");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            System.out.println("\nNotifying all others who may be waiting");
-            db.notifyAll();
-        }
-        System.out.println("Exiting synchronized");
+    public void print(String message, String who) {
+        System.out.println(LocalTime.now().format(timeFormat) + " " + who + ":" + message);
     }
+
 
     private class InternalClient implements Runnable {
 
@@ -105,48 +92,66 @@ public class Server {
         private ObjectOutputStream output;
         private Formatter formatterOutput;
 
-        private int num;
+        private int userType;
+        private String activeUsername;
+        private int activeUserType;
 
-        public InternalClient(Socket socket, int num) {
-            print("Client " + (num + 1) + " initialized");
+        public InternalClient(Socket socket) {
+
             this.connection = socket;
 
-            try{
+            try {
                 this.input = new ObjectInputStream(socket.getInputStream());
                 this.output = new ObjectOutputStream(socket.getOutputStream());
                 output.flush();
-            }catch (IOException e){
+            } catch (IOException e) {
                 System.out.println(e);
             }
-
-
-            this.num = num;
         }
 
         public void run() {
             Request request = null;
-            print("Client " + (num + 1) + " waiting for input");
             while (true) {
-               try{
-                   request = (Request) input.readObject();
-               }catch (IOException e){
-                   System.out.println(e);
-               }catch (ClassNotFoundException e){
-                   System.out.println(e);
-               }
+                try {
+                    request = (Request) input.readObject();
+                    processMessage(request);
+                } catch (IOException e) {
+                    System.out.println(e);
+                } catch (ClassNotFoundException e) {
+                    System.out.println(e);
+                }
 
-               if(request instanceof AddUserRequest){
-                   System.out.println("True");
-               }
+
             }
         }
 
+
+        private void processMessage(Request request) {
+            synchronized (db) {
+                try {
+                    if (request instanceof AddUserRequest) {
+                        AddUserRequest addUserRequest = (AddUserRequest) request;
+
+                        if (db.createUser(addUserRequest.getUsername(), addUserRequest.getPassword(), addUserRequest.getType())) {
+                            output.writeObject(new Boolean(true));
+                        } else {
+                            output.writeObject(new Boolean(false));
+                        }
+                    }
+                } catch (IOException e) {
+                    System.out.println(e);
+                }
+
+                System.out.println("\nNotifying all others who may be waiting");
+                db.notifyAll();
+            }
+            System.out.println("Exiting synchronized");
+        }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Server server = new Server();
     }
-
 
 
 }
