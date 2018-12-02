@@ -2,23 +2,33 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Random;
+import java.util.ArrayList;
 
 public class HomeFrame extends JFrame {
-    private final JButton sellButton;
+    private final JButton postItem;
     private final JButton loginButton;
     private final JPanel itemPanel;
     private final JScrollPane scrollPane;
     private final JPanel topPanel;
     private JPanel loginState;
-    //private final Wrapper wrapper;
+    private ArrayList<Item> items;
+    private final Wrapper wrapper;
+
+    public HomeFrame(String title){
+        super(title);
+        postItem = null;
+        loginButton = null;
+        itemPanel = null;
+        scrollPane = null;
+        topPanel = null;
+        items = null;
+        wrapper = null;
+    }
 
     public HomeFrame(){
-        //wrapper = new Wrapper();
-        sellButton = new JButton("Sell Item");
-        sellButton.setMinimumSize(new Dimension(100,25));
+        wrapper = new Wrapper();
+        postItem = new JButton("Post Item");
+        postItem.setMinimumSize(new Dimension(100,25));
         loginButton = new JButton("Login");
         loginButton.setMinimumSize(new Dimension(75,25));
 
@@ -28,14 +38,14 @@ public class HomeFrame extends JFrame {
         loginState.add(loginButton);
 
         ButtonHandler handler = new ButtonHandler();
-        sellButton.addActionListener(handler);
+        postItem.addActionListener(handler);
         loginButton.addActionListener(handler);
 
         topPanel = new JPanel();
         topPanel.setMaximumSize(new Dimension(500,50));
         topPanel.setLayout(new BoxLayout(topPanel,BoxLayout.LINE_AXIS));
         topPanel.add(Box.createHorizontalStrut(5));
-        topPanel.add(sellButton);
+        topPanel.add(postItem);
         topPanel.add(Box.createHorizontalGlue());
         topPanel.add(loginState);
         topPanel.add(Box.createHorizontalStrut(5));
@@ -65,14 +75,14 @@ public class HomeFrame extends JFrame {
     //TODO: Get Items from wrapper and add them to the JPanel ItemPanel. Item Panel is then added to scrollPane
     //TODO: Remove temporary panels used for initializing after a set size for ItemPanel is determined
     private void initializeItemPanel(){
-        Item[] items = Item.getTestItems();
-        //items[0] = wrapper.getItemInfo(1);
-        //items[1] = wrapper.getItemInfo(2);
-        itemPanel.setPreferredSize(new Dimension(460,100 * items.length));
-        itemPanel.setLayout(new GridLayout(items.length,1));
+        items = Item.getTestItems();
+        items.add(wrapper.getItemInfo(1));
+        items.add(wrapper.getItemInfo(2));
+        itemPanel.setPreferredSize(new Dimension(460,100 * items.size()));
+        itemPanel.setLayout(new GridLayout(items.size(),1));
 
-        for(int i=0; i<items.length; i++){
-            itemPanel.add(items[i].getItemTile());
+        for(int i=0; i<items.size(); i++){
+            itemPanel.add(items.get(i).getItemTile());
         }
     }
 
@@ -93,6 +103,15 @@ public class HomeFrame extends JFrame {
         });
     }
 
+    public void addItem(Item item){
+        items.add(item);
+        itemPanel.setPreferredSize(new Dimension(460, itemPanel.getHeight() + 100));
+        itemPanel.setLayout(new GridLayout(items.size(), 1));
+        itemPanel.add(item.getItemTile());
+        itemPanel.revalidate();
+        itemPanel.repaint();
+    }
+
     private class ButtonHandler implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -100,8 +119,8 @@ public class HomeFrame extends JFrame {
                 LoginFrame frame = new LoginFrame(getThis());
             }
 
-            if(e.getSource() == sellButton){
-
+            if(e.getSource() == postItem){
+                AddItemFrame frame = new AddItemFrame(getThis());
             }
         }
     }
