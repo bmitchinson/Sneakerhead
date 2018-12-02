@@ -11,13 +11,13 @@ public class Wrapper {
             System.out.println("Unable to connect to remote database");
             e.printStackTrace();
         }
-    }
-
+    }/*
     public Item getItemInfo(int id){
         Statement statement = connection.createStatement();
-        ResultSet result = statement.executeQuery("")
+        ResultSet result = statement.executeQuery("");
 
     }
+    */
 
     /*try {
         Connection connection = DriverManager.getConnection("jdbc:mysql://s-l112.engr.uiowa.edu/engr_class037", "engr_class037", "mbs123");

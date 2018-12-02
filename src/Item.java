@@ -13,6 +13,20 @@ public class Item {
     private int quantity;
     private String imageURL;
 
+    public Item(){
+        this.name = "Nike Air Max";
+        this.description = "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price";
+        this.brand = "Nike";
+        this.condition = "New";
+        this.size = 8;
+        this.color = "Blue";
+        this.gender = "Mens";
+        this.cost = 60.;
+        this.quantity = 2;
+        this.imageURL = "https://i.imgur.com/C6iJSYy.jpg";
+
+    }
+
     public Item(String name, String description, String brand, String condition, String color, String gender, Integer size, Double cost, int quantity, String imageURL){
         this.name = name;
         this.description = description;
