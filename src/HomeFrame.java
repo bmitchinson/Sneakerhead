@@ -28,7 +28,8 @@ public class HomeFrame extends JFrame {
         itemPanel = new JPanel();
         initializeItemPanel();
 
-        scrollPane = new JScrollPane(itemPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setViewportView(itemPanel);
         scrollPane.setMaximumSize(new Dimension(480,510));
         scrollPane.setAlignmentX(CENTER_ALIGNMENT);
 
@@ -58,6 +59,7 @@ public class HomeFrame extends JFrame {
         itemPanel.setLayout(new GridLayout(items.length,1));
 
         for(int i=0; i<items.length; i++){
+            items[i].getItemTile().setParentFrame(this);
             itemPanel.add(items[i].getItemTile());
         }
     }

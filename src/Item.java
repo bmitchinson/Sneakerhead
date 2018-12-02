@@ -18,8 +18,7 @@ public class Item {
 
     public Item(int id, String name, String description, String brand,
                 String condition, String color, String gender, float size,
-                Double cost, int quantity, String imageURL, String seller)
-    {
+                Double cost, int quantity, String imageURL, String seller) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -59,7 +58,7 @@ public class Item {
         return gender;
     }
 
-    public String getSeller(){
+    public String getSeller() {
         return seller;
     }
 
@@ -74,7 +73,7 @@ public class Item {
     }
 
     //TODO: Create an ItemTile Class that shows a condensed version of the Item's data in a (JPanel)
-    public JPanel getItemTile(){
+    public ItemTile getItemTile() {
         return itemTile;
     }
 
@@ -87,41 +86,47 @@ public class Item {
         return imageURL;
     }
 
-    public void incrementQuantity(){
+    public void incrementQuantity() {
         quantity++;
     }
 
-    public void decrementQuantity(){
-        if(quantity != 0){
+    public void decrementQuantity() {
+        if (quantity != 0) {
             quantity--;
         }
     }
 
+    public void updateTile() {
+        SwingUtilities.invokeLater(() -> {
+            itemTile.updateQuantityText();
+        });
+    }
+
     //TODO: Create an ItemWindow Class that shows the item in its own JFrame
-    public void startItemWindow(){
+    public void startItemWindow() {
         ItemViewFrame frame = new ItemViewFrame(this);
     }
 
     @Override
     public String toString() {
         String desc = (description.length() > 25) ?
-        (description.substring(0, 25)) : (description);
+                (description.substring(0, 25)) : (description);
 
         String shortURL = (imageURL.length() > 10) ?
-                (imageURL.substring(0,10)) : (imageURL);
+                (imageURL.substring(0, 10)) : (imageURL);
 
-        return ( "Item Contents:\nName:" + name + " Description:" + desc
+        return ("Item Contents:\nName:" + name + " Description:" + desc
                 + " Color:" + color + " Gender:" + gender + " Size:" + size
                 + " Cost:" + cost + " Quantity:" + quantity + " ImgURL:"
-                        + shortURL);
+                + shortURL);
     }
 
-    public static Item[] getTestItems(){
+    public static Item[] getTestItems() {
         Item[] items = new Item[20];
-        for(int i=0; i<items.length; i++){
+        for (int i = 0; i < items.length; i++) {
             items[i] = new Item(i,
-                    "Nike Air Max" + (i+1),
-                    "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price","Nike",
+                    "Nike Air Max" + (i + 1),
+                    "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price", "Nike",
                     "New",
                     "Blue",
                     "Male",
@@ -133,9 +138,9 @@ public class Item {
         return items;
     }
 
-    public static void main(String args[]){
+    public static void main(String args[]) {
         Item testItem = new Item(0, "Nike Air Max",
-                "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price","Nike",
+                "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price", "Nike",
                 "New",
                 "Blue",
                 "Male",

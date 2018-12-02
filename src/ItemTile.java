@@ -11,6 +11,7 @@ public class ItemTile extends JPanel{
     private final JLabel quantityLabel;
     private final JTextArea descriptionArea;
     private final Item item;
+    private JFrame parentFrame = null;
     private static int colorDecider = 0;
 
     public ItemTile(Item item){
@@ -95,6 +96,10 @@ public class ItemTile extends JPanel{
         }else{
             descriptionArea.setText(description);
         }
+    }
+
+    public void updateQuantityText(){
+        quantityLabel.setText("Quantity: " + item.getQuantity());
     }
 
     private class PanelListener extends MouseAdapter {
