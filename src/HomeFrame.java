@@ -54,8 +54,6 @@ public class HomeFrame extends JFrame {
         Item[] items = Item.getTestItems();
         items[0] = wrapper.getItemInfo(1);
         items[1] = wrapper.getItemInfo(2);
-        System.out.println(items[0]);
-        System.out.println(items[1]);
         itemPanel.setPreferredSize(new Dimension(460,100 * items.length));
         itemPanel.setLayout(new GridLayout(items.length,1));
 
