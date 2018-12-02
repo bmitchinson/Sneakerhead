@@ -89,6 +89,7 @@ public class ItemTile extends JPanel{
         //Listeners to start window
         PanelListener listener = new PanelListener();
         addMouseListener(listener);
+        rightPanel.addMouseListener(listener);
         descriptionArea.addMouseListener(listener);
     }
 
@@ -137,6 +138,7 @@ public class ItemTile extends JPanel{
     private class PanelListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
+            System.out.println("123123");
             item.startItemWindow();
         }
     }

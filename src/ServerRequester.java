@@ -34,7 +34,6 @@ public class ServerRequester {
 
     public void setupStreams() throws IOException{
         output = new ObjectOutputStream(socket.getOutputStream());
-
         input = new ObjectInputStream(socket.getInputStream());
     }
 

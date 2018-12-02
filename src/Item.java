@@ -192,6 +192,22 @@ public class Item implements Serializable {
                 "https://i.imgur.com/daU2fPw.jpg",
                 "BigSeller123"
                 ));
+
+        for(int i=0; i<20; i++){
+            items.add(new Item(
+                    "Converse High Tops 2",
+                    "Converse High Tops feature super grip bottoms so you don't slip around in those icy winters",
+                    "Converse",
+                    "Like New",
+                    "Black",
+                    "Womens",
+                    4.0,
+                    59.95,
+                    1,
+                    "https://i.imgur.com/daU2fPw.jpg",
+                    "BigSeller123"
+            ));
+        }
         return items;
     }
 

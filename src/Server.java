@@ -117,8 +117,10 @@ public class Server {
                     processMessage(request);
                 } catch (IOException e) {
                     System.out.println(e);
+                    break;
                 } catch (ClassNotFoundException e) {
                     System.out.println(e);
+                    break;
                 }
 
 

@@ -13,28 +13,18 @@ public class HomeFrame extends JFrame {
     private final JPanel itemPanel;
     private final JScrollPane scrollPane;
     private final JPanel topPanel;
+    private final JPanel bottomPanel;
     private JPanel loginState;
     private ArrayList<Item> items;
     private final ServerRequester serverRequester;
 
-    public HomeFrame(String title){
-        super(title);
-        postItem = null;
-        loginButton = null;
-        itemPanel = null;
-        scrollPane = null;
-        topPanel = null;
-        items = null;
-        serverRequester = null;
-    }
-
     public HomeFrame(){
         serverRequester = new ServerRequester("localhost");
 
-        /*if(!serverRequester.start()){
+        if(!serverRequester.start()){
             System.out.println("Error connecting to server... Please ensure server was started correctly");
             System.exit(-1);
-        }*/
+        }
 
         postItem = new JButton("Post Item");
         postItem.setMinimumSize(new Dimension(100,25));
@@ -64,10 +54,10 @@ public class HomeFrame extends JFrame {
 
         scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setViewportView(itemPanel);
-        scrollPane.setMaximumSize(new Dimension(480,510));
+        scrollPane.setPreferredSize(new Dimension(480,510));
         scrollPane.setAlignmentX(CENTER_ALIGNMENT);
 
-        JPanel bottomPanel = new JPanel();
+        bottomPanel = new JPanel();
         bottomPanel.setSize(new Dimension(400,300));
         bottomPanel.setBackground(Color.BLUE);
 
@@ -78,6 +68,7 @@ public class HomeFrame extends JFrame {
         add(Box.createVerticalStrut(15));
         add(scrollPane);
         add(Box.createVerticalStrut(15));
+        add(bottomPanel);
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setSize(500,900);
@@ -87,6 +78,7 @@ public class HomeFrame extends JFrame {
 
     private void initializeItemPanel(){
         items = (ArrayList<Item>) makeRequest(new GetAllItemsRequest());
+        //items = Item.getTestItems();
         itemPanel.setPreferredSize(new Dimension(460,100 * items.size()));
         itemPanel.setLayout(new GridLayout(items.size(),1));
 
