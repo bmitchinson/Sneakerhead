@@ -48,7 +48,7 @@ public class ItemTile extends JPanel{
         descriptionArea = new JTextArea();
         initializeDescriptionArea(item.getDescription());
 
-
+        //Panel that holds bottom 3 tables
         JPanel bottomPanel = new JPanel();
         //bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
         bottomPanel.setBackground(this.getBackground());
@@ -58,6 +58,7 @@ public class ItemTile extends JPanel{
         bottomPanel.add(Box.createHorizontalStrut(100));
         bottomPanel.add(costLabel);
 
+        //Panel that holds Name description and bottom Panel, This panel is to the right of the image
         JPanel rightPanel = new JPanel();
         rightPanel.setAlignmentX(LEFT_ALIGNMENT);
         rightPanel.setBackground(this.getBackground());
@@ -69,6 +70,7 @@ public class ItemTile extends JPanel{
         rightPanel.add(Box.createVerticalStrut(10));
         rightPanel.add(bottomPanel);
 
+        //add image and rightPanel to the base JPanel
         add(Box.createHorizontalStrut(5));
         add(itemPictureLabel);
         add(Box.createHorizontalStrut(5));
