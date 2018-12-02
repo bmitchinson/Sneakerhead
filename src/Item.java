@@ -18,6 +18,22 @@ public class Item implements Serializable {
     private String seller;
     private ItemTile itemTile;
 
+    public Item() {
+        this.id = -1;
+        this.name = "Item";
+        this.description = "Low tops";
+        this.brand = "Jordans";
+        this.condition = "New";
+        this.size = 6.5;
+        this.color = "Black";
+        this.gender = "Womens";
+        this.cost = 25;
+        this.quantity = 1;
+        this.imageURL = "http://www.sneakerexclusive.com/wp-content/uploads/2016/12/Air-Jordan-11-Low-“Barons”-1-672x372.jpg";
+        this.seller = "Melanie";
+        itemTile = new ItemTile(this);
+    }
+
     public Item(String name, String description, String brand,
                 String condition, String color, String gender, double size,
                 double cost, int quantity, String imageURL, String seller) {
@@ -84,10 +100,7 @@ public class Item implements Serializable {
         return seller;
     }
 
-    public String getCost() {
-        String costString = String.format("$%.2f", cost);
-        return costString;
-    }
+    public double getCost() { return cost; }
 
     //TODO: Verify how we want size returned from the getSize method
     public double getSize() {

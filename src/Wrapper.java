@@ -23,9 +23,13 @@ public class Wrapper {
             ResultSet result =
                     itemStatement.executeQuery("SELECT * FROM Items where ID = " + id);
 
-            result.next();
+            if (result.next() == false){
+                System.out.println("Wrapping returning null");
+                return null;
+            }
 
             linkedSellerStatement = connection.createStatement();
+
             ResultSet sellerResult = linkedSellerStatement.executeQuery(
                     "SELECT * FROM Users where ID = " +
                             result.getInt("Seller")
@@ -123,32 +127,26 @@ public class Wrapper {
 
     public boolean createUser(String Name,String Pass,int Type){
 
-        boolean createUser = true;
-
         try {
             Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT Username FROM Users");
+            String insertName = insertSQL(Name);
+            ResultSet result = statement.executeQuery("SELECT Username FROM Users WHERE Username = " + insertName);
 
-            while(result.next()){
-                if(result.getString(1).equals(Name)){
-                    createUser = false;
-                }
-            }
-
-            if(createUser){
-                String insertName = "'"+ Name + "'";
+            if(result.next() == false){
                 String insertPass = "'" + Pass + "'";
                 statement.execute("INSERT INTO Users (Username,Password,Usertype) VALUES ( " + insertName + "," + insertPass + "," + Type + ")");
+                return true;
+            } else {
+                return false;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return createUser;
+        return false;
     }
 
-    public void sellItem(Item item){
+    public void sellItem(String username, Item item){
         try {
             Statement statement = connection.createStatement();
 
@@ -159,17 +157,39 @@ public class Wrapper {
             String insertColor = "'"+ item.getColor() + "'";
             String insertGender = "'"+ item.getGender() + "'";
             String insertURL = "'"+ item.getImageURL() + "'";
-            String seller = "'"+ item.getSeller() + "'";
-            ResultSet result = statement.executeQuery("SELECT ID FROM Users WHERE Username =" + seller);
+            String insertSize = "'" + item.getSize() + "'";
+            String insertCost = "'" + item.getCost() + "'";
+            String user = "'" + username + "'";
+            ResultSet result = statement.executeQuery("SELECT ID FROM Users WHERE Username =" + user);
             result.next();
             int id = result.getInt(1);
-            String values = "(" + insertName + "," + insertDescrip + "," + insertBrand + "," + item.getQuantity() + "," + insertCondition + "," + item.getSize() + "," + insertColor + "," + insertGender + "," + item.getCost() + "," + insertURL + "," + id + ")";
-            statement.execute("INSERT INTO Items(Name,Description,Brand,Quantity,Condition,Size,Color,Gender,Price,URL,Seller) VALUES " + values);
+            String values = "(" + insertName + "," + insertDescrip + "," + insertBrand + "," + item.getQuantity() + "," + insertCondition + "," + insertSize + "," + insertColor + "," + insertGender + "," + insertCost + "," + insertURL + "," + id + ")";
+            statement.execute("INSERT INTO `Items` (`Name`,`Description`,`Brand`,`Quantity`,`Condition`,`Size`,`Color`,`Gender`,`Price`,`URL`,`Seller`) VALUES " + values);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    public int login(String name, String password){
+        int userType = 0;
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT Password,Usertype FROM Users WHERE Username =" + insertSQL(name));
+
+            result.next();
+            if(result.getString(1).equals(password)){
+                userType = result.getInt(2);
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+       return userType;
+    }
+
+    public String insertSQL(String s){
+        return "'" + s + "'";
+    }
 
     public static void main(String[] args) {
         Wrapper wrapper = new Wrapper();
@@ -178,8 +198,6 @@ public class Wrapper {
 
     /*
     TODO: Methods
-    sellItem(Item) - populate item list with new item with user attached
-    login(name, pass) - true or false, telling gui to use provided username in corner, check to make sure vaild
     getUserType(name) - return string of user type - 1, buyer 2, seller, 3 both
 
      */
