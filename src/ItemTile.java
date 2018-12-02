@@ -10,6 +10,8 @@ public class ItemTile extends JPanel{
     private final JLabel sellerLabel;
     private final JLabel quantityLabel;
     private final JTextArea descriptionArea;
+    private final JPanel rightPanel;
+    private final JPanel bottomPanel;
     private final Item item;
     private JFrame parentFrame = null;
     private static int colorDecider = 0;
@@ -30,7 +32,8 @@ public class ItemTile extends JPanel{
         //Create image JLabel
         ImageIcon itemImageIcon = new ImageIcon();
         itemImageIcon.setImage(ScaledImage.getScaledImage(item.getImageURL(),100,100));
-        itemPictureLabel = new JLabel(itemImageIcon);
+        itemPictureLabel = new JLabel();
+        itemPictureLabel.setIcon(itemImageIcon);
         itemPictureLabel.setMinimumSize(new Dimension(100,100));
 
         nameLabel = new JLabel(item.getName());
@@ -49,8 +52,7 @@ public class ItemTile extends JPanel{
         initializeDescriptionArea(item.getDescription());
 
         //Panel that holds bottom 3 tables
-        JPanel bottomPanel = new JPanel();
-        //bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
+        bottomPanel = new JPanel();
         bottomPanel.setBackground(this.getBackground());
         bottomPanel.add(sellerLabel);
         bottomPanel.add(Box.createHorizontalGlue());
@@ -59,7 +61,7 @@ public class ItemTile extends JPanel{
         bottomPanel.add(costLabel);
 
         //Panel that holds Name description and bottom Panel, This panel is to the right of the image
-        JPanel rightPanel = new JPanel();
+        rightPanel = new JPanel();
         rightPanel.setAlignmentX(LEFT_ALIGNMENT);
         rightPanel.setBackground(this.getBackground());
         rightPanel.setPreferredSize(new Dimension(365,100));
@@ -101,6 +103,26 @@ public class ItemTile extends JPanel{
     public void updateQuantityText(){
         quantityLabel.setText("Quantity: " + item.getQuantity());
     }
+
+    /*public void updateBackGround(){
+        if(item.getQuantity() == 0){
+            int r = 255;
+            int g = 182;
+            int b = 178;
+            Color color = new Color(r,g,b);
+            setBackground(color);
+            rightPanel.setBackground(color);
+            bottomPanel.setBackground(color);
+            descriptionArea.setBackground(color);
+        }
+    }*/
+
+    public void updateImage(){
+        Image image = ScaledImage.getScaledImage(item.getImageURL(), 100, 100);
+        itemPictureLabel.setIcon(new ImageIcon(ScaledImage.getSoldImage(image)));
+    }
+
+
 
     private class PanelListener extends MouseAdapter {
         @Override

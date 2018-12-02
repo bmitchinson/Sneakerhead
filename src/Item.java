@@ -78,8 +78,8 @@ public class Item {
     }
 
 
-    public String getQuantity() {
-        return String.valueOf(quantity);
+    public int getQuantity() {
+        return quantity;
     }
 
     public String getImageURL() {
@@ -99,12 +99,15 @@ public class Item {
     public void updateTile() {
         SwingUtilities.invokeLater(() -> {
             itemTile.updateQuantityText();
+            itemTile.updateImage();
         });
     }
 
     //TODO: Create an ItemWindow Class that shows the item in its own JFrame
     public void startItemWindow() {
-        ItemViewFrame frame = new ItemViewFrame(this);
+        if(quantity != 0){
+            ItemViewFrame frame = new ItemViewFrame(this);
+        }
     }
 
     @Override
