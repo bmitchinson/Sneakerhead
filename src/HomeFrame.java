@@ -16,14 +16,15 @@ public class HomeFrame extends JFrame {
     private final JPanel bottomPanel;
     private JPanel loginState;
     private ArrayList<Item> items;
-    private final Wrapper wrapper;
     private final Color color1 = new Color(245, 245, 245);
     private final Color color2 = new Color(240, 248, 255);
     private final ServerRequester serverRequester;
 
     public HomeFrame() {
         serverRequester = new ServerRequester("localhost");
-        wrapper = new Wrapper();
+        if(!serverRequester.start()){
+            System.exit(0);
+        }
 
         getContentPane().setBackground(color1);
         postItem = new JButton("Post Item");
