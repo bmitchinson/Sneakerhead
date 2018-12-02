@@ -52,20 +52,78 @@ public class Wrapper {
         return null;
     }
 
-    /*public static Item[] getAllItems(){
+    public Item[] getAllItems(){
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            ResultSet count = statement.executeQuery("SELECT COUNT(*) FROM Items");
+            count.next();
+            int rows = count.getInt(1);
+            Item[] allItems = new Item[rows];
 
-    }*/
 
-    public static void main(String[] args) {
-        Wrapper wrapper = new Wrapper();
-        Item test = wrapper.getItemInfo(2);
-        System.out.println(test);
+            ResultSet result =
+                    statement.executeQuery("SELECT * FROM Items" );
+
+            int i = 0;
+            while(result.next()) {
+                Item test = new Item(result.getInt("ID"),
+                        result.getString("Name"),
+                        result.getString("Description"),
+                        result.getString("Brand"),
+                        result.getString("Condition"),
+                        result.getString("Color"),
+                        result.getString("Gender"),
+                        result.getFloat("Size"),
+                        result.getDouble("Price"),
+                        result.getInt("Quantity"),
+                        result.getString("URL"),
+                        result.getString("Seller"));
+
+                allItems[i] = test;
+                i++;
+            }
+
+            return allItems;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("ERROR: Null item returned");
+        return null;
+    }
+
+    public void buyItem(int itemID){
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet quantity = statement.executeQuery("SELECT Quantity FROM Items WHERE ID =" + itemID);
+            quantity.next();
+            System.out.println("Before decrement: " + quantity.getInt(1));
+            int q = quantity.getInt(1)-1;
+            String query = "UPDATE Items SET Quantity = " + q + "WHERE ID = " + itemID;
+            statement.executeUpdate(query);
+            ResultSet result = statement.executeQuery("SELECT Quantity FROM Items WHERE ID =" + itemID);
+            result.next();
+            System.out.println("After decrement: " + result.getInt(1));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
+    public static void main(String[] args) {
+        Wrapper wrapper = new Wrapper();
+        //Item test = wrapper.getItemInfo(2);
+        //System.out.println(test);
+        wrapper.buyItem(1);
+    }
+
     /*
     TODO: Methods
-    getAllItems() - Uses get getItemInfo and returns an item array
     buyItem(ID)
     sellItem(Item)
     createUser(Name, Pass, Type (123))
