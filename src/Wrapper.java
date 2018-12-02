@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Wrapper {
 
@@ -57,7 +58,7 @@ public class Wrapper {
         return null;
     }
 
-    public Item[] getAllItems(){
+    public ArrayList<Item> getAllItems(){
         Statement statement = null;
         Statement linkedSellerStatement = null;
 
@@ -65,17 +66,13 @@ public class Wrapper {
             statement = connection.createStatement();
             linkedSellerStatement = connection.createStatement();
 
-            ResultSet count = statement.executeQuery("SELECT COUNT(*) FROM Items");
-            count.next();
-            int rows = count.getInt(1);
-            Item[] allItems = new Item[rows];
+            ArrayList<Item> allItems = new ArrayList<Item>(1024);
 
             ResultSet result =
                     statement.executeQuery("SELECT * FROM Items" );
 
             ResultSet sellerResult;
 
-            int i = 0;
             while(result.next()) {
                 sellerResult = linkedSellerStatement.executeQuery(
                         "SELECT * FROM Users where ID = " +
@@ -95,8 +92,7 @@ public class Wrapper {
                         result.getString("URL"),
                         sellerResult.getString("Username"));
 
-                allItems[i] = test;
-                i++;
+                allItems.add(test);
             }
 
             return allItems;
@@ -177,10 +173,7 @@ public class Wrapper {
 
     public static void main(String[] args) {
         Wrapper wrapper = new Wrapper();
-        Item test = wrapper.getItemInfo(2);
-        System.out.println(test);
-        //wrapper.buyItem(1);
-        //wrapper.createUser("Mel","123",1);
+        ArrayList<Item> test = wrapper.getAllItems();
     }
 
     /*

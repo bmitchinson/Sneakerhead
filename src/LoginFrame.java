@@ -3,6 +3,8 @@ import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class LoginFrame extends JFrame {
     private final JTextField usernameField;
@@ -12,8 +14,11 @@ public class LoginFrame extends JFrame {
     private final JLabel usernameLabel;
     private final JLabel passwordLabel;
     private final JComboBox userTypeBox;
+    private final HomeFrame mainFrame;
 
-    public LoginFrame(){
+    public LoginFrame(HomeFrame mainFrame){
+        this.mainFrame = mainFrame;
+
         usernameField = new JTextField();
         passwordField = new JPasswordField();
 
@@ -55,6 +60,8 @@ public class LoginFrame extends JFrame {
         userTypeBox = new JComboBox(types);
         userTypeBox.setMaximumSize(new Dimension(150,50));
 
+        setLayout(new BoxLayout(getContentPane(),BoxLayout.PAGE_AXIS));
+
         add(Box.createRigidArea(new Dimension(500,100)));
         add(usernameLabel);
         add(Box.createRigidArea(new Dimension(500,10)));
@@ -69,17 +76,17 @@ public class LoginFrame extends JFrame {
         add(userTypeBox);
         add(Box.createRigidArea(new Dimension(500,220)));
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                mainFrame.updateLogin(usernameField.getText());
+            }
+        });
 
-        setLayout(new BoxLayout(getContentPane(),BoxLayout.PAGE_AXIS));
-
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setSize(500,500);
         setResizable(false);
         setVisible(true);
-    }
-
-    public static void main(String[] args){
-        LoginFrame window = new LoginFrame();
     }
 
     private class ButtonHandler implements ActionListener{
@@ -95,7 +102,6 @@ public class LoginFrame extends JFrame {
                         JOptionPane.ERROR_MESSAGE);
                     passwordField.setText("");
                   }*/
-
             }
             if(e.getSource() == registerButton){
                 //TODO: Use wrapper to attempt to create a new user account in the database, will need to prompt the user if they want to be a buyer seller or both

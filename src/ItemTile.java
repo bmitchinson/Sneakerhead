@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class ItemTile extends JPanel{
     private final JLabel itemPictureLabel;
@@ -10,8 +11,9 @@ public class ItemTile extends JPanel{
     private final JLabel sellerLabel;
     private final JLabel quantityLabel;
     private final JTextArea descriptionArea;
+    private final JPanel rightPanel;
+    private final JPanel bottomPanel;
     private final Item item;
-    private JFrame parentFrame = null;
     private static int colorDecider = 0;
 
     public ItemTile(Item item){
@@ -30,37 +32,44 @@ public class ItemTile extends JPanel{
         //Create image JLabel
         ImageIcon itemImageIcon = new ImageIcon();
         itemImageIcon.setImage(ScaledImage.getScaledImage(item.getImageURL(),100,100));
-        itemPictureLabel = new JLabel(itemImageIcon);
+        itemPictureLabel = new JLabel();
+        itemPictureLabel.setIcon(itemImageIcon);
         itemPictureLabel.setMinimumSize(new Dimension(100,100));
 
         nameLabel = new JLabel(item.getName());
-        nameLabel.setAlignmentX(LEFT_ALIGNMENT);
+        nameLabel.setAlignmentX(CENTER_ALIGNMENT);
 
         costLabel = new JLabel("Cost: " + item.getCost());
         costLabel.setAlignmentX(RIGHT_ALIGNMENT);
+        costLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
 
         sellerLabel = new JLabel("Seller: " + item.getSeller());
         sellerLabel.setAlignmentX(LEFT_ALIGNMENT);
+        sellerLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        //sellerLabel.setPreferredSize(new Dimension(120,25));
 
         quantityLabel = new JLabel("Quantity: " + item.getQuantity());
         quantityLabel.setAlignmentX(LEFT_ALIGNMENT);
+        quantityLabel.setHorizontalAlignment(SwingConstants.LEFT);
+
 
         descriptionArea = new JTextArea();
         initializeDescriptionArea(item.getDescription());
 
         //Panel that holds bottom 3 tables
-        JPanel bottomPanel = new JPanel();
-        //bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
+        bottomPanel = new JPanel();
         bottomPanel.setBackground(this.getBackground());
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
         bottomPanel.add(sellerLabel);
-        bottomPanel.add(Box.createHorizontalGlue());
+        bottomPanel.add(Box.createHorizontalStrut(10));
         bottomPanel.add(quantityLabel);
-        bottomPanel.add(Box.createHorizontalStrut(100));
+        bottomPanel.add(Box.createHorizontalGlue());
         bottomPanel.add(costLabel);
+        bottomPanel.add(Box.createHorizontalStrut(5));
 
         //Panel that holds Name description and bottom Panel, This panel is to the right of the image
-        JPanel rightPanel = new JPanel();
-        rightPanel.setAlignmentX(LEFT_ALIGNMENT);
+        rightPanel = new JPanel();
         rightPanel.setBackground(this.getBackground());
         rightPanel.setPreferredSize(new Dimension(365,100));
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
@@ -102,6 +111,29 @@ public class ItemTile extends JPanel{
         quantityLabel.setText("Quantity: " + item.getQuantity());
     }
 
+    /*public void updateBackGround(){
+        if(item.getQuantity() == 0){
+            int r = 255;
+            int g = 182;
+            int b = 178;
+            Color color = new Color(r,g,b);
+            setBackground(color);
+            rightPanel.setBackground(color);
+            bottomPanel.setBackground(color);
+            descriptionArea.setBackground(color);
+        }
+    }*/
+
+    public void updateImage(){
+        if(item.getQuantity() == 0){
+            Image image = ScaledImage.getScaledImage(item.getImageURL(), 100, 100);
+            itemPictureLabel.setIcon(new ImageIcon(ScaledImage.getSoldImage(image)));
+        }
+
+    }
+
+
+
     private class PanelListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -111,8 +143,8 @@ public class ItemTile extends JPanel{
 
     public static void main(String[] args){
         JFrame frame = new JFrame();
-        Item[] items = Item.getTestItems();
-        ItemTile tile = new ItemTile(items[0]);
+        ArrayList<Item> items = Item.getTestItems();
+        ItemTile tile = new ItemTile(items.get(0));
 
         frame.setLayout(new FlowLayout());
         frame.add(tile);

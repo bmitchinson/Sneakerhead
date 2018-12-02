@@ -58,7 +58,7 @@ public class ItemViewFrame extends JFrame {
         itemDetails.add(new JLabel("Condition: " + item.getCondition()));
         itemDetails.add(new JLabel("Size: "+ item.getSize() + " " + item.getGender()));
         itemDetails.add(new JLabel("Color: "+ item.getColor()));
-        itemDetails.add(new JLabel("Price: $" + item.getCost()));
+        itemDetails.add(new JLabel("Price: " + item.getCost()));
         itemDetails.add(quantityLabel);
         itemDetails.add(new JLabel("Seller: " + item.getSeller()));
         itemDetails.add(new JLabel(""));
