@@ -7,7 +7,6 @@ import java.net.URL;
 
 public class ScaledImage {
     public static Image getScaledImage(String url, int width, int height){
-        ImageIcon image = new ImageIcon();
         BufferedImage tempImage = null;
 
         try{
@@ -17,7 +16,7 @@ public class ScaledImage {
             System.out.println(e);
         }
 
-        Image finalImage = tempImage.getScaledInstance(400,400, Image.SCALE_DEFAULT);
+        Image finalImage = tempImage.getScaledInstance(width, height, Image.SCALE_DEFAULT);
 
         return finalImage;
     }
