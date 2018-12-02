@@ -130,7 +130,7 @@ public class LoginFrame extends JFrame {
 
                     getThis().dispatchEvent(new WindowEvent(getThis(), WindowEvent.WINDOW_CLOSING));
                 }else{
-                    JOptionPane.showMessageDialog(null, "Error logging in");
+                    JOptionPane.showMessageDialog(null, "Username is already in use. Please choose another.");
                 }
             }
         }
