@@ -87,6 +87,16 @@ public class Item {
         return imageURL;
     }
 
+    public void incrementQuantity(){
+        quantity++;
+    }
+
+    public void decrementQuantity(){
+        if(quantity != 0){
+            quantity--;
+        }
+    }
+
     //TODO: Create an ItemWindow Class that shows the item in its own JFrame
     public JFrame getItemWindow(){
         //ItemWindow window = new ItemWindow(this);

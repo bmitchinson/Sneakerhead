@@ -38,7 +38,8 @@ public class Wrapper {
                     result.getFloat("Size"),
                     result.getDouble("Price"),
                     result.getInt("Quantity"),
-                    result.getString("URL"));
+                    result.getString("URL"),
+                    "Sam");
 
             System.out.println(test);
             return test;
@@ -51,11 +52,16 @@ public class Wrapper {
         return null;
     }
 
+    /*public static Item[] getAllItems(){
+
+    }*/
+
     public static void main(String[] args) {
         Wrapper wrapper = new Wrapper();
         Item test = wrapper.getItemInfo(2);
         System.out.println(test);
     }
+
 
     /*
     TODO: Methods
