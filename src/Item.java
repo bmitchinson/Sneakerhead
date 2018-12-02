@@ -16,7 +16,7 @@ public class Item implements Serializable {
     private int quantity;
     private String imageURL;
     private String seller;
-    private ItemTile itemTile;
+    private ItemTile itemTile = null;
 
     public Item() {
         this.id = -1;
@@ -31,7 +31,6 @@ public class Item implements Serializable {
         this.quantity = 1;
         this.imageURL = "http://www.sneakerexclusive.com/wp-content/uploads/2016/12/Air-Jordan-11-Low-“Barons”-1-672x372.jpg";
         this.seller = "Melanie";
-        itemTile = new ItemTile(this);
     }
 
     public Item(String name, String description, String brand,
@@ -49,7 +48,6 @@ public class Item implements Serializable {
         this.quantity = quantity;
         this.imageURL = imageURL;
         this.seller = seller;
-        itemTile = new ItemTile(this);
     }
 
     public Item(int id, String name, String description, String brand,
@@ -67,7 +65,6 @@ public class Item implements Serializable {
         this.quantity = quantity;
         this.imageURL = imageURL;
         this.seller = seller;
-        itemTile = new ItemTile(this);
     }
 
     public int getId(){return id;};
@@ -108,8 +105,15 @@ public class Item implements Serializable {
     }
 
     //TODO: Create an ItemTile Class that shows a condensed version of the Item's data in a (JPanel)
-    public ItemTile getItemTile() {
-        return itemTile;
+    public ItemTile getItemTile()
+    {
+        if(itemTile == null){
+            itemTile = new ItemTile(this);
+            return itemTile;
+        }
+        else{
+            return itemTile;
+        }
     }
 
 
