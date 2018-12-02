@@ -124,17 +124,27 @@ public class Server {
         }
 
         public void run() {
-            //Request request = Request;
+            Request request = null;
             print("Client " + (num + 1) + " waiting for input");
             while (true) {
-               //input.readObject()
+               try{
+                   request = (Request) input.readObject();
+               }catch (IOException e){
+                   System.out.println(e);
+               }catch (ClassNotFoundException e){
+                   System.out.println(e);
+               }
+
+               if(request instanceof AddUserRequest){
+                   System.out.println("True");
+               }
             }
         }
 
     }
 
     public static void main(String[] args){
-
+        Server server = new Server();
     }
 
 
