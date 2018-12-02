@@ -59,7 +59,6 @@ public class HomeFrame extends JFrame {
         itemPanel.setLayout(new GridLayout(items.length,1));
 
         for(int i=0; i<items.length; i++){
-            items[i].getItemTile().setParentFrame(this);
             itemPanel.add(items[i].getItemTile());
         }
     }
