@@ -187,18 +187,39 @@ public class Wrapper {
        return userType;
     }
 
-    public String insertSQL(String s){
+    public String getUserType(String name){
+        String Type = "";
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT Usertype FROM Users WHERE Username =" + insertSQL(name));
+            result.next();
+            int type = result.getInt(1);
+            if(type == 1)
+                Type = "buyer";
+            else if(type == 2)
+                Type = "seller";
+            else if(type == 3)
+                Type = "both";
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        System.out.println(Type);
+        return Type;
+    }
+
+    private String insertSQL(String s){
         return "'" + s + "'";
     }
 
     public static void main(String[] args) {
         Wrapper wrapper = new Wrapper();
-        ArrayList<Item> test = wrapper.getAllItems();
+        wrapper.getUserType("Mel");
     }
 
     /*
     TODO: Methods
-    getUserType(name) - return string of user type - 1, buyer 2, seller, 3 both
 
      */
 }
