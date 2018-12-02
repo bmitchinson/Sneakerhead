@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class ItemTile extends JPanel{
     private final JLabel itemPictureLabel;
@@ -77,12 +76,7 @@ public class ItemTile extends JPanel{
         add(rightPanel);
         add(Box.createHorizontalStrut(5));
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                JOptionPane.showMessageDialog(getParent(),"This worked" + item.getName());
-            }
-        });
+        //Listeners to start window
         PanelListener listener = new PanelListener();
         addMouseListener(listener);
         descriptionArea.addMouseListener(listener);
@@ -106,7 +100,7 @@ public class ItemTile extends JPanel{
     private class PanelListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            JOptionPane.showMessageDialog(getParent(), item.getName());
+            item.startItemWindow();
         }
     }
 

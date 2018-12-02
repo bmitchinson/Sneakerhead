@@ -98,10 +98,8 @@ public class Item {
     }
 
     //TODO: Create an ItemWindow Class that shows the item in its own JFrame
-    public JFrame getItemWindow(){
-        //ItemWindow window = new ItemWindow(this);
-        //return window;
-        return null;
+    public void startItemWindow(){
+        ItemViewFrame frame = new ItemViewFrame(this);
     }
 
     @Override

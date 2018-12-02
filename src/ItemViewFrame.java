@@ -71,7 +71,7 @@ public class ItemViewFrame extends JFrame {
         //add listener to the buyButton
         buyButton.addActionListener(e -> buttonHit());
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(600,510);
         this.setVisible(true);
     }
