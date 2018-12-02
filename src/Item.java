@@ -35,6 +35,24 @@ public class Item {
         itemTile = new ItemTile(this);
     }
 
+    public Item(int id, String name, String description, String brand,
+                String condition, String color, String gender, double size,
+                double cost, int quantity, String imageURL, String seller) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.brand = brand;
+        this.condition = condition;
+        this.size = size;
+        this.color = color;
+        this.gender = gender;
+        this.cost = cost;
+        this.quantity = quantity;
+        this.imageURL = imageURL;
+        this.seller = seller;
+        itemTile = new ItemTile(this);
+    }
+
     public String getName() {
         return name;
     }
