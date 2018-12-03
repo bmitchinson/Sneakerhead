@@ -1,8 +1,9 @@
 import javax.swing.*;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class Item {
+public class Item implements Serializable {
     private int id;
     private String name;
     private String description;
@@ -15,7 +16,22 @@ public class Item {
     private int quantity;
     private String imageURL;
     private String seller;
-    private ItemTile itemTile;
+    private ItemTile itemTile = null;
+
+    public Item() {
+        this.id = -1;
+        this.name = "Item";
+        this.description = "Low tops";
+        this.brand = "Jordans";
+        this.condition = "New";
+        this.size = 6.5;
+        this.color = "Black";
+        this.gender = "Womens";
+        this.cost = 25;
+        this.quantity = 1;
+        this.imageURL = "https://i.imgur.com/aQ4IWz6.png";
+        this.seller = "Melanie";
+    }
 
     public Item(String name, String description, String brand,
                 String condition, String color, String gender, double size,
@@ -32,7 +48,6 @@ public class Item {
         this.quantity = quantity;
         this.imageURL = imageURL;
         this.seller = seller;
-        itemTile = new ItemTile(this);
     }
 
     public Item(int id, String name, String description, String brand,
@@ -50,8 +65,9 @@ public class Item {
         this.quantity = quantity;
         this.imageURL = imageURL;
         this.seller = seller;
-        itemTile = new ItemTile(this);
     }
+
+    public int getId(){return id;};
 
     public String getName() {
         return name;
@@ -81,10 +97,7 @@ public class Item {
         return seller;
     }
 
-    public String getCost() {
-        String costString = String.format("$%.2f", cost);
-        return costString;
-    }
+    public double getCost() { return cost; }
 
     //TODO: Verify how we want size returned from the getSize method
     public double getSize() {
@@ -92,8 +105,15 @@ public class Item {
     }
 
     //TODO: Create an ItemTile Class that shows a condensed version of the Item's data in a (JPanel)
-    public ItemTile getItemTile() {
-        return itemTile;
+    public ItemTile getItemTile()
+    {
+        if(itemTile == null){
+            itemTile = new ItemTile(this);
+            return itemTile;
+        }
+        else{
+            return itemTile;
+        }
     }
 
 
@@ -176,6 +196,22 @@ public class Item {
                 "https://i.imgur.com/daU2fPw.jpg",
                 "BigSeller123"
                 ));
+
+        for(int i=0; i<20; i++){
+            items.add(new Item(
+                    "Converse High Tops 2",
+                    "Converse High Tops feature super grip bottoms so you don't slip around in those icy winters",
+                    "Converse",
+                    "Like New",
+                    "Black",
+                    "Womens",
+                    4.0,
+                    59.95,
+                    1,
+                    "https://i.imgur.com/daU2fPw.jpg",
+                    "BigSeller123"
+            ));
+        }
         return items;
     }
 

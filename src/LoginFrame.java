@@ -76,17 +76,14 @@ public class LoginFrame extends JFrame {
         add(userTypeBox);
         add(Box.createRigidArea(new Dimension(500,220)));
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                mainFrame.updateLogin(usernameField.getText());
-            }
-        });
-
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setSize(500,500);
         setResizable(false);
         setVisible(true);
+    }
+
+    public LoginFrame getThis(){
+        return this;
     }
 
     private class ButtonHandler implements ActionListener{
@@ -94,23 +91,43 @@ public class LoginFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == loginButton){
-                //TODO: Use wrapper to attempt to login, may need to also notify server/client if the login was successful so the user can buy and sell now
-                /*if(!wrapper.login){
-                    JOptionPane.showMessageDialog(getContentPane(),
-                        "The username or password you entered was invalid, please try again.",
-                        "Error with registration",
-                        JOptionPane.ERROR_MESSAGE);
-                    passwordField.setText("");
-                  }*/
+                LoginRequest request = new LoginRequest(usernameField.getText(), String.valueOf(passwordField.getPassword()));
+                Integer response = (Integer) mainFrame.makeRequest(request);
+
+                if(response == 1){
+                    System.out.println("Logged in as buyer...");
+                    mainFrame.updateLogin(request.getUsername(), "Buyer");
+                }
+
+                else if(response == 2){
+                    System.out.println("Logged in as seller...");
+                    mainFrame.updateLogin(request.getUsername(), "Seller");
+                }
+
+                else if(response == 3){
+                    System.out.println("Logged in as buyer/seller");
+                    mainFrame.updateLogin(request.getUsername(), "Buyer/Seller");
+                }
+
+                else{
+                    JOptionPane.showMessageDialog(null, "Invalid Username/Password. Please check your entries and try again.");
+                    SwingUtilities.invokeLater(() -> {
+                        passwordField.setText("");
+                    });
+                }
             }
             if(e.getSource() == registerButton){
-                //TODO: Use wrapper to attempt to create a new user account in the database, will need to prompt the user if they want to be a buyer seller or both
-                /*if(!wrapper.register){
-                    JOptionPane.showMessageDialog(getContentPane(),
-                        "The username you tried to register is already taken. Please enter a new username.",
-                        "Error with registration",
-                        JOptionPane.ERROR_MESSAGE);
-                }*/
+                AddUserRequest request = new AddUserRequest(usernameField.getText(), String.valueOf(passwordField.getPassword()), userTypeBox.getSelectedIndex()+1);
+                Boolean response = (Boolean) mainFrame.makeRequest(request);
+                if(response == true){
+                    System.out.println("Successfully created user...");
+
+                    mainFrame.updateLogin(request.getUsername(), (String) userTypeBox.getSelectedItem());
+
+                    getThis().dispatchEvent(new WindowEvent(getThis(), WindowEvent.WINDOW_CLOSING));
+                }else{
+                    JOptionPane.showMessageDialog(null, "Error logging in");
+                }
             }
         }
     }

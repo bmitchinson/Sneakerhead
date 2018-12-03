@@ -21,11 +21,11 @@ public class ItemTile extends JPanel{
         setPreferredSize(new Dimension(480,100));
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         if(colorDecider == 0){
-            setBackground(Color.GRAY);
+            setBackground(Color.LIGHT_GRAY);
             colorDecider = 1;
         }
         else if(colorDecider == 1){
-            setBackground(Color.LIGHT_GRAY);
+            setBackground(Color.GRAY);
             colorDecider = 0;
         }
 
@@ -89,6 +89,7 @@ public class ItemTile extends JPanel{
         //Listeners to start window
         PanelListener listener = new PanelListener();
         addMouseListener(listener);
+        rightPanel.addMouseListener(listener);
         descriptionArea.addMouseListener(listener);
     }
 
@@ -137,6 +138,7 @@ public class ItemTile extends JPanel{
     private class PanelListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
+            System.out.println("123123");
             item.startItemWindow();
         }
     }

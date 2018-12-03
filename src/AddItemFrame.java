@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ public class AddItemFrame extends JFrame {
     private final JComboBox<String> genderBox = new JComboBox();
     private final JTextField quantityField = new JTextField();
     private final JTextField imageURLField = new JTextField();
+    private final JPanel blank = new JPanel();
     private final HomeFrame homeFrame;
 
     AddItemFrame(HomeFrame homeFrame){
@@ -24,7 +26,11 @@ public class AddItemFrame extends JFrame {
         this.homeFrame = homeFrame;
 
         JPanel itemDetails = new JPanel();
+        itemDetails.setBackground(new Color(204,229,255));
+        itemDetails.setBorder(new EmptyBorder(10, 10, 10, 10));
         itemDetails.setLayout(new GridLayout(11,2,5,5));
+
+        blank.setBackground(itemDetails.getBackground());
 
         genderBox.addItem("Men's");
         genderBox.addItem("Women's");
@@ -35,7 +41,7 @@ public class AddItemFrame extends JFrame {
         conditionBox.addItem("Very Used");
         conditionBox.addItem("Heavily Used");
 
-        for(double i=1; i<16.5; i += .5){
+        for(double i=5; i<16.5; i += .5){
             sizeBox.addItem(String.valueOf(i));
         }
 
@@ -59,7 +65,7 @@ public class AddItemFrame extends JFrame {
         itemDetails.add(new JLabel("Price: "));
         itemDetails.add(imageURLField);
         itemDetails.add(priceField);
-        itemDetails.add(new JPanel());
+        itemDetails.add(blank);
         itemDetails.add(postButton);
 
         postButton.addActionListener(new ActionListener() {
@@ -73,17 +79,17 @@ public class AddItemFrame extends JFrame {
                 //}
 
                 Item testItem = new Item(
-                        nameField.getText(),
-                        descriptionField.getText(),
-                        brandField.getText(),
-                        (String) conditionBox.getSelectedItem(),
-                        colorField.getText(),
-                        (String) genderBox.getSelectedItem(),
-                        Double.valueOf((String) sizeBox.getSelectedItem()),
-                        Double.valueOf(priceField.getText()),
-                        Integer.valueOf(quantityField.getText()),
-                        imageURLField.getText(),
-                        "TestSeller");
+                    nameField.getText(),
+                    descriptionField.getText(),
+                    brandField.getText(),
+                    (String) conditionBox.getSelectedItem(),
+                    colorField.getText(),
+                    (String) genderBox.getSelectedItem(),
+                    Double.valueOf((String) sizeBox.getSelectedItem()),
+                    Double.valueOf(priceField.getText()),
+                    Integer.valueOf(quantityField.getText()),
+                    imageURLField.getText(),
+                    "TestSeller");
 
                 homeFrame.addItem(testItem);
 
@@ -97,5 +103,7 @@ public class AddItemFrame extends JFrame {
         this.setSize(500,500);
         this.setVisible(true);
     }
+
+    public static void main(String[] args){AddItemFrame frame = new AddItemFrame(new HomeFrame());}
 
 }
