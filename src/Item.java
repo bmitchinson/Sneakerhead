@@ -1,3 +1,5 @@
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -446,9 +448,11 @@ public class Item implements Serializable {
         }
 
         private void buttonHit() {
+            BuyItemRequest buyItemRequest = new BuyItemRequest(getThis());
+            Boolean test = (Boolean) homeFrame.makeRequest(buyItemRequest);
+            System.out.println(test);
             SwingUtilities.invokeLater(() -> {
-                BuyItemRequest buyItemRequest = new BuyItemRequest(getThis());
-                if ((boolean) homeFrame.makeRequest(buyItemRequest)) {
+                if((Boolean) homeFrame.makeRequest(buyItemRequest)) {
                     buyButton.setText("Bought!");
                     buyButton.setEnabled(false);
                     itemDetails.setBackground(Color.LIGHT_GRAY);

@@ -150,7 +150,9 @@ public class Server {
         }
 
         private void processMessage(Request request) {
+            System.out.println("In process request");
             synchronized (db) {
+                System.out.println("In synchronized");
                 try {
                     if (request instanceof AddUserRequest) {
                         serverLogStream.write(("Client " + clientNum + " made a AddUserRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
@@ -186,6 +188,7 @@ public class Server {
                         serverLogStream.write(("Client " + clientNum + " made a BuyItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         BuyItemRequest buyItemRequest = (BuyItemRequest) request;
                         Boolean successful = db.buyItem(buyItemRequest.getItemId());
+
                         if(successful){
                             transactionLogStream.write((activeUsername + " bought item " + buyItemRequest.getItem().getItemName() +
                                     " from " + buyItemRequest.getItem().getSeller() + "\n").getBytes() );
@@ -197,8 +200,8 @@ public class Server {
                         output.writeObject(db.sellItem(activeUsername, sellItemRequest.getItem()));
                     }
 
-
                 } catch (IOException e) {
+                    System.out.println("IOException");
                     System.out.println(e);
                 }
 

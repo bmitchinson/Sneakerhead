@@ -1,10 +1,13 @@
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.sun.security.ntlm.Server;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class HomeFrame extends JFrame {
@@ -22,7 +25,7 @@ public class HomeFrame extends JFrame {
     private final ServerRequester serverRequester;
     private boolean isBuyer = false;
     private boolean isSeller = false;
-    private final JLabel logoLabel;
+    //private final JLabel logoLabel;
 
     public HomeFrame() {
         serverRequester = new ServerRequester("localhost");
@@ -49,8 +52,16 @@ public class HomeFrame extends JFrame {
         postItem.addActionListener(handler);
         loginButton.addActionListener(handler);
 
-        ImageIcon logoIcon = new ImageIcon();
-        logoLabel = new JLabel();
+        Image banner = null;
+        /*try{
+            File image = new File(getClass().getResource(File.separator + "Image" + File.separator + "logo.jpg").getPath());
+            banner = ImageIO.read(image);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        ImageIcon logoIcon = new ImageIcon(banner);
+        logoLabel = new JLabel(logoIcon);*/
 
         topPanel = new JPanel();
         topPanel.setMaximumSize(new Dimension(500, 50));
@@ -58,7 +69,7 @@ public class HomeFrame extends JFrame {
         topPanel.add(Box.createHorizontalStrut(5));
         topPanel.add(postItem);
         topPanel.add(Box.createHorizontalGlue());
-
+        //topPanel.add(logoLabel);
         topPanel.add(Box.createHorizontalGlue());
         topPanel.add(loginState);
         topPanel.add(Box.createHorizontalStrut(5));
@@ -107,9 +118,9 @@ public class HomeFrame extends JFrame {
             itemPanel.setLayout(new GridLayout(items.size(), 1));
 
             for (int i = 0; i < items.size(); i++) {
-                items.get(i).setHomeFrame(getThis());
                 itemPanel.add(items.get(i).getItemTile());
             }
+            System.out.println("");
             itemPanel.revalidate();
             itemPanel.repaint();
         });
