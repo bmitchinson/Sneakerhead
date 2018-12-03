@@ -19,7 +19,7 @@ public class Item implements Serializable {
     private String imageURL;
     private String seller;
     private ItemTile itemTile = null;
-    private static HomeFrame homeFrame;
+    private HomeFrame homeFrame;
     private static int colorDecider = 0;
 
     public Item() {
@@ -141,7 +141,7 @@ public class Item implements Serializable {
         this.id = id;
     }
 
-    public static void setHomeFrame(HomeFrame frame) {
+    public void setHomeFrame(HomeFrame frame) {
         homeFrame = frame;
     }
 

@@ -30,8 +30,6 @@ public class HomeFrame extends JFrame {
             System.exit(0);
         }
 
-        Item.setHomeFrame(this);
-
         getContentPane().setBackground(color1);
         postItem = new JButton("Post Item");
         postItem.setMinimumSize(new Dimension(100, 25));
@@ -103,13 +101,13 @@ public class HomeFrame extends JFrame {
 
     private void initializeItemPanel() {
         items = (ArrayList<Item>) makeRequest(new GetAllItemsRequest());
-        //items = Item.getTestItems();
         SwingUtilities.invokeLater(() -> {
             itemPanel.removeAll();
             itemPanel.setPreferredSize(new Dimension(460, 100 * items.size()));
             itemPanel.setLayout(new GridLayout(items.size(), 1));
 
             for (int i = 0; i < items.size(); i++) {
+                items.get(i).setHomeFrame(getThis());
                 itemPanel.add(items.get(i).getItemTile());
             }
             itemPanel.revalidate();
