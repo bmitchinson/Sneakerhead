@@ -153,7 +153,7 @@ public class Server {
             synchronized (db) {
                 try {
                     if (request instanceof AddUserRequest) {
-                        serverLogStream.write(("Client " + clientNum + " made a AddUserRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
+                        serverLogStream.write(("Client made a AddUserRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         AddUserRequest addUserRequest = (AddUserRequest) request;
                         boolean result = db.createUser(addUserRequest.getUsername(),
                                 addUserRequest.getPassword(), addUserRequest.getType());
@@ -163,7 +163,7 @@ public class Server {
                         }
                         output.writeObject(result);
                     } else if (request instanceof LoginRequest) {
-                        serverLogStream.write(("Client " + clientNum + " made a LoginRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
+                        serverLogStream.write(("Client made a LoginRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         LoginRequest loginRequest = (LoginRequest) request;
                         activeUserType = db.login(loginRequest.getUsername(), loginRequest.getPassword());
                         if(activeUserType != 0){
@@ -171,19 +171,19 @@ public class Server {
                         }
                         output.writeObject(activeUserType);
                     } else if (request instanceof LogoutRequest) {
-                        serverLogStream.write(("Client " + clientNum + " made a LogoutRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
+                        serverLogStream.write(("Client made a LogoutRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         activeUserType = 0;
                         activeUsername = "";
                         output.writeObject(new Boolean(true));
                     } else if (request instanceof GetAllItemsRequest) {
-                        serverLogStream.write(("Client " + clientNum + " made a GetAllItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
+                        serverLogStream.write(("Client made a GetAllItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         output.writeObject(db.getAllItems());
                     } else if (request instanceof GetItemRequest) {
-                        serverLogStream.write(("Client " + clientNum + " made a GetItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
+                        serverLogStream.write(("Client made a GetItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         GetItemRequest getItemRequest = (GetItemRequest) request;
                         output.writeObject(db.getItemInfo(getItemRequest.getItem()));
                     } else if (request instanceof BuyItemRequest) {
-                        serverLogStream.write(("Client " + clientNum + " made a BuyItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
+                        serverLogStream.write(("Client made a BuyItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         BuyItemRequest buyItemRequest = (BuyItemRequest) request;
                         Boolean successful = db.buyItem(buyItemRequest.getItemId());
                         if(successful){
@@ -192,7 +192,7 @@ public class Server {
                         }
                         output.writeObject(successful);
                     } else if (request instanceof SellItemRequest) {
-                        serverLogStream.write(("Client " + clientNum + " made a SellItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
+                        serverLogStream.write(("Client made a SellItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         SellItemRequest sellItemRequest = (SellItemRequest) request;
                         output.writeObject(db.sellItem(activeUsername, sellItemRequest.getItem()));
                     }
