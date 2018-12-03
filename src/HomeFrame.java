@@ -24,7 +24,6 @@ public class HomeFrame extends JFrame {
     private boolean isSeller = false;
     private final JLabel logoLabel;
 
-
     public HomeFrame() {
         serverRequester = new ServerRequester("localhost");
         if (!serverRequester.start()) {
@@ -119,6 +118,7 @@ public class HomeFrame extends JFrame {
     }
 
     public void setBuyer(boolean buyer) {
+        System.out.println("buyer set in setter to " + buyer);
         isBuyer = buyer;
     }
 
@@ -188,12 +188,14 @@ public class HomeFrame extends JFrame {
     }
 
     private void logout() {
-        updateLogin("Login to buy or sell", "");
-        makeRequest(new LogoutRequest());
-        bottomPanel.remove(logoutButton);
-        isBuyer = false;
-        isSeller = false;
-        postItem.setEnabled(false);
+        SwingUtilities.invokeLater(() -> {
+            updateLogin("Login to buy or sell", "");
+            makeRequest(new LogoutRequest());
+            bottomPanel.remove(logoutButton);
+            isBuyer = false;
+            isSeller = false;
+            postItem.setEnabled(false);
+        });
     }
 
     private class ButtonHandler implements ActionListener {
@@ -201,7 +203,6 @@ public class HomeFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
                 LoginFrame frame = new LoginFrame(getThis());
-
             }
 
             if (e.getSource() == postItem) {
