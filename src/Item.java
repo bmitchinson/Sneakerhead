@@ -481,10 +481,12 @@ public class Item implements Serializable {
                     boxedFrame.setBackground(Color.LIGHT_GRAY);
                     descriptionText.setBackground(Color.LIGHT_GRAY);
                     decrementQuantity();
+
                     updateTile();
                 } else {
                     homeFrame.updateAllItems();
-                    JOptionPane.showMessageDialog(null, "Error buying item please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Error buying item please try again. Please the item windows and try to re-open it to buy"
+                            , "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 quantityLabel.setText("Quantity: " + getQuantity());
             });
