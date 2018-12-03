@@ -210,9 +210,4 @@ public class Database {
         ArrayList<Item> test = database.getAllItems();
     }
 
-    /*
-    TODO: Methods
-    getUserType(name) - return string of user type - 1, buyer 2, seller, 3 both
-
-     */
 }
