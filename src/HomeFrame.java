@@ -94,7 +94,7 @@ public class HomeFrame extends JFrame {
         });
 
         bottomPanel = new JPanel();
-        bottomPanel.setMinimumSize(new Dimension(400, 300));
+        bottomPanel.setMinimumSize(new Dimension(400, 50));
         //bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
         bottomPanel.setBackground(color2);
 
@@ -108,7 +108,7 @@ public class HomeFrame extends JFrame {
         add(bottomPanel);
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setSize(500, 900);
+        this.setSize(500, 650);
         this.setResizable(false);
         this.setVisible(true);
     }
