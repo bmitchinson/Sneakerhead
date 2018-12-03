@@ -1,4 +1,5 @@
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+import Requests.AddUserRequest;
+import Requests.Request;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

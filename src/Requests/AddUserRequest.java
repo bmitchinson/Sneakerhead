@@ -1,3 +1,5 @@
+package Requests;
+
 public class AddUserRequest extends Request {
     private final String username;
     private final String password;

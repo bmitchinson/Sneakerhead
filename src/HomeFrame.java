@@ -1,5 +1,6 @@
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import com.sun.security.ntlm.Server;
+import Requests.GetAllItemsRequest;
+import Requests.LogoutRequest;
+import Requests.Request;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -7,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class HomeFrame extends JFrame {

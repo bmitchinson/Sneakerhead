@@ -1,3 +1,5 @@
+import Requests.*;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -178,10 +180,6 @@ public class Server {
                     } else if (request instanceof GetAllItemsRequest) {
                         serverLogStream.write(("Client made a GetAllItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         output.writeObject(db.getAllItems());
-                    } else if (request instanceof GetItemRequest) {
-                        serverLogStream.write(("Client made a GetItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
-                        GetItemRequest getItemRequest = (GetItemRequest) request;
-                        output.writeObject(db.getItemInfo(getItemRequest.getItem()));
                     } else if (request instanceof BuyItemRequest) {
                         serverLogStream.write(("Client made a BuyItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         BuyItemRequest buyItemRequest = (BuyItemRequest) request;

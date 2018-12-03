@@ -1,3 +1,5 @@
+import Requests.Request;
+
 public class SellItemRequest extends Request {
     private Item item;
 

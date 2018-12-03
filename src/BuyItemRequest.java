@@ -1,4 +1,4 @@
-public class BuyItemRequest extends Request {
+public class BuyItemRequest extends Requests.Request {
 
     private final Item item;
 
