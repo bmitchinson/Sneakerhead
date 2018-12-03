@@ -210,8 +210,8 @@ public class Item implements Serializable {
         @Override
         public int compare(Item o1, Item o2) {
             return (int)(o1.getCost() - o2.getCost());
-    };
-        }
+    }
+        };
 
     // Comparator logic for Item objects to compare based on their set gender
     public static Comparator<Item> GenderComparator = new Comparator<Item>() {

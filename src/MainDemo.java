@@ -19,8 +19,13 @@ public class MainDemo {
         // To test user functionality we've created three user accounts for use
         // Buyer:
         ExecutorService worker = Executors.newCachedThreadPool();
-        worker.execute(new ServerRunnable());
 
+        worker.execute(new ServerRunnable());
+        try{
+            Thread.sleep(3000);
+        }catch(InterruptedException e){
+
+        }
         HomeFrame[] clients = new HomeFrame[CLIENT_COUNT];
 
         for (int i = 0; i < CLIENT_COUNT; i++){
