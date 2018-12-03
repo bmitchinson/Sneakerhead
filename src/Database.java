@@ -166,6 +166,11 @@ public class Database {
             int id = result.getInt(1);
             String values = "(" + insertName + "," + insertDescrip + "," + insertBrand + "," + item.getQuantity() + "," + insertCondition + "," + insertSize + "," + insertColor + "," + insertGender + "," + insertCost + "," + insertURL + "," + id + ")";
             statement.execute("INSERT INTO `Items` (`Name`,`Description`,`Brand`,`Quantity`,`Condition`,`Size`,`Color`,`Gender`,`Price`,`URL`,`Seller`) VALUES " + values);
+
+            ResultSet idResult = statement.executeQuery("SELECT ID FROM Items WHERE Name =" + insertSQL(item.getName()));
+            idResult.next();
+            item.setId(idResult.getInt(1));
+
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

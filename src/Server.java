@@ -59,9 +59,7 @@ public class Server {
         while (true) {
             try {
                 print("Waiting for connection #" + (clientIndex + 1));
-                allInternalClients.add(
-                        new InternalClient(server.accept())
-                );
+                allInternalClients.add(new InternalClient(server.accept()));
                 runClients.execute(allInternalClients.get(clientIndex));
             } catch (IOException e) {
                 print("Connection failed in server execute");
