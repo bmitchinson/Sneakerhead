@@ -1,8 +1,12 @@
+import jdk.nashorn.internal.scripts.JO;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 public class LoginFrame extends JFrame {
     private final JTextField usernameField;
@@ -11,8 +15,10 @@ public class LoginFrame extends JFrame {
     private final JButton registerButton;
     private final JLabel usernameLabel;
     private final JLabel passwordLabel;
+    private final JLabel logoLabel;
     private final JComboBox userTypeBox;
     private final HomeFrame homeFrame;
+    private final Color color = new Color(0, 128, 128);
 
     public LoginFrame(HomeFrame homeFrame) {
         this.homeFrame = homeFrame;
@@ -54,25 +60,40 @@ public class LoginFrame extends JFrame {
         passwordLabel.setSize(new Dimension(150, 25));
         passwordLabel.setAlignmentX(CENTER_ALIGNMENT);
 
-        String[] types = {"Buyer", "Seller", "Buyer & Seller"};
+        Image banner = null;
+        try{
+            File image = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile() + File.separator + "Image" + File.separator + "logo.png");
+            banner = ImageIO.read(image);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        ImageIcon logoIcon = new ImageIcon(banner.getScaledInstance(250,100, Image.SCALE_DEFAULT));
+        logoLabel = new JLabel(logoIcon);
+        logoLabel.setAlignmentX(CENTER_ALIGNMENT);
+
+        String[] types = {"Select Type to Register", "Buyer", "Seller", "Buyer & Seller"};
         userTypeBox = new JComboBox(types);
-        userTypeBox.setMaximumSize(new Dimension(150, 50));
+        userTypeBox.setMaximumSize(new Dimension(175, 50));
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+        setBackground(color);
 
-        add(Box.createRigidArea(new Dimension(500, 100)));
+        add(Box.createVerticalStrut(50));
+        add(logoLabel);
+        add(Box.createRigidArea(new Dimension(500, 30)));
         add(usernameLabel);
         add(Box.createRigidArea(new Dimension(500, 10)));
         add(usernameField);
-        add(Box.createRigidArea(new Dimension(500, 40)));
+        add(Box.createRigidArea(new Dimension(500, 30)));
         add(passwordLabel);
         add(Box.createRigidArea(new Dimension(500, 10)));
         add(passwordField);
-        add(Box.createRigidArea(new Dimension(500, 50)));
+        add(Box.createRigidArea(new Dimension(500, 30)));
         add(buttonPanel);
         add(Box.createRigidArea(new Dimension(500, 20)));
         add(userTypeBox);
-        add(Box.createRigidArea(new Dimension(500, 220)));
+        add(Box.createVerticalStrut(10));
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setSize(500, 500);
@@ -120,17 +141,24 @@ public class LoginFrame extends JFrame {
                     }
                 }
                 if (e.getSource() == registerButton) {
-                    AddUserRequest request = new AddUserRequest(usernameField.getText(), String.valueOf(passwordField.getPassword()), userTypeBox.getSelectedIndex() + 1);
-                    Boolean response = (Boolean) homeFrame.makeRequest(request);
-                    if (response == true) {
-                        System.out.println("Successfully created user...");
+                    if(userTypeBox.getSelectedIndex() != 0){
+                        AddUserRequest request = new AddUserRequest(usernameField.getText(), String.valueOf(passwordField.getPassword()), userTypeBox.getSelectedIndex() + 1);
+                        Boolean response = (Boolean) homeFrame.makeRequest(request);
+                        if (response == true) {
+                            System.out.println("Successfully created user...");
 
-                        homeFrame.updateLogin(request.getUsername(), (String) userTypeBox.getSelectedItem());
+                            homeFrame.updateLogin(request.getUsername(), (String) userTypeBox.getSelectedItem());
 
-                        getThis().dispatchEvent(new WindowEvent(getThis(), WindowEvent.WINDOW_CLOSING));
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Username is already in use. Please choose another.");
+                            getThis().dispatchEvent(new WindowEvent(getThis(), WindowEvent.WINDOW_CLOSING));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Username is already in use. Please choose another.");
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Select a user type to register as.",
+                                "Error Registering", JOptionPane.ERROR_MESSAGE);
                     }
+
+
                 }
             });
         }

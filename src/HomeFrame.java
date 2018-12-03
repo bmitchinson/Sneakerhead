@@ -26,7 +26,7 @@ public class HomeFrame extends JFrame {
     private static boolean connected = false;
     private boolean isBuyer = false;
     private boolean isSeller = false;
-    //private final JLabel logoLabel;
+    private final JLabel logoLabel;
 
     public HomeFrame() {
         if(!connected){
@@ -56,15 +56,15 @@ public class HomeFrame extends JFrame {
         loginButton.addActionListener(handler);
 
         Image banner = null;
-        /*try{
-            File image = new File(getClass().getResource(File.separator + "Image" + File.separator + "logo.jpg").getPath());
+        try{
+            File image = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile() + File.separator + "Image" + File.separator + "logo.png");
             banner = ImageIO.read(image);
         }catch (Exception e){
             System.out.println(e);
         }
 
-        ImageIcon logoIcon = new ImageIcon(banner);
-        logoLabel = new JLabel(logoIcon);*/
+        ImageIcon logoIcon = new ImageIcon(banner.getScaledInstance(150,50, Image.SCALE_DEFAULT));
+        logoLabel = new JLabel(logoIcon);
 
         topPanel = new JPanel();
         topPanel.setMaximumSize(new Dimension(500, 50));
@@ -72,7 +72,7 @@ public class HomeFrame extends JFrame {
         topPanel.add(Box.createHorizontalStrut(5));
         topPanel.add(postItem);
         topPanel.add(Box.createHorizontalGlue());
-        //topPanel.add(logoLabel);
+        topPanel.add(logoLabel);
         topPanel.add(Box.createHorizontalGlue());
         topPanel.add(loginState);
         topPanel.add(Box.createHorizontalStrut(5));
