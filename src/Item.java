@@ -1,10 +1,8 @@
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class Item implements Serializable {
@@ -75,7 +73,7 @@ public class Item implements Serializable {
 
     public int getId(){return id;};
 
-    public String getName() {
+    public String getItemName() {
         return name;
     }
 
@@ -129,6 +127,10 @@ public class Item implements Serializable {
 
     public String getImageURL() {
         return imageURL;
+    }
+
+    private Item getThis(){
+        return this;
     }
 
     public void setId(int id){
@@ -252,8 +254,9 @@ public class Item implements Serializable {
             itemPictureLabel = new JLabel();
             itemPictureLabel.setIcon(itemImageIcon);
             itemPictureLabel.setMinimumSize(new Dimension(100, 100));
+            updateImage();
 
-            nameLabel = new JLabel(getName());
+            nameLabel = new JLabel(getItemName());
             nameLabel.setAlignmentX(CENTER_ALIGNMENT);
 
             costLabel = new JLabel("Cost: " + getCost());
@@ -319,7 +322,7 @@ public class Item implements Serializable {
             descriptionArea.setWrapStyleWord(true);
 
             if (description.length() >= 55) {
-                descriptionArea.setText(description.substring(0, 60) + "...");
+                descriptionArea.setText(description.substring(0, 55) + "...");
             } else {
                 descriptionArea.setText(description);
             }
@@ -376,6 +379,9 @@ public class Item implements Serializable {
         //TODO: Change cost string
 
         ItemViewFrame(){
+            setTitle("");
+            setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+
             //add a JPanel to initial frame, put a border layout
             JPanel mainPanel = new JPanel();
             mainPanel.setLayout(new BorderLayout());
@@ -384,7 +390,7 @@ public class Item implements Serializable {
             mainPanel.setBackground(new Color(245,245,245));
 
             //add name label to top of border layout
-            JLabel name = new JLabel(Item.this.getName());
+            JLabel name = new JLabel(getItemName());
             name.setHorizontalAlignment(SwingConstants.CENTER);
             name.setFont(new Font("Helvetica", Font.BOLD, 18));
 
@@ -413,25 +419,15 @@ public class Item implements Serializable {
             //itemDetails.setPreferredSize(new Dimension(400,450));
             itemDetails.setBackground(color);
             itemDetails.add(new JLabel("Description: " ));
-            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(descriptionText);
-            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel("Condition: " + getCondition()));
-            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel("Size: "+ getShoeSize() + " " + getGender()));
-            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel("Color: "+ getColor()));
-            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel("Price: " + getCost()));
-            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(quantityLabel);
-            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel("Seller: " + getSeller()));
-            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel(""));
-            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(buyButton);
-            itemDetails.add(Box.createHorizontalGlue());
 
             //add all components
             boxedFrame.add(pic);
@@ -442,6 +438,7 @@ public class Item implements Serializable {
 
             //add listener to the buyButton
             buyButton.addActionListener(e -> buttonHit());
+            buyButton.setEnabled(homeFrame.isBuyer());
 
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             this.setSize(600,510);
@@ -455,7 +452,7 @@ public class Item implements Serializable {
             itemDetails.setBackground(Color.LIGHT_GRAY);
             boxedFrame.setBackground(Color.LIGHT_GRAY);
             descriptionText.setBackground(Color.LIGHT_GRAY);
-            BuyItemRequest buyItemRequest = new BuyItemRequest(getId());
+            BuyItemRequest buyItemRequest = new BuyItemRequest(getThis());
             if((boolean) homeFrame.makeRequest(buyItemRequest)){
                 decrementQuantity();
                 updateTile();

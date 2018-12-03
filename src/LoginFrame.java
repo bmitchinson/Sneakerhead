@@ -1,9 +1,7 @@
 import javax.swing.*;
-import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class LoginFrame extends JFrame {
@@ -14,10 +12,10 @@ public class LoginFrame extends JFrame {
     private final JLabel usernameLabel;
     private final JLabel passwordLabel;
     private final JComboBox userTypeBox;
-    private final HomeFrame mainFrame;
+    private final HomeFrame homeFrame;
 
-    public LoginFrame(HomeFrame mainFrame){
-        this.mainFrame = mainFrame;
+    public LoginFrame(HomeFrame homeFrame){
+        this.homeFrame = homeFrame;
 
         usernameField = new JTextField();
         passwordField = new JPasswordField();
@@ -92,24 +90,30 @@ public class LoginFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == loginButton){
                 LoginRequest request = new LoginRequest(usernameField.getText(), String.valueOf(passwordField.getPassword()));
-                Integer response = (Integer) mainFrame.makeRequest(request);
+                Integer response = (Integer) homeFrame.makeRequest(request);
 
                 if(response == 1){
                     System.out.println("Logged in as buyer...");
-                    mainFrame.updateLogin(request.getUsername(), "Buyer");
+                    homeFrame.setBuyer(true);
+                    homeFrame.setSeller(false);
+                    homeFrame.updateLogin(request.getUsername(), "Buyer");
                     getThis().dispatchEvent(new WindowEvent(getThis(), WindowEvent.WINDOW_CLOSING));
 
                 }
 
                 else if(response == 2){
                     System.out.println("Logged in as seller...");
-                    mainFrame.updateLogin(request.getUsername(), "Seller");
+                    homeFrame.setBuyer(false);
+                    homeFrame.setSeller(true);
+                    homeFrame.updateLogin(request.getUsername(), "Seller");
                     getThis().dispatchEvent(new WindowEvent(getThis(), WindowEvent.WINDOW_CLOSING));
                 }
 
                 else if(response == 3){
+                    homeFrame.setBuyer(true);
+                    homeFrame.setSeller(true);
                     System.out.println("Logged in as buyer/seller");
-                    mainFrame.updateLogin(request.getUsername(), "Buyer/Seller");
+                    homeFrame.updateLogin(request.getUsername(), "Buyer/Seller");
                     getThis().dispatchEvent(new WindowEvent(getThis(), WindowEvent.WINDOW_CLOSING));
                 }
 
@@ -123,11 +127,11 @@ public class LoginFrame extends JFrame {
             }
             if(e.getSource() == registerButton){
                 AddUserRequest request = new AddUserRequest(usernameField.getText(), String.valueOf(passwordField.getPassword()), userTypeBox.getSelectedIndex()+1);
-                Boolean response = (Boolean) mainFrame.makeRequest(request);
+                Boolean response = (Boolean) homeFrame.makeRequest(request);
                 if(response == true){
                     System.out.println("Successfully created user...");
 
-                    mainFrame.updateLogin(request.getUsername(), (String) userTypeBox.getSelectedItem());
+                    homeFrame.updateLogin(request.getUsername(), (String) userTypeBox.getSelectedItem());
 
                     getThis().dispatchEvent(new WindowEvent(getThis(), WindowEvent.WINDOW_CLOSING));
                 }else{
