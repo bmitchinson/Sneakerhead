@@ -254,6 +254,7 @@ public class Item implements Serializable {
             itemPictureLabel = new JLabel();
             itemPictureLabel.setIcon(itemImageIcon);
             itemPictureLabel.setMinimumSize(new Dimension(100, 100));
+            updateImage();
 
             nameLabel = new JLabel(getItemName());
             nameLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -321,7 +322,7 @@ public class Item implements Serializable {
             descriptionArea.setWrapStyleWord(true);
 
             if (description.length() >= 55) {
-                descriptionArea.setText(description.substring(0, 60) + "...");
+                descriptionArea.setText(description.substring(0, 55) + "...");
             } else {
                 descriptionArea.setText(description);
             }
