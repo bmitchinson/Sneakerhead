@@ -1,8 +1,10 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class Item implements Serializable {
@@ -366,17 +368,20 @@ public class Item implements Serializable {
         private JPanel boxedFrame = new JPanel();
         private JTextArea descriptionText = new JTextArea();
         private JLabel quantityLabel;
+        //private Color color = new Color(255,215,204);
+        //private Color color = new Color(240,248,255);
+        private Color color = new Color(255,250,240);
+        private NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
         //TODO: Change cost string
 
         ItemViewFrame(){
-            setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-
             //add a JPanel to initial frame, put a border layout
-            JPanel insideBox = new JPanel();
-            insideBox.setLayout(new BorderLayout());
-            insideBox.setPreferredSize(new Dimension(590,500));
-            insideBox.setBackground(Color.LIGHT_GRAY);
+            JPanel mainPanel = new JPanel();
+            mainPanel.setLayout(new BorderLayout());
+            mainPanel.setBorder(new EmptyBorder(10,10,10,10));
+            mainPanel.setPreferredSize(new Dimension(590,500));
+            mainPanel.setBackground(new Color(245,245,245));
 
             //add name label to top of border layout
             JLabel name = new JLabel(getName());
@@ -384,7 +389,6 @@ public class Item implements Serializable {
             name.setFont(new Font("Helvetica", Font.BOLD, 18));
 
             //created new JPanel with 1 row, 2 columns to add to center of border layout
-            //JPanel boxedFrame = new JPanel();
             boxedFrame.setLayout(new GridLayout(1,2));
             boxedFrame.setBackground(Color.orange);
 
@@ -395,7 +399,6 @@ public class Item implements Serializable {
             boxedFrame.add(pic);
 
             //Put item description in column 2
-            //JTextArea descriptionText = new JTextArea();
             descriptionText.setBackground(boxedFrame.getBackground());
             descriptionText.setText(getDescription());
             descriptionText.setLineWrap(true);
@@ -422,9 +425,9 @@ public class Item implements Serializable {
             //add all components
             boxedFrame.add(pic);
             boxedFrame.add(itemDetails);
-            insideBox.add(name,BorderLayout.NORTH);
-            insideBox.add(boxedFrame,BorderLayout.CENTER);
-            add(insideBox);
+            mainPanel.add(name,BorderLayout.NORTH);
+            mainPanel.add(boxedFrame,BorderLayout.CENTER);
+            add(mainPanel);
 
             //add listener to the buyButton
             buyButton.addActionListener(e -> buttonHit());
