@@ -381,16 +381,16 @@ public class Item implements Serializable {
             mainPanel.setLayout(new BorderLayout());
             mainPanel.setBorder(new EmptyBorder(10,10,10,10));
             mainPanel.setPreferredSize(new Dimension(590,500));
-            mainPanel.setBackground(color);
+            mainPanel.setBackground(new Color(245,245,245));
 
             //add name label to top of border layout
-            JLabel name = new JLabel(this.getName());
+            JLabel name = new JLabel(Item.this.getName());
             name.setHorizontalAlignment(SwingConstants.CENTER);
             name.setFont(new Font("Helvetica", Font.BOLD, 18));
 
             //created new JPanel with 1 row, 2 columns to add to center of border layout
             boxedFrame.setLayout(new GridLayout(1,2));
-            boxedFrame.setBackground(Color.orange);
+            boxedFrame.setBackground(color);
 
             //Put a picture in column 1
             ImageIcon picPass = new ImageIcon();
@@ -399,7 +399,7 @@ public class Item implements Serializable {
             boxedFrame.add(pic);
 
             //Put item description in column 2
-            descriptionText.setBackground(boxedFrame.getBackground());
+            descriptionText.setBackground(color);
             descriptionText.setText(getDescription());
             descriptionText.setLineWrap(true);
             descriptionText.setWrapStyleWord(true);
@@ -408,19 +408,30 @@ public class Item implements Serializable {
             quantityLabel = new JLabel("Quantity: " + getQuantity());
 
             //JPanel itemDetails = new JPanel();
-            itemDetails.setLayout(new GridLayout(10,1));
-            itemDetails.setPreferredSize(new Dimension(400,450));
-            itemDetails.setBackground(Color.orange);
+            //itemDetails.setLayout(new GridLayout(10,1));
+            itemDetails.setLayout(new BoxLayout(itemDetails,BoxLayout.PAGE_AXIS));
+            //itemDetails.setPreferredSize(new Dimension(400,450));
+            itemDetails.setBackground(color);
             itemDetails.add(new JLabel("Description: " ));
+            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(descriptionText);
+            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel("Condition: " + getCondition()));
+            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel("Size: "+ getShoeSize() + " " + getGender()));
+            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel("Color: "+ getColor()));
+            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel("Price: " + getCost()));
+            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(quantityLabel);
+            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel("Seller: " + getSeller()));
+            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(new JLabel(""));
+            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(buyButton);
+            itemDetails.add(Box.createHorizontalGlue());
 
             //add all components
             boxedFrame.add(pic);
