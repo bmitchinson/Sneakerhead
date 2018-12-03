@@ -17,7 +17,7 @@ public class HomeFrame extends JFrame {
     private JPanel loginState;
     private ArrayList<Item> items;
     private final Color color1 = new Color(245, 245, 245);
-    private final Color color2 = new Color(240, 248, 255);
+    private final Color color2 = new Color(0,0,128);
     private final ServerRequester serverRequester;
 
     public HomeFrame() {

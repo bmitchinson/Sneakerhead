@@ -12,11 +12,12 @@ public class ItemViewFrame extends JFrame {
     private JTextArea descriptionText = new JTextArea();
     private JLabel quantityLabel;
     private Item item;
-    private Color color = Color.orange;
+    //private Color color = new Color(255,215,204);
+    //private Color color = new Color(240,248,255);
+    private Color color = new Color(255,250,240);
     private NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
     ItemViewFrame(Item item){
-
         //set item
         this.item = item;
 
@@ -25,13 +26,14 @@ public class ItemViewFrame extends JFrame {
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBorder(new EmptyBorder(10,10,10,10));
         mainPanel.setPreferredSize(new Dimension(590,500));
-        mainPanel.setBackground(Color.LIGHT_GRAY);
+        mainPanel.setBackground(new Color(245,245,245));
 
         //add name label to top of border layout
         String itemName = item.getName();
         JLabel name = new JLabel(itemName);
         name.setHorizontalAlignment(SwingConstants.CENTER);
         name.setFont(new Font("Helvetica", Font.BOLD, 18));
+
 
         //created new JPanel with 1 row, 2 columns to add to center of border layout
         boxedFrame.setLayout(new GridLayout(1,2));
@@ -91,7 +93,7 @@ public class ItemViewFrame extends JFrame {
         itemDetails.setBackground(Color.LIGHT_GRAY);
         boxedFrame.setBackground(Color.LIGHT_GRAY);
         descriptionText.setBackground(Color.LIGHT_GRAY);
-
+        //
 
         item.decrementQuantity();
         item.updateTile();
