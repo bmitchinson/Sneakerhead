@@ -29,7 +29,7 @@ public class ServerRequester {
 
     public void connect() throws IOException {
         socket = new Socket(InetAddress.getByName(ip), 23517);
-        System.out.println("Connection Successful...");
+        System.out.println("SeverRequester: Connection Successful...");
     }
 
     public void setupStreams() throws IOException {
