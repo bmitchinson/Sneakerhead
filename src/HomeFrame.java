@@ -21,8 +21,8 @@ public class HomeFrame extends JFrame {
     private JPanel loginState;
     private ArrayList<Item> items;
     private final Color color1 = new Color(245, 245, 245);
-    private final Color color2 = new Color(0, 0, 128);
-    private final ServerRequester serverRequester;
+    private final Color color2 = new Color(240, 248, 255);
+    private static ServerRequester serverRequester = new ServerRequester("localhost");
     private boolean isBuyer = false;
     private boolean isSeller = false;
     //private final JLabel logoLabel;
@@ -118,6 +118,7 @@ public class HomeFrame extends JFrame {
             itemPanel.setLayout(new GridLayout(items.size(), 1));
 
             for (int i = 0; i < items.size(); i++) {
+                items.get(i).setHomeFrame(this);
                 itemPanel.add(items.get(i).getItemTile());
             }
             System.out.println("");
@@ -141,6 +142,10 @@ public class HomeFrame extends JFrame {
 
     public boolean isSeller() {
         return isSeller;
+    }
+
+    public ServerRequester getServerRequester() {
+        return serverRequester;
     }
 
     private HomeFrame getThis() {
