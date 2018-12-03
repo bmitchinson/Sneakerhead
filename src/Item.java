@@ -390,6 +390,7 @@ public class Item implements Serializable {
 
             //created new JPanel with 1 row, 2 columns to add to center of border layout
             boxedFrame.setLayout(new GridLayout(1,2));
+            //boxedFrame.setPreferredSize();
             boxedFrame.setBackground(color);
 
             //Put a picture in column 1
@@ -404,12 +405,11 @@ public class Item implements Serializable {
             descriptionText.setLineWrap(true);
             descriptionText.setWrapStyleWord(true);
             descriptionText.setEditable(false);
-            //descriptionText.setSize(descriptionText.getPreferredSize());
 
             //JPanel itemDetails = new JPanel();
             //itemDetails.setLayout(new GridLayout(10,1));
             itemDetails.setLayout(new BoxLayout(itemDetails,BoxLayout.PAGE_AXIS));
-            itemDetails.setPreferredSize(new Dimension(400,450));
+            //itemDetails.setPreferredSize(new Dimension(400,300));
             itemDetails.setBackground(color);
 
             JLabel descripLabel = new JLabel("Description: ");
@@ -428,7 +428,6 @@ public class Item implements Serializable {
             itemDetails.add(leftJustify(priceLabel));
             itemDetails.add(leftJustify(quantityLabel));
             itemDetails.add(leftJustify(sellerLabel));
-            itemDetails.add(new JLabel(""));
             itemDetails.add(buyButton);
 
 
