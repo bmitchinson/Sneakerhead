@@ -12,6 +12,7 @@ public class MainDemo {
         worker.execute(new ServerRunnable());
 
         HomeFrame client_one = new HomeFrame();
+        HomeFrame client_two = new HomeFrame();
 
         /*while(true){
             System.out.println("Waiting 15 seconds to see if there's an update " +
@@ -23,6 +24,7 @@ public class MainDemo {
             }
             System.out.println("Calling update");
             client_one.updateAllItems();
+            client_two.updateAllItems();
         }*/
     }
 }

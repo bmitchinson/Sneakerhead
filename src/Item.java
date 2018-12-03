@@ -71,7 +71,11 @@ public class Item implements Serializable {
         this.seller = seller;
     }
 
-    public int getId(){return id;};
+    public int getId() {
+        return id;
+    }
+
+    ;
 
     public String getItemName() {
         return name;
@@ -101,7 +105,9 @@ public class Item implements Serializable {
         return seller;
     }
 
-    public double getCost() { return cost; }
+    public double getCost() {
+        return cost;
+    }
 
     //TODO: Verify how we want size returned from the getShoeSize method
     public double getShoeSize() {
@@ -109,13 +115,11 @@ public class Item implements Serializable {
     }
 
     //TODO: Create an ItemTile Class that shows a condensed version of the Item's data in a (JPanel)
-    public ItemTile getItemTile()
-    {
-        if(itemTile == null){
+    public ItemTile getItemTile() {
+        if (itemTile == null) {
             itemTile = new ItemTile();
             return itemTile;
-        }
-        else{
+        } else {
             return itemTile;
         }
     }
@@ -129,15 +133,15 @@ public class Item implements Serializable {
         return imageURL;
     }
 
-    private Item getThis(){
+    private Item getThis() {
         return this;
     }
 
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
 
-    public static void setHomeFrame(HomeFrame frame){
+    public static void setHomeFrame(HomeFrame frame) {
         homeFrame = frame;
     }
 
@@ -160,7 +164,7 @@ public class Item implements Serializable {
 
     //TODO: Create an ItemWindow Class that shows the item in its own JFrame
     public void startItemWindow() {
-        if(quantity != 0){
+        if (quantity != 0) {
             ItemViewFrame frame = new ItemViewFrame();
         }
     }
@@ -171,7 +175,7 @@ public class Item implements Serializable {
                 (description.substring(0, 25) + "...") : (description);
 
         String shortURL = (imageURL.length() > 10) ?
-                (imageURL.substring(0, 10)+ "...") : (imageURL);
+                (imageURL.substring(0, 10) + "...") : (imageURL);
 
         return ("Item Contents:\nName:" + name + ", Description:" + desc
                 + ", Color:" + color + ", Gender:" + gender + ", Size:" + size
@@ -207,9 +211,9 @@ public class Item implements Serializable {
                 1,
                 "https://i.imgur.com/daU2fPw.jpg",
                 "BigSeller123"
-                ));
+        ));
 
-        for(int i=0; i<20; i++){
+        for (int i = 0; i < 20; i++) {
             items.add(new Item(
                     "Converse High Tops 2",
                     "Converse High Tops feature super grip bottoms so you don't slip around in those icy winters",
@@ -374,14 +378,14 @@ public class Item implements Serializable {
 
         //TODO: Change cost string
 
-        ItemViewFrame(){
+        ItemViewFrame() {
             setTitle("");
             setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
             //add a JPanel to initial frame, put a border layout
             JPanel insideBox = new JPanel();
             insideBox.setLayout(new BorderLayout());
-            insideBox.setPreferredSize(new Dimension(590,500));
+            insideBox.setPreferredSize(new Dimension(590, 500));
             insideBox.setBackground(Color.LIGHT_GRAY);
 
             //add name label to top of border layout
@@ -391,12 +395,12 @@ public class Item implements Serializable {
 
             //created new JPanel with 1 row, 2 columns to add to center of border layout
             //JPanel boxedFrame = new JPanel();
-            boxedFrame.setLayout(new GridLayout(1,2));
+            boxedFrame.setLayout(new GridLayout(1, 2));
             boxedFrame.setBackground(Color.orange);
 
             //Put a picture in column 1
             ImageIcon picPass = new ImageIcon();
-            picPass.setImage(ScaledImage.getScaledImage(getImageURL(),250,250));
+            picPass.setImage(ScaledImage.getScaledImage(getImageURL(), 250, 250));
             JLabel pic = new JLabel(picPass);
             boxedFrame.add(pic);
 
@@ -411,14 +415,14 @@ public class Item implements Serializable {
             quantityLabel = new JLabel("Quantity: " + getQuantity());
 
             //JPanel itemDetails = new JPanel();
-            itemDetails.setLayout(new GridLayout(10,1));
-            itemDetails.setPreferredSize(new Dimension(400,450));
+            itemDetails.setLayout(new GridLayout(10, 1));
+            itemDetails.setPreferredSize(new Dimension(400, 450));
             itemDetails.setBackground(Color.orange);
-            itemDetails.add(new JLabel("Description: " ));
+            itemDetails.add(new JLabel("Description: "));
             itemDetails.add(descriptionText);
             itemDetails.add(new JLabel("Condition: " + getCondition()));
-            itemDetails.add(new JLabel("Size: "+ getShoeSize() + " " + getGender()));
-            itemDetails.add(new JLabel("Color: "+ getColor()));
+            itemDetails.add(new JLabel("Size: " + getShoeSize() + " " + getGender()));
+            itemDetails.add(new JLabel("Color: " + getColor()));
             itemDetails.add(new JLabel("Price: " + getCost()));
             itemDetails.add(quantityLabel);
             itemDetails.add(new JLabel("Seller: " + getSeller()));
@@ -428,35 +432,37 @@ public class Item implements Serializable {
             //add all components
             boxedFrame.add(pic);
             boxedFrame.add(itemDetails);
-            insideBox.add(name,BorderLayout.NORTH);
-            insideBox.add(boxedFrame,BorderLayout.CENTER);
+            insideBox.add(name, BorderLayout.NORTH);
+            insideBox.add(boxedFrame, BorderLayout.CENTER);
             add(insideBox);
 
             //add listener to the buyButton
             buyButton.addActionListener(e -> buttonHit());
+            System.out.println("Buyer stat: " + homeFrame.isBuyer());
             buyButton.setEnabled(homeFrame.isBuyer());
 
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            this.setSize(600,510);
+            this.setSize(600, 510);
             this.setVisible(true);
         }
 
-        //TODO: decrement the item quantity
-        private void buttonHit(){
-            buyButton.setText("Bought!");
-            buyButton.setEnabled(false);
-            itemDetails.setBackground(Color.LIGHT_GRAY);
-            boxedFrame.setBackground(Color.LIGHT_GRAY);
-            descriptionText.setBackground(Color.LIGHT_GRAY);
-            BuyItemRequest buyItemRequest = new BuyItemRequest(getThis());
-            if((boolean) homeFrame.makeRequest(buyItemRequest)){
-                decrementQuantity();
-                updateTile();
-            }
-            else{
-                JOptionPane.showMessageDialog(null,"Error buying item please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            quantityLabel.setText("Quantity: " + getQuantity());
+        private void buttonHit() {
+            SwingUtilities.invokeLater(() -> {
+                BuyItemRequest buyItemRequest = new BuyItemRequest(getThis());
+                if ((boolean) homeFrame.makeRequest(buyItemRequest)) {
+                    buyButton.setText("Bought!");
+                    buyButton.setEnabled(false);
+                    itemDetails.setBackground(Color.LIGHT_GRAY);
+                    boxedFrame.setBackground(Color.LIGHT_GRAY);
+                    descriptionText.setBackground(Color.LIGHT_GRAY);
+                    decrementQuantity();
+                    updateTile();
+                } else {
+                    homeFrame.updateAllItems();
+                    JOptionPane.showMessageDialog(null, "Error buying item please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                quantityLabel.setText("Quantity: " + getQuantity());
+            });
         }
     }
 }
