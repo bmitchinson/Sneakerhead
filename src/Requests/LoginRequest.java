@@ -1,3 +1,7 @@
+package Requests;
+
+import Requests.Request;
+
 public class LoginRequest extends Request {
     private String username;
     private String password;

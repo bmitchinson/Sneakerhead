@@ -1,5 +1,3 @@
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
