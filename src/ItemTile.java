@@ -138,7 +138,6 @@ public class ItemTile extends JPanel{
     private class PanelListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            System.out.println("123123");
             item.startItemWindow();
         }
     }

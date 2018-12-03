@@ -70,7 +70,6 @@ public class Server {
             } finally {
                 clientIndex++;
             }
-
         }
     }
 
@@ -82,7 +81,6 @@ public class Server {
         System.out.println(LocalTime.now().format(timeFormat) + " " + who + ":" + message);
     }
 
-
     private class InternalClient implements Runnable {
 
         // Network socket +  needed object streams
@@ -92,9 +90,8 @@ public class Server {
         private ObjectOutputStream output;
         private Formatter formatterOutput;
 
-        private int userType;
-        private String activeUsername;
-        private int activeUserType;
+        private int activeUserType = 0;
+        private String activeUsername = "";
 
         public InternalClient(Socket socket) {
 
@@ -133,24 +130,30 @@ public class Server {
                 try {
                     if (request instanceof AddUserRequest) {
                         AddUserRequest addUserRequest = (AddUserRequest) request;
-                        output.writeObject(db.createUser(addUserRequest.getUsername(), addUserRequest.getPassword(), addUserRequest.getType()));
-                    }
-                    else if(request instanceof LoginRequest){
+                        boolean result = db.createUser(addUserRequest.getUsername(),
+                                addUserRequest.getPassword(), addUserRequest.getType());
+                        if (result) {
+                            activeUsername = addUserRequest.getUsername();
+                            activeUserType = addUserRequest.getType();
+                        }
+                        output.writeObject(result);
+                    } else if (request instanceof LoginRequest) {
                         LoginRequest loginRequest = (LoginRequest) request;
-                        output.writeObject(db.login(loginRequest.getUsername(), loginRequest.getPassword()));
-                    }
-                    else if (request instanceof GetAllItemsRequest){
+                        activeUserType = db.login(loginRequest.getUsername(), loginRequest.getPassword());
+                        output.writeObject(activeUserType);
+                    } else if (request instanceof LogoutRequest) {
+                        activeUserType = 0;
+                        activeUsername = "";
+                        output.writeObject(new Boolean(true));
+                    } else if (request instanceof GetAllItemsRequest) {
                         output.writeObject(db.getAllItems());
-                    }
-                    else if(request instanceof GetItemRequest){
+                    } else if (request instanceof GetItemRequest) {
                         GetItemRequest getItemRequest = (GetItemRequest) request;
                         output.writeObject(db.getItemInfo(getItemRequest.getItem()));
-                    }
-                    else if(request instanceof BuyItemRequest){
+                    } else if (request instanceof BuyItemRequest) {
                         BuyItemRequest buyItemRequest = (BuyItemRequest) request;
                         output.writeObject(db.buyItem(buyItemRequest.getItem()));
-                    }
-                    else if(request instanceof SellItemRequest){
+                    } else if (request instanceof SellItemRequest) {
                         SellItemRequest sellItemRequest = (SellItemRequest) request;
                         output.writeObject(db.sellItem(sellItemRequest.getSeller(), sellItemRequest.getItem()));
                     }
