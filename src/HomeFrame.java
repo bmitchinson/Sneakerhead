@@ -121,8 +121,7 @@ public class HomeFrame extends JFrame {
     }
 
     public Object makeRequest(Request request) {
-        Object response = null;
-        response = serverRequester.makeRequest(request);
+        Object response = serverRequester.makeRequest(request);
         return response;
     }
 
