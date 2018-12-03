@@ -1,6 +1,10 @@
 # Team 37's E-Commerce Solution: "Sneakerhead"
 ![Demo](/uploads/e45a0bebe7b731e78224177ffa714063/Demo.png)
 
+## Wiki Pages:
+### [Helpful Links](https://class-git.engineering.uiowa.edu/swd2018/team37_swd/wikis/helpful-links)
+### [Helpful Tools](https://class-git.engineering.uiowa.edu/swd2018/team37_swd/wikis/helpful-tools)
+### [Documentation Pages](https://class-git.engineering.uiowa.edu/swd2018/team37_swd/wikis/three-documentation-pages)
 
 ## How To Use
 To begin the demo, run the "MainDemo" class. There you can customize the amount 
@@ -31,9 +35,4 @@ been personally assigned.
 
 ### UML
 
-![UML]((/uploads/6de89cddf5e29389ae08382e2be7966a/UML.png))
-
-## Wiki Pages:
-### [Helpful Links](https://class-git.engineering.uiowa.edu/swd2018/team37_swd/wikis/helpful-links)
-### [Helpful Tools](https://class-git.engineering.uiowa.edu/swd2018/team37_swd/wikis/helpful-tools)
-### [Documentation Pages](https://class-git.engineering.uiowa.edu/swd2018/team37_swd/wikis/three-documentation-pages)
+![uml](/uploads/6de89cddf5e29389ae08382e2be7966a/UML.png)
