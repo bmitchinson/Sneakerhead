@@ -1,6 +1,6 @@
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import Requests.*;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalTime;
@@ -19,7 +19,11 @@ public class Server {
 
     // Networking
     private ServerSocket server;
-    private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mm:ss.SSS - ");
+    private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mm:ss.S");
+
+    //Streams used for logging by Inner Clients
+    private FileOutputStream serverLogStream;
+    private FileOutputStream transactionLogStream;
 
     // Space for InternalClients to be held upon each connection
     private List<InternalClient> allInternalClients = new ArrayList<>();
@@ -51,6 +55,30 @@ public class Server {
             print("Server opened on port 23517");
         }
 
+        String logPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        File logDirectory = new File(logPath + File.separator + "log");
+
+        if(!logDirectory.exists()){
+            logDirectory.mkdir();
+        }
+
+        File serverLog = new File(logDirectory + File.separator + "server_log.log");
+        File transactionLog = new File(logDirectory + File.separator + "transaction_log.log");
+
+        try{
+            serverLogStream = new FileOutputStream(serverLog, false);
+            transactionLogStream = new FileOutputStream(transactionLog, false);
+            serverLogStream.write(("Server started at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
+            transactionLogStream.write(("Server started at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
+            serverLogStream.close();
+            transactionLogStream.close();
+            serverLogStream = new FileOutputStream(serverLog, true);
+            transactionLogStream = new FileOutputStream(transactionLog, true);
+
+        }catch (IOException e){
+            System.out.println(e);
+        }
         execute();
     }
 
@@ -59,9 +87,7 @@ public class Server {
         while (true) {
             try {
                 print("Waiting for connection #" + (clientIndex + 1));
-                allInternalClients.add(
-                        new InternalClient(server.accept())
-                );
+                allInternalClients.add(new InternalClient(server.accept()));
                 runClients.execute(allInternalClients.get(clientIndex));
             } catch (IOException e) {
                 print("Connection failed in server execute");
@@ -70,7 +96,6 @@ public class Server {
             } finally {
                 clientIndex++;
             }
-
         }
     }
 
@@ -82,7 +107,6 @@ public class Server {
         System.out.println(LocalTime.now().format(timeFormat) + " " + who + ":" + message);
     }
 
-
     private class InternalClient implements Runnable {
 
         // Network socket +  needed object streams
@@ -90,15 +114,15 @@ public class Server {
         private Scanner scannerInput;
         private ObjectInputStream input;
         private ObjectOutputStream output;
+        private int clientNum;
         private Formatter formatterOutput;
 
-        private int userType;
-        private String activeUsername;
-        private int activeUserType;
+        private int activeUserType = 0;
+        private String activeUsername = "";
 
         public InternalClient(Socket socket) {
-
             this.connection = socket;
+            clientNum = clientIndex;
 
             try {
                 this.input = new ObjectInputStream(socket.getInputStream());
@@ -127,36 +151,52 @@ public class Server {
             }
         }
 
-
         private void processMessage(Request request) {
             synchronized (db) {
                 try {
                     if (request instanceof AddUserRequest) {
+                        serverLogStream.write(("Client made a AddUserRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         AddUserRequest addUserRequest = (AddUserRequest) request;
-                        output.writeObject(db.createUser(addUserRequest.getUsername(), addUserRequest.getPassword(), addUserRequest.getType()));
-                    }
-                    else if(request instanceof LoginRequest){
+                        boolean result = db.createUser(addUserRequest.getUsername(),
+                                addUserRequest.getPassword(), addUserRequest.getType());
+                        if (result) {
+                            activeUsername = addUserRequest.getUsername();
+                            activeUserType = addUserRequest.getType();
+                        }
+                        output.writeObject(result);
+                    } else if (request instanceof LoginRequest) {
+                        serverLogStream.write(("Client made a LoginRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         LoginRequest loginRequest = (LoginRequest) request;
-                        output.writeObject(db.login(loginRequest.getUsername(), loginRequest.getPassword()));
-                    }
-                    else if (request instanceof GetAllItemsRequest){
+                        activeUserType = db.login(loginRequest.getUsername(), loginRequest.getPassword());
+                        if(activeUserType != 0){
+                            activeUsername = loginRequest.getUsername();
+                        }
+                        output.writeObject(activeUserType);
+                    } else if (request instanceof LogoutRequest) {
+                        serverLogStream.write(("Client made a LogoutRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
+                        activeUserType = 0;
+                        activeUsername = "";
+                        output.writeObject(new Boolean(true));
+                    } else if (request instanceof GetAllItemsRequest) {
+                        serverLogStream.write(("Client made a GetAllItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         output.writeObject(db.getAllItems());
-                    }
-                    else if(request instanceof GetItemRequest){
-                        GetItemRequest getItemRequest = (GetItemRequest) request;
-                        output.writeObject(db.getItemInfo(getItemRequest.getItem()));
-                    }
-                    else if(request instanceof BuyItemRequest){
+                    } else if (request instanceof BuyItemRequest) {
+                        serverLogStream.write(("Client made a BuyItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         BuyItemRequest buyItemRequest = (BuyItemRequest) request;
-                        output.writeObject(db.buyItem(buyItemRequest.getItem()));
-                    }
-                    else if(request instanceof SellItemRequest){
+                        Boolean successful = db.buyItem(buyItemRequest.getItemId());
+                        if(successful){
+                            transactionLogStream.write((activeUsername + " bought item " + buyItemRequest.getItem().getItemName() +
+                                    " from " + buyItemRequest.getItem().getSeller() + "\n").getBytes() );
+                        }
+                        output.writeObject(successful);
+                    } else if (request instanceof SellItemRequest) {
+                        serverLogStream.write(("Client made a SellItemRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         SellItemRequest sellItemRequest = (SellItemRequest) request;
-                        output.writeObject(db.sellItem(sellItemRequest.getSeller(), sellItemRequest.getItem()));
+                        output.writeObject(db.sellItem(activeUsername, sellItemRequest.getItem()));
                     }
-
 
                 } catch (IOException e) {
+                    System.out.println("IOException");
                     System.out.println(e);
                 }
 

@@ -115,7 +115,11 @@ public class Database {
             Statement statement = connection.createStatement();
             ResultSet quantity = statement.executeQuery("SELECT Quantity FROM Items WHERE ID =" + itemID);
             quantity.next();
-            int q = quantity.getInt(1)-1;
+            int q = quantity.getInt(1);
+            if (q == 0){
+                return false;
+            }
+            q--;
             String query = "UPDATE Items SET Quantity =" + q + " WHERE ID =" + itemID;
             statement.executeUpdate(query);
             return true;
@@ -151,21 +155,28 @@ public class Database {
         try {
             Statement statement = connection.createStatement();
 
-            String insertName = "'"+ item.getName() + "'";
+            String insertName = "'"+ item.getItemName() + "'";
             String insertDescrip = "'"+ item.getDescription() + "'";
             String insertBrand = "'"+ item.getBrand() + "'";
             String insertCondition = "'"+ item.getCondition() + "'";
             String insertColor = "'"+ item.getColor() + "'";
             String insertGender = "'"+ item.getGender() + "'";
             String insertURL = "'"+ item.getImageURL() + "'";
-            String insertSize = "'" + item.getSize() + "'";
+            String insertSize = "'" + item.getShoeSize() + "'";
             String insertCost = "'" + item.getCost() + "'";
             String user = "'" + username + "'";
-            ResultSet result = statement.executeQuery("SELECT ID FROM Users WHERE Username =" + user);
+            ResultSet result = statement.executeQuery("SELECT ID FROM Users WHERE Username = " + user);
+
             result.next();
             int id = result.getInt(1);
             String values = "(" + insertName + "," + insertDescrip + "," + insertBrand + "," + item.getQuantity() + "," + insertCondition + "," + insertSize + "," + insertColor + "," + insertGender + "," + insertCost + "," + insertURL + "," + id + ")";
+            System.out.println("INSERT INTO `Items` (`Name`,`Description`,`Brand`,`Quantity`,`Condition`,`Size`,`Color`,`Gender`,`Price`,`URL`,`Seller`) VALUES " + values);
             statement.execute("INSERT INTO `Items` (`Name`,`Description`,`Brand`,`Quantity`,`Condition`,`Size`,`Color`,`Gender`,`Price`,`URL`,`Seller`) VALUES " + values);
+
+            ResultSet idResult = statement.executeQuery("SELECT ID FROM Items WHERE Name =" + insertSQL(item.getItemName()));
+            idResult.next();
+            item.setId(idResult.getInt(1));
+
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -199,9 +210,4 @@ public class Database {
         ArrayList<Item> test = database.getAllItems();
     }
 
-    /*
-    TODO: Methods
-    getUserType(name) - return string of user type - 1, buyer 2, seller, 3 both
-
-     */
 }
