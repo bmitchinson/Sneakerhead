@@ -1,3 +1,7 @@
+package Requests;
+
+// extends the Serializable object Request to send a request to "add a user" through the output stream
+
 public class AddUserRequest extends Request {
     private final String username;
     private final String password;

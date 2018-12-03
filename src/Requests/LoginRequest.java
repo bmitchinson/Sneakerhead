@@ -1,3 +1,9 @@
+package Requests;
+
+import Requests.Request;
+
+// extends the Serializable object Request to send a request to "login" through the output stream
+
 public class LoginRequest extends Request {
     private String username;
     private String password;

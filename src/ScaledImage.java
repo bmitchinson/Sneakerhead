@@ -4,11 +4,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
+//ScaledImage can return a ScaledImage from a given url
 public class ScaledImage {
+    //getScaledImage can return a scaledImage from a given url
     public static Image getScaledImage(String url, int width, int height){
         BufferedImage tempImage = null;
-
         try{
             URL imageURL = new URL(url);
             tempImage = ImageIO.read(imageURL);
@@ -16,11 +16,10 @@ public class ScaledImage {
             System.out.println(e);
         }
 
-        Image finalImage = tempImage.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-
-        return finalImage;
+        return tempImage.getScaledInstance(width, height, Image.SCALE_DEFAULT);
     }
 
+    //getSoldImage is used in the UpdateTile to overlay Sold on a image so the user knows its sold out
     public static Image getSoldImage(Image image){
         Image finalImage;
         Image soldImage = null;
