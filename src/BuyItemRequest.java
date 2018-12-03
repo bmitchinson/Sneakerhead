@@ -1,3 +1,6 @@
+
+// extends the Serializable object Request to send a request to "buy" an item through the output stream
+
 public class BuyItemRequest extends Requests.Request {
 
     private final Item item;

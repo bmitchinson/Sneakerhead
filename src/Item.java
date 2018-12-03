@@ -8,40 +8,42 @@ import java.awt.event.WindowEvent;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+//Represents an Item
 import java.util.Comparator;
 
 public class Item implements Serializable {
+    //id is the id the item is in the database
     private int id;
+    //name is the name of the item displayed to the shoppers
     private String name;
+    //description is a description of the shoe
     private String description;
+    //brand is the brand of the shoe
     private String brand;
+    //condition is the condition of the shoe
     private String condition;
+    //size is the size of the shoe
     private double size;
+    //color is the color of the shoe
     private String color;
+    //gender is the gender the shoe is made for
     private String gender;
+    //cost is the cost of the shoe
     private double cost;
+    //quantity is the number of shoes available
     private int quantity;
+    //imageURL is the url that points to the image of the shoe
     private String imageURL;
+    //seller is the seller of the shoe
     private String seller;
+    //itemTile is the ItemTile the shoe is displayed on in HomeFrame
     private ItemTile itemTile = null;
+    //homeFrame is reference to the HomeFrame that displays the list of shoes
     private HomeFrame homeFrame;
+    //color decider is a static int used by the ItemTile class to decide how to color the JPanel
     private static int colorDecider = 0;
 
-    public Item() {
-        this.id = -1;
-        this.name = "Item";
-        this.description = "Low tops";
-        this.brand = "Jordans";
-        this.condition = "New";
-        this.size = 6.5;
-        this.color = "Black";
-        this.gender = "Womens";
-        this.cost = 25;
-        this.quantity = 1;
-        this.imageURL = "https://i.imgur.com/aQ4IWz6.png";
-        this.seller = "Melanie";
-    }
-
+    //item constructor without an ID that can be used to add and item to the data base, which will then set the id of the item correctly
     public Item(String name, String description, String brand,
                 String condition, String color, String gender, double size,
                 double cost, int quantity, String imageURL, String seller) {
@@ -59,6 +61,7 @@ public class Item implements Serializable {
         this.seller = seller;
     }
 
+    //item constructor with every variable initialized
     public Item(int id, String name, String description, String brand,
                 String condition, String color, String gender, double size,
                 double cost, int quantity, String imageURL, String seller) {
@@ -76,50 +79,73 @@ public class Item implements Serializable {
         this.seller = seller;
     }
 
+    //return id
     public int getId() {
         return id;
     }
 
-    ;
-
+    //return name
     public String getItemName() {
         return name;
     }
 
+    //return description
     public String getDescription() {
         return description;
     }
 
+    //return brand
     public String getBrand() {
         return brand;
     }
 
+    //return condition
     public String getCondition() {
         return condition;
     }
 
+    //return color
     public String getColor() {
         return color;
     }
 
+    //return gender
     public String getGender() {
         return gender;
     }
 
+    //return seller
     public String getSeller() {
         return seller;
     }
 
+    //return cost
     public double getCost() {
         return cost;
     }
 
-    //TODO: Verify how we want size returned from the getShoeSize method
+    //return size
     public double getShoeSize() {
         return size;
     }
 
-    //TODO: Create an ItemTile Class that shows a condensed version of the Item's data in a (JPanel)
+    //set id of item, used by database to correctly add item
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    //get quantity
+    public int getQuantity() {
+        return quantity;
+    }
+
+    //get url of image
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    //create item tile, or get reference if already created
     public ItemTile getItemTile() {
         if (itemTile == null) {
             itemTile = new ItemTile();
@@ -129,27 +155,17 @@ public class Item implements Serializable {
         }
     }
 
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public String getImageURL() {
-        return imageURL;
-    }
-
+    //get reference to this item
     private Item getThis() {
         return this;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    //set reference to the HomeFrame serving as the homepage of the client
     public void setHomeFrame(HomeFrame frame) {
         homeFrame = frame;
     }
 
+    //decrement quantity if item is bought
     public void decrementQuantity() {
         SwingUtilities.invokeLater(() -> {
             if (quantity != 0) {
@@ -158,6 +174,7 @@ public class Item implements Serializable {
         });
     }
 
+    //updateTile updates the ItemTile after an item is bought
     public void updateTile() {
         SwingUtilities.invokeLater(() -> {
             itemTile.updateQuantityText();
@@ -165,13 +182,14 @@ public class Item implements Serializable {
         });
     }
 
-    //TODO: Create an ItemWindow Class that shows the item in its own JFrame
+    //startItemWindow to display detailed view to user
     public void startItemWindow() {
         if (quantity != 0) {
             ItemViewFrame frame = new ItemViewFrame();
         }
     }
 
+    //method to print Item to String
     @Override
     public String toString() {
         String desc = (description.length() > 25) ?
@@ -186,13 +204,14 @@ public class Item implements Serializable {
                 + shortURL + ", Seller:" + seller);
     }
 
+    //ItemTile is a class that serves as a preview for the Item, the user will see this tile and click on it to buy, or view a more detailed view
     // Comparator logic for Item objects to compare based on their internal price
     public static Comparator<Item> PriceComparator = new Comparator<Item>() {
         @Override
         public int compare(Item o1, Item o2) {
             return (int)(o1.getCost() - o2.getCost());
-        }
     };
+        }
 
     // Comparator logic for Item objects to compare based on their set gender
     public static Comparator<Item> GenderComparator = new Comparator<Item>() {
@@ -219,68 +238,31 @@ public class Item implements Serializable {
             return (int)(o1.getShoeSize() - o2.getShoeSize());
         }
     };
-
-    public static ArrayList<Item> getTestItems() {
-        ArrayList<Item> items = new ArrayList<Item>(1024);
-
-        items.add(new Item(
-                "Nike Air Max" + 1,
-                "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price", "Nike",
-                "New",
-                "Blue",
-                "Mens",
-                8,
-                40.65,
-                1,
-                "https://i.imgur.com/C6iJSYy.jpg",
-                "Sam"));
-
-
-        items.add(new Item(
-                "Converse High Tops 2",
-                "Converse High Tops feature super grip bottoms so you don't slip around in those icy winters",
-                "Converse",
-                "Like New",
-                "Black",
-                "Womens",
-                4.0,
-                59.95,
-                1,
-                "https://i.imgur.com/daU2fPw.jpg",
-                "BigSeller123"
-        ));
-
-        for (int i = 0; i < 20; i++) {
-            items.add(new Item(
-                    "Converse High Tops 2",
-                    "Converse High Tops feature super grip bottoms so you don't slip around in those icy winters",
-                    "Converse",
-                    "Like New",
-                    "Black",
-                    "Womens",
-                    4.0,
-                    59.95,
-                    1,
-                    "https://i.imgur.com/daU2fPw.jpg",
-                    "BigSeller123"
-            ));
-        }
-        return items;
-    }
-
     private class ItemTile extends JPanel {
+        //displays picture of Item
         private final JLabel itemPictureLabel;
+        //displays name of Item
         private final JLabel nameLabel;
+        //displays cost of Item
         private final JLabel costLabel;
+        //displays seller of Item
         private final JLabel sellerLabel;
+        //displays quantity of Item
         private final JLabel quantityLabel;
+        //displays description of Item
         private final JTextArea descriptionArea;
+        //holds everything but the itemPictureLabel
         private final JPanel rightPanel;
+        //holds seller, cost, and name labels
         private final JPanel bottomPanel;
 
+        //constructor to make an ItemTile which extends JPanel
         public ItemTile() {
+            //format window
             setPreferredSize(new Dimension(480, 100));
             setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
+            //method to decide what color the JPanel should be, the store will alternate colors for easy viewing
             if (colorDecider == 0) {
                 setBackground(new Color(240, 248, 255));
                 colorDecider = 1;
@@ -297,6 +279,7 @@ public class Item implements Serializable {
             itemPictureLabel.setMinimumSize(new Dimension(100, 100));
             updateImage();
 
+            //format labels
             nameLabel = new JLabel(getItemName());
             nameLabel.setAlignmentX(CENTER_ALIGNMENT);
 
@@ -304,21 +287,19 @@ public class Item implements Serializable {
             costLabel.setAlignmentX(RIGHT_ALIGNMENT);
             costLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-
             sellerLabel = new JLabel("Seller: " + getSeller());
             sellerLabel.setAlignmentX(LEFT_ALIGNMENT);
             sellerLabel.setHorizontalAlignment(SwingConstants.LEFT);
-            //sellerLabel.setPreferredSize(new Dimension(120,25));
 
             quantityLabel = new JLabel("Quantity: " + getQuantity());
             quantityLabel.setAlignmentX(LEFT_ALIGNMENT);
             quantityLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
-
+            //create desription Area then initialize
             descriptionArea = new JTextArea();
             initializeDescriptionArea(getDescription());
 
-            //Panel that holds bottom 3 tables
+            //Panel that holds bottom 3 labels
             bottomPanel = new JPanel();
             bottomPanel.setBackground(this.getBackground());
             bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
@@ -347,17 +328,16 @@ public class Item implements Serializable {
             add(rightPanel);
             add(Box.createHorizontalStrut(5));
 
-            //Listeners to start window
+            //Listeners to start window on click
             PanelListener listener = new PanelListener();
             addMouseListener(listener);
             rightPanel.addMouseListener(listener);
             descriptionArea.addMouseListener(listener);
         }
 
+        //method initializes description area
         private void initializeDescriptionArea(String description) {
-            //descriptionArea.setAlignmentX(LEFT_ALIGNMENT);
             descriptionArea.setBackground(this.getBackground());
-            //descriptionArea.setMinimumSize(new Dimension(365, 25));
             descriptionArea.setEditable(false);
             descriptionArea.setLineWrap(true);
             descriptionArea.setWrapStyleWord(true);
@@ -369,23 +349,12 @@ public class Item implements Serializable {
             }
         }
 
+        //update quantity text of ItemTile
         public void updateQuantityText() {
             quantityLabel.setText("Quantity: " + getQuantity());
         }
 
-    /*public void updateBackGround(){
-        if(item.getQuantity() == 0){
-            int r = 255;
-            int g = 182;
-            int b = 178;
-            Color color = new Color(r,g,b);
-            setBackground(color);
-            rightPanel.setBackground(color);
-            bottomPanel.setBackground(color);
-            descriptionArea.setBackground(color);
-        }
-    }*/
-
+        //update image to sold if quantity = 0
         public void updateImage() {
             if (getQuantity() == 0) {
                 Image image = ScaledImage.getScaledImage(getImageURL(), 100, 100);
@@ -394,7 +363,7 @@ public class Item implements Serializable {
 
         }
 
-
+        //listener to start ItemWindow on click
         private class PanelListener extends MouseAdapter {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -405,23 +374,23 @@ public class Item implements Serializable {
 
     }
 
+    //ItemView frame gets started when the user clicks an ItemTile and shows a detailed view of the item
     public class ItemViewFrame extends JFrame {
-
+        //button to buy shoe
         private JButton buyButton = new JButton("Buy Shoe!");
+        //Panel holds itemDetails
         private JPanel itemDetails = new JPanel();
+        //Frame to add to the JFrame
         private JPanel boxedFrame = new JPanel();
+        //text area that holds description
         private JTextArea descriptionText = new JTextArea();
+        //label that holds quantity
         private JLabel quantityLabel;
-        //private Color color = new Color(255,215,204);
-        //private Color color = new Color(240,248,255);
+        //color to set panel as
         private Color color = new Color(255, 250, 240);
-        private NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
-        //TODO: Change cost string
-
+        //constructor for ItemViewFrame initializes the JFrame
         ItemViewFrame() {
-
-            setTitle("");
             setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
             //add a JPanel to initial frame, put a border layout
@@ -468,6 +437,7 @@ public class Item implements Serializable {
             JLabel sellerLabel = new JLabel("Seller: " + getSeller());
             quantityLabel = new JLabel("Quantity: " + getQuantity());
 
+            //add components
             itemDetails.add(leftJustify(descripLabel));
             itemDetails.add(descriptionText);
             itemDetails.add(leftJustify(conditionLabel));
@@ -504,9 +474,11 @@ public class Item implements Serializable {
             this.setVisible(true);
         }
 
+        //on button click buy item
         private void buttonHit() {
             BuyItemRequest buyItemRequest = new BuyItemRequest(getThis());
             SwingUtilities.invokeLater(() -> {
+                //request buy
                 if ((Boolean) homeFrame.makeRequest(buyItemRequest)) {
                     buyButton.setText("Bought!");
                     buyButton.setEnabled(false);
@@ -514,7 +486,6 @@ public class Item implements Serializable {
                     boxedFrame.setBackground(Color.LIGHT_GRAY);
                     descriptionText.setBackground(Color.LIGHT_GRAY);
                     decrementQuantity();
-
                     updateTile();
                 } else {
                     homeFrame.updateAllItems();
@@ -525,6 +496,7 @@ public class Item implements Serializable {
             });
         }
 
+        //Left justify a component
         private Component leftJustify(JLabel label) {
             Box b = Box.createHorizontalBox();
             b.add(label);
