@@ -14,11 +14,11 @@ To create your own pieces of the client server relationship one by one, create a
 Server class, and then create HomeFrame classes as desired.
 
 ### Account Types for sign in
-*Buyer* User: "Mel" Pass: "123"
+**Buyer** User: "Mel" Pass: "123"
 
-*Seller* User: "Ben" Pass: "123"
+**Seller** User: "Ben" Pass: "123"
 
-*Both Buyer + Seller* User: "Sam" Pass "123"
+**Both Buyer + Seller** User: "Sam" Pass "123"
 
 
 Other accounts can be freely created
