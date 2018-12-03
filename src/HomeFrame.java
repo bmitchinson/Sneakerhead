@@ -21,16 +21,19 @@ public class HomeFrame extends JFrame {
     private JPanel loginState;
     private ArrayList<Item> items;
     private final Color color1 = new Color(245, 245, 245);
-    private final Color color2 = new Color(240, 248, 255);
+    private final Color color2 = new Color(0, 128, 128);
     private static ServerRequester serverRequester = new ServerRequester("localhost");
+    private static boolean connected = false;
     private boolean isBuyer = false;
     private boolean isSeller = false;
     //private final JLabel logoLabel;
 
     public HomeFrame() {
-        serverRequester = new ServerRequester("localhost");
-        if (!serverRequester.start()) {
-            System.exit(0);
+        if(!connected){
+            if (!serverRequester.start()) {
+                System.exit(0);
+            }
+            connected = true;
         }
 
         getContentPane().setBackground(color1);
@@ -93,7 +96,7 @@ public class HomeFrame extends JFrame {
         bottomPanel = new JPanel();
         bottomPanel.setMinimumSize(new Dimension(400, 300));
         //bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
-        bottomPanel.setBackground(Color.BLUE);
+        bottomPanel.setBackground(color2);
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
