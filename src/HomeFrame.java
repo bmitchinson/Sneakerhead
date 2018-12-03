@@ -22,6 +22,7 @@ public class HomeFrame extends JFrame {
     private final ServerRequester serverRequester;
     private boolean isBuyer = false;
     private boolean isSeller = false;
+    private final JLabel logoLabel;
 
 
     public HomeFrame() {
@@ -36,6 +37,7 @@ public class HomeFrame extends JFrame {
         postItem = new JButton("Post Item");
         postItem.setMinimumSize(new Dimension(100, 25));
         postItem.setEnabled(false);
+
         loginButton = new JButton("Login");
         loginButton.setMinimumSize(new Dimension(75, 25));
 
@@ -50,11 +52,16 @@ public class HomeFrame extends JFrame {
         postItem.addActionListener(handler);
         loginButton.addActionListener(handler);
 
+        ImageIcon logoIcon = new ImageIcon();
+        logoLabel = new JLabel();
+
         topPanel = new JPanel();
         topPanel.setMaximumSize(new Dimension(500, 50));
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
         topPanel.add(Box.createHorizontalStrut(5));
         topPanel.add(postItem);
+        topPanel.add(Box.createHorizontalGlue());
+
         topPanel.add(Box.createHorizontalGlue());
         topPanel.add(loginState);
         topPanel.add(Box.createHorizontalStrut(5));
