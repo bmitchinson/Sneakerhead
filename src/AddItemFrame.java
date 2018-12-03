@@ -10,7 +10,10 @@ import java.net.URL;
 
 public class AddItemFrame extends JFrame {
 
-    //TODO: add link to browse for url
+    // all components of the add item frame: 7 JTextfields to input attributes such as name, description, price, color, etc.,
+    // 2 JComboBox to choose gender and size, and 1 post item button, 1 blank JPanel to fill cell grid.
+
+
     private final JButton postButton = new JButton("Post Item!");
     private final JTextField nameField = new JTextField();
     private final JTextField descriptionField = new JTextField();
@@ -29,10 +32,14 @@ public class AddItemFrame extends JFrame {
         super("Add Item for Sale");
         this.homeFrame = homeFrame;
 
+        //formats main JPanel object
+
         JPanel itemDetails = new JPanel();
-        itemDetails.setBackground(new Color(204, 229, 255));
+        itemDetails.setBackground(new Color(255, 250, 240));
         itemDetails.setBorder(new EmptyBorder(10, 10, 10, 10));
         itemDetails.setLayout(new GridLayout(11, 2, 5, 5));
+
+        // set values for some of the private instance variables
 
         blank.setBackground(itemDetails.getBackground());
 
@@ -48,6 +55,8 @@ public class AddItemFrame extends JFrame {
         for (double i = 5; i < 16.5; i += .5) {
             sizeBox.addItem(String.valueOf(i));
         }
+
+        //add all private instance variables to the main JPanel object
 
         itemDetails.add(new JLabel("Name of Item: "));
         itemDetails.add(new JLabel("Description: "));
@@ -71,6 +80,9 @@ public class AddItemFrame extends JFrame {
         itemDetails.add(priceField);
         itemDetails.add(blank);
         itemDetails.add(postButton);
+
+        // add action listener to post button
+        // when post button is pressed, a new item is created and a request to post item for sell to database is sent
 
         postButton.addActionListener(new ActionListener() {
             @Override
@@ -124,6 +136,8 @@ public class AddItemFrame extends JFrame {
         this.setVisible(true);
     }
 
+    //Checks that all user entered fields to post an item for sale are valid entries
+
     public void verifyItem (Item item) throws IllegalArgumentException, IOException {
         if (item.getItemName().equals("")) {
             throw new IllegalArgumentException("The name you entered was invalid. Please check your input and try to re-post the Item");
@@ -149,10 +163,6 @@ public class AddItemFrame extends JFrame {
             throw new IllegalArgumentException("The URL you entered did not correctly find an image. Please check your input and try to re-post the Item.");
         }
 
-    }
-
-    public static void main(String[] args) {
-        AddItemFrame frame = new AddItemFrame(new HomeFrame());
     }
 
 }
