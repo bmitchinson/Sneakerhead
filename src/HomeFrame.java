@@ -235,7 +235,7 @@ public class HomeFrame extends JFrame {
         });
     }
 
-    //handels the login and post item button
+    //handles the login and post item button
     private class ButtonHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
