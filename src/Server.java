@@ -59,9 +59,7 @@ public class Server {
         while (true) {
             try {
                 print("Waiting for connection #" + (clientIndex + 1));
-                allInternalClients.add(
-                        new InternalClient(server.accept())
-                );
+                allInternalClients.add(new InternalClient(server.accept()));
                 runClients.execute(allInternalClients.get(clientIndex));
             } catch (IOException e) {
                 print("Connection failed in server execute");
@@ -151,7 +149,9 @@ public class Server {
                         output.writeObject(db.getItemInfo(getItemRequest.getItem()));
                     } else if (request instanceof BuyItemRequest) {
                         BuyItemRequest buyItemRequest = (BuyItemRequest) request;
-                        output.writeObject(db.buyItem(buyItemRequest.getItem()));
+                        Boolean successful = db.buyItem(buyItemRequest.getItem());
+
+                        output.writeObject(successful);
                     } else if (request instanceof SellItemRequest) {
                         SellItemRequest sellItemRequest = (SellItemRequest) request;
                         output.writeObject(db.sellItem(sellItemRequest.getSeller(), sellItemRequest.getItem()));

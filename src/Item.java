@@ -73,7 +73,7 @@ public class Item implements Serializable {
 
     public int getId(){return id;};
 
-    public String getName() {
+    public String getItemName() {
         return name;
     }
 
@@ -251,7 +251,7 @@ public class Item implements Serializable {
             itemPictureLabel.setIcon(itemImageIcon);
             itemPictureLabel.setMinimumSize(new Dimension(100, 100));
 
-            nameLabel = new JLabel(getName());
+            nameLabel = new JLabel(getItemName());
             nameLabel.setAlignmentX(CENTER_ALIGNMENT);
 
             costLabel = new JLabel("Cost: " + getCost());
@@ -370,6 +370,7 @@ public class Item implements Serializable {
         //TODO: Change cost string
 
         ItemViewFrame(){
+            setTitle("");
             setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
             //add a JPanel to initial frame, put a border layout
@@ -379,7 +380,7 @@ public class Item implements Serializable {
             insideBox.setBackground(Color.LIGHT_GRAY);
 
             //add name label to top of border layout
-            JLabel name = new JLabel(getName());
+            JLabel name = new JLabel(getItemName());
             name.setHorizontalAlignment(SwingConstants.CENTER);
             name.setFont(new Font("Helvetica", Font.BOLD, 18));
 
@@ -428,6 +429,7 @@ public class Item implements Serializable {
 
             //add listener to the buyButton
             buyButton.addActionListener(e -> buttonHit());
+            buyButton.setEnabled(homeFrame.isBuyer());
 
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             this.setSize(600,510);
