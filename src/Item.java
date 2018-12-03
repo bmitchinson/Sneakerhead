@@ -361,7 +361,6 @@ public class Item implements Serializable {
         private class PanelListener extends MouseAdapter {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("123123");
                 startItemWindow();
             }
         }
