@@ -6,14 +6,9 @@ import java.net.Socket;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Server {
 
@@ -31,20 +26,18 @@ public class Server {
 
     // Thread Management
     private ExecutorService runClients;
-    private Lock dbLock;
-    private Condition dbFree;
 
     // Database
     private final Database db = new Database();
 
+    //construct Server
     public Server() {
         print("Constructing Server");
 
         runClients = Executors.newCachedThreadPool();
-        dbLock = new ReentrantLock();
-        dbFree = dbLock.newCondition();
 
         try {
+            //create port for Server
             server = new ServerSocket(23517, 8); // Setup socket
         } catch (IOException ioException) {
             print("\nPort 23517 is already in use, " +
@@ -55,8 +48,9 @@ public class Server {
             print("Server opened on port 23517");
         }
 
-        String logPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
 
+        //create log files and get output streams ready so the clients can write the requests they make
+        String logPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
         File logDirectory = new File(logPath + File.separator + "log");
 
         if(!logDirectory.exists()){
@@ -79,14 +73,17 @@ public class Server {
         }catch (IOException e){
             System.out.println(e);
         }
+        //start server
         execute();
     }
 
+    //method starts the server and tells it to wait for connection
     public void execute() {
         print("Server beginning infinite loop of waiting for clients  to connect");
         while (true) {
             try {
                 print("Waiting for connection #" + (clientIndex + 1));
+                //wait for Client to connect
                 allInternalClients.add(new InternalClient(server.accept()));
                 runClients.execute(allInternalClients.get(clientIndex));
             } catch (IOException e) {
@@ -103,27 +100,20 @@ public class Server {
         System.out.println(LocalTime.now().format(timeFormat) + " Server:" + message);
     }
 
-    public void print(String message, String who) {
-        System.out.println(LocalTime.now().format(timeFormat) + " " + who + ":" + message);
-    }
-
+    //IternalClient is a runnable inner class that will get requests and pass them to the database and retrun a result
     private class InternalClient implements Runnable {
 
         // Network socket +  needed object streams
-        private Socket connection;
-        private Scanner scannerInput;
         private ObjectInputStream input;
         private ObjectOutputStream output;
-        private int clientNum;
-        private Formatter formatterOutput;
 
+        //holds what type of user is logged in
         private int activeUserType = 0;
+        //holds username of user
         private String activeUsername = "";
 
+        //constructor initializes the ObjectInput and OutputStream
         public InternalClient(Socket socket) {
-            this.connection = socket;
-            clientNum = clientIndex;
-
             try {
                 this.input = new ObjectInputStream(socket.getInputStream());
                 this.output = new ObjectOutputStream(socket.getOutputStream());
@@ -133,12 +123,14 @@ public class Server {
             }
         }
 
+        //method will run and constantly listen for a Request from the Client and then process the Request
         public void run() {
             Request request = null;
             while (true) {
                 try {
+                    //get Request and Process it
                     request = (Request) input.readObject();
-                    processMessage(request);
+                    processRequest(request);
                 } catch (IOException e) {
                     System.out.println(e);
                     break;
@@ -151,19 +143,28 @@ public class Server {
             }
         }
 
-        private void processMessage(Request request) {
+        //processRequest will take a Request and figure out what type of Request it is then query the database and return the appropriate type of Object
+        private void processRequest(Request request) {
             synchronized (db) {
                 try {
+                    //Ifs test what kind of request was made then query the database and return the appropriate result
                     if (request instanceof AddUserRequest) {
+                        //log the request was made
                         serverLogStream.write(("Client made a AddUserRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
+                        //Cast request to appropriate class
                         AddUserRequest addUserRequest = (AddUserRequest) request;
+                        //query database by pulling needed info from the Request
                         boolean result = db.createUser(addUserRequest.getUsername(),
                                 addUserRequest.getPassword(), addUserRequest.getType());
+                        //process results from database if needed
                         if (result) {
                             activeUsername = addUserRequest.getUsername();
                             activeUserType = addUserRequest.getType();
                         }
+                        //return something to user
                         output.writeObject(result);
+
+                    //each of these requests follows a similar algorithm to the above request
                     } else if (request instanceof LoginRequest) {
                         serverLogStream.write(("Client made a LoginRequest at " + LocalTime.now().format(timeFormat) + "\n").getBytes());
                         LoginRequest loginRequest = (LoginRequest) request;
