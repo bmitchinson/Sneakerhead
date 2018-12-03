@@ -9,11 +9,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HomeFrame extends JFrame {
     private final JButton postItem;
     private final JButton loginButton;
     private final JButton logoutButton;
+    private final JButton sortCostButton;
+    private final JButton sortGenderButton;
+    private final JButton sortSizeButton;
+    private final JButton sortQuantityButton;
     private final JPanel itemPanel;
     private final JScrollPane scrollPane;
     private final JPanel topPanel;
@@ -93,10 +98,36 @@ public class HomeFrame extends JFrame {
             logout();
         });
 
+        // Buttons to call their respective sorting functions detailed below
+        sortCostButton = new JButton("Sort Cost");
+        sortCostButton.addActionListener((e) -> {
+            sortCost();
+        });
+
+        sortGenderButton = new JButton("Sort Gender");
+        sortGenderButton.addActionListener((e) -> {
+            sortGender();
+        });
+
+        sortSizeButton = new JButton("Sort Size");
+        sortSizeButton.addActionListener((e) -> {
+            sortSize();
+        });
+
+        sortQuantityButton = new JButton("Sort Quantity");
+        sortQuantityButton.addActionListener((e) -> {
+            sortQuantity();
+        });
+
         bottomPanel = new JPanel();
-        bottomPanel.setMinimumSize(new Dimension(400, 300));
-        //bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
+        bottomPanel.setMinimumSize(new Dimension(400, 50));
         bottomPanel.setBackground(color2);
+
+        // Adds sorting buttons to bottomPanel
+        bottomPanel.add(sortCostButton);
+        bottomPanel.add(sortGenderButton);
+        bottomPanel.add(sortQuantityButton);
+        bottomPanel.add(sortSizeButton);
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
@@ -108,26 +139,14 @@ public class HomeFrame extends JFrame {
         add(bottomPanel);
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setSize(500, 900);
+        this.setSize(500, 650);
         this.setResizable(false);
         this.setVisible(true);
     }
 
     private void initializeItemPanel() {
         items = (ArrayList<Item>) makeRequest(new GetAllItemsRequest());
-        SwingUtilities.invokeLater(() -> {
-            itemPanel.removeAll();
-            itemPanel.setPreferredSize(new Dimension(460, 100 * items.size()));
-            itemPanel.setLayout(new GridLayout(items.size(), 1));
-
-            for (int i = 0; i < items.size(); i++) {
-                items.get(i).setHomeFrame(this);
-                itemPanel.add(items.get(i).getItemTile());
-            }
-            System.out.println("");
-            itemPanel.revalidate();
-            itemPanel.repaint();
-        });
+        updateAllLocalItems();
     }
 
     public void setBuyer(boolean buyer) {
@@ -199,9 +218,20 @@ public class HomeFrame extends JFrame {
         initializeItemPanel();
     }
 
-    // Called before any action is called just in case something has changed
-    public void updateItem(Item itemUpdate) {
+    public void updateAllLocalItems() {
+        SwingUtilities.invokeLater(() -> {
+            itemPanel.removeAll();
+            itemPanel.setPreferredSize(new Dimension(460, 100 * items.size()));
+            itemPanel.setLayout(new GridLayout(items.size(), 1));
 
+            for (int i = 0; i < items.size(); i++) {
+                items.get(i).setHomeFrame(this);
+                itemPanel.add(items.get(i).getItemTile());
+            }
+            System.out.println("");
+            itemPanel.revalidate();
+            itemPanel.repaint();
+        });
     }
 
     private void logout() {
@@ -213,6 +243,30 @@ public class HomeFrame extends JFrame {
             isSeller = false;
             postItem.setEnabled(false);
         });
+    }
+
+    // Updates all items and then begins a sort using Item's Comparator
+    private void sortCost(){
+        updateAllItems();
+        Collections.sort(items, Item.PriceComparator);
+    }
+
+    // Updates all items and then begins a sort using Item's Comparator
+    private void sortGender(){
+        updateAllItems();
+        Collections.sort(items, Item.GenderComparator);
+    }
+
+    // Updates all items and then begins a sort using Item's Comparator
+    private void sortQuantity(){
+        updateAllItems();
+        Collections.sort(items, Item.QuantityComparator);
+    }
+
+    // Updates all items and then begins a sort using Item's Comparator
+    private void sortSize(){
+        updateAllItems();
+        Collections.sort(items, Item.SizeComparator);
     }
 
     private class ButtonHandler implements ActionListener {

@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Item implements Serializable {
     private int id;
@@ -184,6 +185,40 @@ public class Item implements Serializable {
                 + ", Cost:" + cost + ", Quantity:" + quantity + ", ImgURL:"
                 + shortURL + ", Seller:" + seller);
     }
+
+    // Comparator logic for Item objects to compare based on their internal price
+    public static Comparator<Item> PriceComparator = new Comparator<Item>() {
+        @Override
+        public int compare(Item o1, Item o2) {
+            return (int)(o1.getCost() - o2.getCost());
+        }
+    };
+
+    // Comparator logic for Item objects to compare based on their set gender
+    public static Comparator<Item> GenderComparator = new Comparator<Item>() {
+        @Override
+        public int compare(Item o1, Item o2) {
+            int one_w = (o1.getGender().equals("Womens")) ? 1 : 0;
+            int two_w = (o1.getGender().equals("Womens")) ? 1 : 0;
+            return (one_w - two_w);
+        }
+    };
+
+    // Comparator logic for Item objects to compare based on their held quantity
+    public static Comparator<Item> QuantityComparator = new Comparator<Item>() {
+        @Override
+        public int compare(Item o1, Item o2) {
+            return (int)(o1.getQuantity() - o2.getQuantity());
+        }
+    };
+
+    // Comparator logic for Item objects to compare based on their internal size
+    public static Comparator<Item> SizeComparator = new Comparator<Item>() {
+        @Override
+        public int compare(Item o1, Item o2) {
+            return (int)(o1.getShoeSize() - o2.getShoeSize());
+        }
+    };
 
     public static ArrayList<Item> getTestItems() {
         ArrayList<Item> items = new ArrayList<Item>(1024);
