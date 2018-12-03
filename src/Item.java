@@ -381,6 +381,7 @@ public class Item implements Serializable {
         //TODO: Change cost string
 
         ItemViewFrame(){
+
             setTitle("");
             setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
@@ -393,12 +394,12 @@ public class Item implements Serializable {
 
             //add name label to top of border layout
             JLabel name = new JLabel(getItemName());
+
             name.setHorizontalAlignment(SwingConstants.CENTER);
             name.setFont(new Font("Helvetica", Font.BOLD, 18));
 
             //created new JPanel with 1 row, 2 columns to add to center of border layout
             boxedFrame.setLayout(new GridLayout(1,2));
-            //boxedFrame.setPreferredSize();
             boxedFrame.setBackground(color);
 
             //Put a picture in column 1
@@ -417,7 +418,7 @@ public class Item implements Serializable {
             //JPanel itemDetails = new JPanel();
             //itemDetails.setLayout(new GridLayout(10,1));
             itemDetails.setLayout(new BoxLayout(itemDetails,BoxLayout.PAGE_AXIS));
-            //itemDetails.setPreferredSize(new Dimension(400,300));
+            //itemDetails.setPreferredSize(new Dimension(400,450));
             itemDetails.setBackground(color);
 
             JLabel descripLabel = new JLabel("Description: ");
