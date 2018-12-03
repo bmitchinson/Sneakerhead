@@ -75,7 +75,11 @@ public class Item implements Serializable {
         this.seller = seller;
     }
 
-    public int getId(){return id;};
+    public int getId() {
+        return id;
+    }
+
+    ;
 
     public String getItemName() {
         return name;
@@ -105,7 +109,9 @@ public class Item implements Serializable {
         return seller;
     }
 
-    public double getCost() { return cost; }
+    public double getCost() {
+        return cost;
+    }
 
     //TODO: Verify how we want size returned from the getShoeSize method
     public double getShoeSize() {
@@ -143,14 +149,12 @@ public class Item implements Serializable {
         homeFrame = frame;
     }
 
-    public void incrementQuantity() {
-        quantity++;
-    }
-
     public void decrementQuantity() {
-        if (quantity != 0) {
-            quantity--;
-        }
+        SwingUtilities.invokeLater(() -> {
+            if (quantity != 0) {
+                quantity--;
+            }
+        });
     }
 
     public void updateTile() {
@@ -162,7 +166,7 @@ public class Item implements Serializable {
 
     //TODO: Create an ItemWindow Class that shows the item in its own JFrame
     public void startItemWindow() {
-        if(quantity != 0){
+        if (quantity != 0) {
             ItemViewFrame frame = new ItemViewFrame();
         }
     }
@@ -243,10 +247,10 @@ public class Item implements Serializable {
             setPreferredSize(new Dimension(480, 100));
             setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
             if (colorDecider == 0) {
-                setBackground(new Color(240,248,255));
+                setBackground(new Color(240, 248, 255));
                 colorDecider = 1;
             } else if (colorDecider == 1) {
-                setBackground(new Color(220,220,220));
+                setBackground(new Color(220, 220, 220));
                 colorDecider = 0;
             }
 
@@ -374,12 +378,12 @@ public class Item implements Serializable {
         private JLabel quantityLabel;
         //private Color color = new Color(255,215,204);
         //private Color color = new Color(240,248,255);
-        private Color color = new Color(255,250,240);
+        private Color color = new Color(255, 250, 240);
         private NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
         //TODO: Change cost string
 
-        ItemViewFrame(){
+        ItemViewFrame() {
 
             setTitle("");
             setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
@@ -387,9 +391,9 @@ public class Item implements Serializable {
             //add a JPanel to initial frame, put a border layout
             JPanel mainPanel = new JPanel();
             mainPanel.setLayout(new BorderLayout());
-            mainPanel.setBorder(new EmptyBorder(10,10,10,10));
-            mainPanel.setPreferredSize(new Dimension(590,500));
-            mainPanel.setBackground(new Color(245,245,245));
+            mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+            mainPanel.setPreferredSize(new Dimension(590, 500));
+            mainPanel.setBackground(new Color(245, 245, 245));
 
             //add name label to top of border layout
             JLabel name = new JLabel(getItemName());
@@ -398,12 +402,12 @@ public class Item implements Serializable {
             name.setFont(new Font("Helvetica", Font.BOLD, 18));
 
             //created new JPanel with 1 row, 2 columns to add to center of border layout
-            boxedFrame.setLayout(new GridLayout(1,2));
+            boxedFrame.setLayout(new GridLayout(1, 2));
             boxedFrame.setBackground(color);
 
             //Put a picture in column 1
             ImageIcon picPass = new ImageIcon();
-            picPass.setImage(ScaledImage.getScaledImage(getImageURL(),250,250));
+            picPass.setImage(ScaledImage.getScaledImage(getImageURL(), 250, 250));
             JLabel pic = new JLabel(picPass);
             boxedFrame.add(pic);
 
@@ -416,14 +420,14 @@ public class Item implements Serializable {
 
             //JPanel itemDetails = new JPanel();
             //itemDetails.setLayout(new GridLayout(10,1));
-            itemDetails.setLayout(new BoxLayout(itemDetails,BoxLayout.PAGE_AXIS));
+            itemDetails.setLayout(new BoxLayout(itemDetails, BoxLayout.PAGE_AXIS));
             //itemDetails.setPreferredSize(new Dimension(400,450));
             itemDetails.setBackground(color);
 
             JLabel descripLabel = new JLabel("Description: ");
             JLabel conditionLabel = new JLabel("Condition: " + getCondition());
-            JLabel sizeLabel = new JLabel("Size: "+ getShoeSize() + " " + getGender());
-            JLabel colorLabel = new JLabel("Color: "+ getColor());
+            JLabel sizeLabel = new JLabel("Size: " + getShoeSize() + " " + getGender());
+            JLabel colorLabel = new JLabel("Color: " + getColor());
             JLabel priceLabel = new JLabel("Price: " + getCost());
             JLabel sellerLabel = new JLabel("Seller: " + getSeller());
             quantityLabel = new JLabel("Quantity: " + getQuantity());
@@ -442,8 +446,8 @@ public class Item implements Serializable {
             boxedFrame.add(pic);
             boxedFrame.add(itemDetails);
 
-            mainPanel.add(name,BorderLayout.NORTH);
-            mainPanel.add(boxedFrame,BorderLayout.CENTER);
+            mainPanel.add(name, BorderLayout.NORTH);
+            mainPanel.add(boxedFrame, BorderLayout.CENTER);
             add(mainPanel);
 
             //add listener to the buyButton
@@ -458,10 +462,8 @@ public class Item implements Serializable {
 
         private void buttonHit() {
             BuyItemRequest buyItemRequest = new BuyItemRequest(getThis());
-            Boolean test = (Boolean) homeFrame.makeRequest(buyItemRequest);
-            System.out.println(test);
             SwingUtilities.invokeLater(() -> {
-                if((Boolean) homeFrame.makeRequest(buyItemRequest)) {
+                if ((Boolean) homeFrame.makeRequest(buyItemRequest)) {
                     buyButton.setText("Bought!");
                     buyButton.setEnabled(false);
                     itemDetails.setBackground(Color.LIGHT_GRAY);
@@ -477,10 +479,10 @@ public class Item implements Serializable {
             });
         }
 
-        private Component leftJustify( JLabel label )  {
-            Box  b = Box.createHorizontalBox();
-            b.add( label );
-            b.add( Box.createHorizontalGlue() );
+        private Component leftJustify(JLabel label) {
+            Box b = Box.createHorizontalBox();
+            b.add(label);
+            b.add(Box.createHorizontalGlue());
             // (Note that you could throw a lot more components
             // and struts and glue in here.)
             return b;
