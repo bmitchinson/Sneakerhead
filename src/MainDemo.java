@@ -22,7 +22,7 @@ public class MainDemo {
 
         // Every 20 seconds, the clients will update their info in order to stay
         // up to date.
-        while(true){
+        /*while(true){
             try {
                 Thread.sleep(20000);
             } catch (InterruptedException e) {
@@ -31,6 +31,6 @@ public class MainDemo {
             for (int i = 0; i < CLIENT_COUNT; i++){
                 clients[i].updateAllItems();
             }
-        }
+        }*/
     }
 }

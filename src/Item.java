@@ -5,6 +5,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -363,6 +365,7 @@ public class Item implements Serializable {
         private class PanelListener extends MouseAdapter {
             @Override
             public void mouseClicked(MouseEvent e) {
+                homeFrame.updateAllItems();
                 startItemWindow();
             }
         }
@@ -454,6 +457,14 @@ public class Item implements Serializable {
             buyButton.addActionListener(e -> buttonHit());
             System.out.println("Buyer stat: " + homeFrame.isBuyer());
             buyButton.setEnabled(homeFrame.isBuyer());
+
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    super.windowClosed(e);
+                    homeFrame.updateAllItems();
+                }
+            });
 
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             this.setSize(600, 510);
