@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class HomeFrame extends JFrame {
     private final JButton postItem;
     private final JButton loginButton;
+    private final JButton logoutButton;
     private final JPanel itemPanel;
     private final JScrollPane scrollPane;
     private final JPanel topPanel;
@@ -22,7 +23,7 @@ public class HomeFrame extends JFrame {
 
     public HomeFrame() {
         serverRequester = new ServerRequester("localhost");
-        if(!serverRequester.start()){
+        if (!serverRequester.start()) {
             System.exit(0);
         }
 
@@ -39,6 +40,7 @@ public class HomeFrame extends JFrame {
         loginState.setLayout(new GridLayout(1, 1));
         loginState.add(loginButton);
         loginState.setBackground(color2);
+        updateLogin("Login to buy or sell", "");
 
         ButtonHandler handler = new ButtonHandler();
         postItem.addActionListener(handler);
@@ -63,8 +65,15 @@ public class HomeFrame extends JFrame {
         scrollPane.setAlignmentX(CENTER_ALIGNMENT);
         scrollPane.setBackground(color1);
 
+        // Items for bottom panel
+        logoutButton = new JButton("Logout");
+        logoutButton.addActionListener((e) -> {
+            logout();
+        });
+
         bottomPanel = new JPanel();
-        bottomPanel.setSize(new Dimension(400, 300));
+        bottomPanel.setMinimumSize(new Dimension(400, 300));
+        //bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
         bottomPanel.setBackground(Color.BLUE);
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
@@ -99,15 +108,17 @@ public class HomeFrame extends JFrame {
 
     public void updateLogin(String username, String type) {
         SwingUtilities.invokeLater(() -> {
+            loginState.removeAll();
             JLabel loggedInLabel = new JLabel(username);
             JLabel loggedInType = new JLabel(type);
             loggedInLabel.setMinimumSize(new Dimension(75, 25));
-            loginState.remove(loginButton);
-            loginState.revalidate();
-            loginState.repaint();
             loginState.setLayout(new GridLayout(2, 1));
             loginState.add(loggedInLabel);
-            loginState.add(loggedInType);
+            if (type.equals("")) loginState.add(loginButton);
+            else {
+                loginState.add(loggedInType);
+                bottomPanel.add(logoutButton);
+            }
             loginState.revalidate();
             loginState.repaint();
         });
@@ -125,6 +136,12 @@ public class HomeFrame extends JFrame {
     public Object makeRequest(Request request) {
         Object response = serverRequester.makeRequest(request);
         return response;
+    }
+
+    private void logout() {
+        updateLogin("Login to buy or sell", "");
+        makeRequest(new LogoutRequest());
+        bottomPanel.remove(logoutButton);
     }
 
     private class ButtonHandler implements ActionListener {
