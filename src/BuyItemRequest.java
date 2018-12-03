@@ -1,11 +1,16 @@
 public class BuyItemRequest extends Request {
-    private final int itemId;
 
-    public BuyItemRequest(int itemId){
-        this.itemId = itemId;
+    private final Item item;
+
+    public BuyItemRequest(Item item){
+        this.item = item;
     }
 
-    public int getItem(){
-        return itemId;
+    public int getItemId(){
+        return item.getId();
+    }
+
+    public Item getItem() {
+        return item;
     }
 }

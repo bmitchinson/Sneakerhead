@@ -129,6 +129,10 @@ public class Item implements Serializable {
         return imageURL;
     }
 
+    private Item getThis(){
+        return this;
+    }
+
     public void setId(int id){
         this.id = id;
     }
@@ -443,7 +447,7 @@ public class Item implements Serializable {
             itemDetails.setBackground(Color.LIGHT_GRAY);
             boxedFrame.setBackground(Color.LIGHT_GRAY);
             descriptionText.setBackground(Color.LIGHT_GRAY);
-            BuyItemRequest buyItemRequest = new BuyItemRequest(getId());
+            BuyItemRequest buyItemRequest = new BuyItemRequest(getThis());
             if((boolean) homeFrame.makeRequest(buyItemRequest)){
                 decrementQuantity();
                 updateTile();
