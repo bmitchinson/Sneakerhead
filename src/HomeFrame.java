@@ -27,6 +27,8 @@ public class HomeFrame extends JFrame {
             System.exit(0);
         }
 
+        Item.setHomeFrame(this);
+
         getContentPane().setBackground(color1);
         postItem = new JButton("Post Item");
         postItem.setMinimumSize(new Dimension(100, 25));
@@ -132,8 +134,7 @@ public class HomeFrame extends JFrame {
     }
 
     public Object makeRequest(Request request) {
-        Object response = null;
-        response = serverRequester.makeRequest(request);
+        Object response = serverRequester.makeRequest(request);
         return response;
     }
 

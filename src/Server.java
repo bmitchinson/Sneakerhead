@@ -124,7 +124,6 @@ public class Server {
             }
         }
 
-
         private void processMessage(Request request) {
             synchronized (db) {
                 try {

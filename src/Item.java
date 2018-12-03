@@ -1,6 +1,8 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class Item implements Serializable {
@@ -17,6 +19,8 @@ public class Item implements Serializable {
     private String imageURL;
     private String seller;
     private ItemTile itemTile = null;
+    private static HomeFrame homeFrame;
+    private static int colorDecider = 0;
 
     public Item() {
         this.id = -1;
@@ -99,8 +103,8 @@ public class Item implements Serializable {
 
     public double getCost() { return cost; }
 
-    //TODO: Verify how we want size returned from the getSize method
-    public double getSize() {
+    //TODO: Verify how we want size returned from the getShoeSize method
+    public double getShoeSize() {
         return size;
     }
 
@@ -108,7 +112,7 @@ public class Item implements Serializable {
     public ItemTile getItemTile()
     {
         if(itemTile == null){
-            itemTile = new ItemTile(this);
+            itemTile = new ItemTile();
             return itemTile;
         }
         else{
@@ -127,6 +131,10 @@ public class Item implements Serializable {
 
     public void setId(int id){
         this.id = id;
+    }
+
+    public static void setHomeFrame(HomeFrame frame){
+        homeFrame = frame;
     }
 
     public void incrementQuantity() {
@@ -149,7 +157,7 @@ public class Item implements Serializable {
     //TODO: Create an ItemWindow Class that shows the item in its own JFrame
     public void startItemWindow() {
         if(quantity != 0){
-            ItemViewFrame frame = new ItemViewFrame(this);
+            ItemViewFrame frame = new ItemViewFrame();
         }
     }
 
@@ -215,18 +223,235 @@ public class Item implements Serializable {
         return items;
     }
 
-    public static void main(String args[]) {
-        Item testItem = new Item( "Nike Air Max",
-                "These are shoes I bought but couldn't ever wear. They are basically like new and I'm willing to negotiate on the price", "Nike",
-                "New",
-                "Blue",
-                "Male",
-                8,
-                60.,
-                2,
-                "https://i.imgur.com/C6iJSYy.jpg",
-                "Sam");
+    private class ItemTile extends JPanel {
+        private final JLabel itemPictureLabel;
+        private final JLabel nameLabel;
+        private final JLabel costLabel;
+        private final JLabel sellerLabel;
+        private final JLabel quantityLabel;
+        private final JTextArea descriptionArea;
+        private final JPanel rightPanel;
+        private final JPanel bottomPanel;
 
-        System.out.println(testItem.getCost());
+        public ItemTile() {
+            setPreferredSize(new Dimension(480, 100));
+            setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+            if (colorDecider == 0) {
+                setBackground(Color.LIGHT_GRAY);
+                colorDecider = 1;
+            } else if (colorDecider == 1) {
+                setBackground(Color.GRAY);
+                colorDecider = 0;
+            }
+
+            //Create image JLabel
+            ImageIcon itemImageIcon = new ImageIcon();
+            itemImageIcon.setImage(ScaledImage.getScaledImage(getImageURL(), 100, 100));
+            itemPictureLabel = new JLabel();
+            itemPictureLabel.setIcon(itemImageIcon);
+            itemPictureLabel.setMinimumSize(new Dimension(100, 100));
+
+            nameLabel = new JLabel(getName());
+            nameLabel.setAlignmentX(CENTER_ALIGNMENT);
+
+            costLabel = new JLabel("Cost: " + getCost());
+            costLabel.setAlignmentX(RIGHT_ALIGNMENT);
+            costLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+
+            sellerLabel = new JLabel("Seller: " + getSeller());
+            sellerLabel.setAlignmentX(LEFT_ALIGNMENT);
+            sellerLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            //sellerLabel.setPreferredSize(new Dimension(120,25));
+
+            quantityLabel = new JLabel("Quantity: " + getQuantity());
+            quantityLabel.setAlignmentX(LEFT_ALIGNMENT);
+            quantityLabel.setHorizontalAlignment(SwingConstants.LEFT);
+
+
+            descriptionArea = new JTextArea();
+            initializeDescriptionArea(getDescription());
+
+            //Panel that holds bottom 3 tables
+            bottomPanel = new JPanel();
+            bottomPanel.setBackground(this.getBackground());
+            bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
+            bottomPanel.add(sellerLabel);
+            bottomPanel.add(Box.createHorizontalStrut(10));
+            bottomPanel.add(quantityLabel);
+            bottomPanel.add(Box.createHorizontalGlue());
+            bottomPanel.add(costLabel);
+            bottomPanel.add(Box.createHorizontalStrut(5));
+
+            //Panel that holds Name description and bottom Panel, This panel is to the right of the image
+            rightPanel = new JPanel();
+            rightPanel.setBackground(this.getBackground());
+            rightPanel.setPreferredSize(new Dimension(365, 100));
+            rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
+            rightPanel.add(nameLabel);
+            rightPanel.add(Box.createVerticalStrut(20));
+            rightPanel.add(descriptionArea);
+            rightPanel.add(Box.createVerticalStrut(10));
+            rightPanel.add(bottomPanel);
+
+            //add image and rightPanel to the base JPanel
+            add(Box.createHorizontalStrut(5));
+            add(itemPictureLabel);
+            add(Box.createHorizontalStrut(5));
+            add(rightPanel);
+            add(Box.createHorizontalStrut(5));
+
+            //Listeners to start window
+            PanelListener listener = new PanelListener();
+            addMouseListener(listener);
+            rightPanel.addMouseListener(listener);
+            descriptionArea.addMouseListener(listener);
+        }
+
+        private void initializeDescriptionArea(String description) {
+            //descriptionArea.setAlignmentX(LEFT_ALIGNMENT);
+            descriptionArea.setBackground(this.getBackground());
+            //descriptionArea.setMinimumSize(new Dimension(365, 25));
+            descriptionArea.setEditable(false);
+            descriptionArea.setLineWrap(true);
+            descriptionArea.setWrapStyleWord(true);
+
+            if (description.length() >= 55) {
+                descriptionArea.setText(description.substring(0, 60) + "...");
+            } else {
+                descriptionArea.setText(description);
+            }
+        }
+
+        public void updateQuantityText() {
+            quantityLabel.setText("Quantity: " + getQuantity());
+        }
+
+    /*public void updateBackGround(){
+        if(item.getQuantity() == 0){
+            int r = 255;
+            int g = 182;
+            int b = 178;
+            Color color = new Color(r,g,b);
+            setBackground(color);
+            rightPanel.setBackground(color);
+            bottomPanel.setBackground(color);
+            descriptionArea.setBackground(color);
+        }
+    }*/
+
+        public void updateImage() {
+            if (getQuantity() == 0) {
+                Image image = ScaledImage.getScaledImage(getImageURL(), 100, 100);
+                itemPictureLabel.setIcon(new ImageIcon(ScaledImage.getSoldImage(image)));
+            }
+
+        }
+
+
+        private class PanelListener extends MouseAdapter {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("123123");
+                startItemWindow();
+            }
+        }
+
+    }
+
+    public class ItemViewFrame extends JFrame {
+
+        private JButton buyButton = new JButton("Buy Shoe!");
+        private JPanel itemDetails = new JPanel();
+        private JPanel boxedFrame = new JPanel();
+        private JTextArea descriptionText = new JTextArea();
+        private JLabel quantityLabel;
+
+        //TODO: Change cost string
+
+        ItemViewFrame(){
+            setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+
+            //add a JPanel to initial frame, put a border layout
+            JPanel insideBox = new JPanel();
+            insideBox.setLayout(new BorderLayout());
+            insideBox.setPreferredSize(new Dimension(590,500));
+            insideBox.setBackground(Color.LIGHT_GRAY);
+
+            //add name label to top of border layout
+            JLabel name = new JLabel(getName());
+            name.setHorizontalAlignment(SwingConstants.CENTER);
+            name.setFont(new Font("Helvetica", Font.BOLD, 18));
+
+            //created new JPanel with 1 row, 2 columns to add to center of border layout
+            //JPanel boxedFrame = new JPanel();
+            boxedFrame.setLayout(new GridLayout(1,2));
+            boxedFrame.setBackground(Color.orange);
+
+            //Put a picture in column 1
+            ImageIcon picPass = new ImageIcon();
+            picPass.setImage(ScaledImage.getScaledImage(getImageURL(),250,250));
+            JLabel pic = new JLabel(picPass);
+            boxedFrame.add(pic);
+
+            //Put item description in column 2
+            //JTextArea descriptionText = new JTextArea();
+            descriptionText.setBackground(boxedFrame.getBackground());
+            descriptionText.setText(getDescription());
+            descriptionText.setLineWrap(true);
+            descriptionText.setWrapStyleWord(true);
+            descriptionText.setEditable(false);
+
+            quantityLabel = new JLabel("Quantity: " + getQuantity());
+
+            //JPanel itemDetails = new JPanel();
+            itemDetails.setLayout(new GridLayout(10,1));
+            itemDetails.setPreferredSize(new Dimension(400,450));
+            itemDetails.setBackground(Color.orange);
+            itemDetails.add(new JLabel("Description: " ));
+            itemDetails.add(descriptionText);
+            itemDetails.add(new JLabel("Condition: " + getCondition()));
+            itemDetails.add(new JLabel("Size: "+ getShoeSize() + " " + getGender()));
+            itemDetails.add(new JLabel("Color: "+ getColor()));
+            itemDetails.add(new JLabel("Price: " + getCost()));
+            itemDetails.add(quantityLabel);
+            itemDetails.add(new JLabel("Seller: " + getSeller()));
+            itemDetails.add(new JLabel(""));
+            itemDetails.add(buyButton);
+
+            //add all components
+            boxedFrame.add(pic);
+            boxedFrame.add(itemDetails);
+            insideBox.add(name,BorderLayout.NORTH);
+            insideBox.add(boxedFrame,BorderLayout.CENTER);
+            add(insideBox);
+
+            //add listener to the buyButton
+            buyButton.addActionListener(e -> buttonHit());
+
+            this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            this.setSize(600,510);
+            this.setVisible(true);
+        }
+
+        //TODO: decrement the item quantity
+        private void buttonHit(){
+            buyButton.setText("Bought!");
+            buyButton.setEnabled(false);
+            itemDetails.setBackground(Color.LIGHT_GRAY);
+            boxedFrame.setBackground(Color.LIGHT_GRAY);
+            descriptionText.setBackground(Color.LIGHT_GRAY);
+            BuyItemRequest buyItemRequest = new BuyItemRequest(getId());
+            if((boolean) homeFrame.makeRequest(buyItemRequest)){
+                decrementQuantity();
+                updateTile();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Error buying item please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            quantityLabel.setText("Quantity: " + getQuantity());
+        }
     }
 }
+
+
