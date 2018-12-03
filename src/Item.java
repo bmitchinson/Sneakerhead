@@ -1,8 +1,10 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class Item implements Serializable {
