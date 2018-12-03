@@ -150,11 +150,13 @@ public class Server {
                     } else if (request instanceof BuyItemRequest) {
                         BuyItemRequest buyItemRequest = (BuyItemRequest) request;
                         Boolean successful = db.buyItem(buyItemRequest.getItem());
-
                         output.writeObject(successful);
                     } else if (request instanceof SellItemRequest) {
                         SellItemRequest sellItemRequest = (SellItemRequest) request;
                         output.writeObject(db.sellItem(sellItemRequest.getSeller(), sellItemRequest.getItem()));
+                    } else if (request instanceof UpdateRequest){
+                        System.out.println("Giving null");
+                        output.writeObject(null);
                     }
 
 
