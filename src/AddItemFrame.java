@@ -36,8 +36,8 @@ public class AddItemFrame extends JFrame {
 
         blank.setBackground(itemDetails.getBackground());
 
-        genderBox.addItem("Men's");
-        genderBox.addItem("Women's");
+        genderBox.addItem("Mens");
+        genderBox.addItem("Womens");
 
         conditionBox.addItem("Brand New");
         conditionBox.addItem("Like New");
@@ -125,7 +125,7 @@ public class AddItemFrame extends JFrame {
     }
 
     public void verifyItem (Item item) throws IllegalArgumentException, IOException {
-        if (item.getName().equals("")) {
+        if (item.getItemName().equals("")) {
             throw new IllegalArgumentException("The name you entered was invalid. Please check your input and try to re-post the Item");
         } else if (item.getQuantity() < 1) {
             throw new IllegalArgumentException("The quantity that you entered was invalid. Please check your input and try to re-post the Item");

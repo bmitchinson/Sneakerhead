@@ -20,6 +20,9 @@ public class HomeFrame extends JFrame {
     private final Color color1 = new Color(245, 245, 245);
     private final Color color2 = new Color(65,105,225);
     private final ServerRequester serverRequester;
+    private boolean isBuyer = false;
+    private boolean isSeller = false;
+
 
     public HomeFrame() {
         serverRequester = new ServerRequester("localhost");
@@ -32,6 +35,7 @@ public class HomeFrame extends JFrame {
         getContentPane().setBackground(color1);
         postItem = new JButton("Post Item");
         postItem.setMinimumSize(new Dimension(100, 25));
+        postItem.setEnabled(false);
         loginButton = new JButton("Login");
         loginButton.setMinimumSize(new Dimension(75, 25));
 
@@ -94,12 +98,33 @@ public class HomeFrame extends JFrame {
     private void initializeItemPanel() {
         items = (ArrayList<Item>) makeRequest(new GetAllItemsRequest());
         //items = Item.getTestItems();
-        itemPanel.setPreferredSize(new Dimension(460, 100 * items.size()));
-        itemPanel.setLayout(new GridLayout(items.size(), 1));
+        SwingUtilities.invokeLater(() -> {
+            itemPanel.removeAll();
+            itemPanel.setPreferredSize(new Dimension(460, 100 * items.size()));
+            itemPanel.setLayout(new GridLayout(items.size(), 1));
 
-        for (int i = 0; i < items.size(); i++) {
-            itemPanel.add(items.get(i).getItemTile());
-        }
+            for (int i = 0; i < items.size(); i++) {
+                itemPanel.add(items.get(i).getItemTile());
+            }
+            itemPanel.revalidate();
+            itemPanel.repaint();
+        });
+    }
+
+    public void setBuyer(boolean buyer) {
+        isBuyer = buyer;
+    }
+
+    public void setSeller(boolean seller) {
+        isSeller = seller;
+    }
+
+    public boolean isBuyer() {
+        return isBuyer;
+    }
+
+    public boolean isSeller() {
+        return isSeller;
     }
 
     private HomeFrame getThis() {
@@ -114,9 +139,17 @@ public class HomeFrame extends JFrame {
             loggedInLabel.setMinimumSize(new Dimension(75, 25));
             loginState.setLayout(new GridLayout(2, 1));
             loginState.add(loggedInLabel);
-            if (type.equals("")) loginState.add(loginButton);
-            else {
+            if (!isBuyer && !isSeller) loginState.add(loginButton);
+
+            else if (isBuyer && isSeller) {
                 loginState.add(loggedInType);
+                bottomPanel.add(logoutButton);
+                postItem.setEnabled(true);
+            } else if (isSeller) {
+                loginState.add(loggedInType);
+                bottomPanel.add(logoutButton);
+                postItem.setEnabled(true);
+            } else if (isBuyer) {
                 bottomPanel.add(logoutButton);
             }
             loginState.revalidate();
@@ -138,10 +171,22 @@ public class HomeFrame extends JFrame {
         return response;
     }
 
+    public void updateAllItems() {
+        initializeItemPanel();
+    }
+
+    // Called before any action is called just in case something has changed
+    public void updateItem(Item itemUpdate) {
+
+    }
+
     private void logout() {
         updateLogin("Login to buy or sell", "");
         makeRequest(new LogoutRequest());
         bottomPanel.remove(logoutButton);
+        isBuyer = false;
+        isSeller = false;
+        postItem.setEnabled(false);
     }
 
     private class ButtonHandler implements ActionListener {

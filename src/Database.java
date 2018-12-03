@@ -151,7 +151,7 @@ public class Database {
         try {
             Statement statement = connection.createStatement();
 
-            String insertName = "'"+ item.getName() + "'";
+            String insertName = "'"+ item.getItemName() + "'";
             String insertDescrip = "'"+ item.getDescription() + "'";
             String insertBrand = "'"+ item.getBrand() + "'";
             String insertCondition = "'"+ item.getCondition() + "'";
@@ -161,13 +161,15 @@ public class Database {
             String insertSize = "'" + item.getShoeSize() + "'";
             String insertCost = "'" + item.getCost() + "'";
             String user = "'" + username + "'";
-            ResultSet result = statement.executeQuery("SELECT ID FROM Users WHERE Username =" + user);
+            ResultSet result = statement.executeQuery("SELECT ID FROM Users WHERE Username = " + user);
+
             result.next();
             int id = result.getInt(1);
             String values = "(" + insertName + "," + insertDescrip + "," + insertBrand + "," + item.getQuantity() + "," + insertCondition + "," + insertSize + "," + insertColor + "," + insertGender + "," + insertCost + "," + insertURL + "," + id + ")";
+            System.out.println("INSERT INTO `Items` (`Name`,`Description`,`Brand`,`Quantity`,`Condition`,`Size`,`Color`,`Gender`,`Price`,`URL`,`Seller`) VALUES " + values);
             statement.execute("INSERT INTO `Items` (`Name`,`Description`,`Brand`,`Quantity`,`Condition`,`Size`,`Color`,`Gender`,`Price`,`URL`,`Seller`) VALUES " + values);
 
-            ResultSet idResult = statement.executeQuery("SELECT ID FROM Items WHERE Name =" + insertSQL(item.getName()));
+            ResultSet idResult = statement.executeQuery("SELECT ID FROM Items WHERE Name =" + insertSQL(item.getItemName()));
             idResult.next();
             item.setId(idResult.getInt(1));
 

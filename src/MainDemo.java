@@ -1,23 +1,28 @@
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /* The purpose of this class is purely to create 4 new clients and a server for
    Demo purposes. Right now it's just a print statement to get everyone a branching
    point, but eventually it could look something like what's commented below
 */
 public class MainDemo {
     public static void main(String[] args){
-        System.out.println("team 37 is the best team");
 
-        Server server = new Server();
+        ExecutorService worker = Executors.newCachedThreadPool();
+        worker.execute(new ServerRunnable());
 
-        /* something like:
-        // Below to be replaced by a loop
-        client_one = new Client()
-        client_two = new Client()
-        client_three = new Client()f
-        client_four = new Client()
+        HomeFrame client_one = new HomeFrame();
 
-        // Execute all of the above since they're runnable
-        client_
-
-         */
+        /*while(true){
+            System.out.println("Waiting 15 seconds to see if there's an update " +
+                    "to client_one");
+            try {
+                Thread.sleep(15000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Calling update");
+            client_one.updateAllItems();
+        }*/
     }
 }
