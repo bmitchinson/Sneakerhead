@@ -36,8 +36,8 @@ public class AddItemFrame extends JFrame {
 
         blank.setBackground(itemDetails.getBackground());
 
-        genderBox.addItem("Men's");
-        genderBox.addItem("Women's");
+        genderBox.addItem("Mens");
+        genderBox.addItem("Womens");
 
         conditionBox.addItem("Brand New");
         conditionBox.addItem("Like New");

@@ -159,6 +159,9 @@ public class Server {
                         serverLogStream.write(("Client " + clientNum + " made a LoginRequest at " + LocalTime.now().format(timeFormat)).getBytes());
                         LoginRequest loginRequest = (LoginRequest) request;
                         activeUserType = db.login(loginRequest.getUsername(), loginRequest.getPassword());
+                        if(activeUserType != 0){
+                            activeUsername = loginRequest.getUsername();
+                        }
                         output.writeObject(activeUserType);
                     } else if (request instanceof LogoutRequest) {
                         serverLogStream.write(("Client " + clientNum + " made a LogoutRequest at " + LocalTime.now().format(timeFormat)).getBytes());
