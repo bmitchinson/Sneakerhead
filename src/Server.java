@@ -53,9 +53,16 @@ public class Server {
             print("Server opened on port 23517");
         }
 
-        String filesPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-        File serverLog = new File(filesPath + File.separator + "log" + File.separator + "server_log.log");
-        File transactionLog = new File(filesPath + File.separator + "log"+ File.separator + "transaction_log.log");
+        String logPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        File logDirectory = new File(logPath + File.separator + "log");
+
+        if(!logDirectory.exists()){
+            logDirectory.mkdir();
+        }
+
+        File serverLog = new File(logDirectory + File.separator + "server_log.log");
+        File transactionLog = new File(logDirectory + File.separator + "transaction_log.log");
 
         try{
             serverLogStream = new FileOutputStream(serverLog, false);
