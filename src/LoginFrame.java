@@ -43,6 +43,7 @@ public class LoginFrame extends JFrame {
         registerButton.addActionListener(handler);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(color);
         buttonPanel.setMinimumSize(new Dimension(500, 50));
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
         buttonPanel.add(Box.createHorizontalGlue());
@@ -56,9 +57,12 @@ public class LoginFrame extends JFrame {
 
         usernameLabel.setSize(new Dimension(150, 25));
         usernameLabel.setAlignmentX(CENTER_ALIGNMENT);
+        usernameLabel.setBackground(color);
+
 
         passwordLabel.setSize(new Dimension(150, 25));
         passwordLabel.setAlignmentX(CENTER_ALIGNMENT);
+        passwordLabel.setBackground(color);
 
         Image banner = null;
         try{
@@ -77,21 +81,21 @@ public class LoginFrame extends JFrame {
         userTypeBox.setMaximumSize(new Dimension(175, 50));
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-        setBackground(color);
+        getContentPane().setBackground(color);
 
         add(Box.createVerticalStrut(50));
         add(logoLabel);
-        add(Box.createRigidArea(new Dimension(500, 30)));
+        add(Box.createVerticalStrut(30));
         add(usernameLabel);
-        add(Box.createRigidArea(new Dimension(500, 10)));
+        add(Box.createVerticalStrut(10));
         add(usernameField);
-        add(Box.createRigidArea(new Dimension(500, 30)));
+        add(Box.createVerticalStrut(30));
         add(passwordLabel);
-        add(Box.createRigidArea(new Dimension(500, 10)));
+        add(Box.createVerticalStrut(10));
         add(passwordField);
-        add(Box.createRigidArea(new Dimension(500, 30)));
+        add(Box.createVerticalStrut(30));
         add(buttonPanel);
-        add(Box.createRigidArea(new Dimension(500, 20)));
+        add(Box.createVerticalStrut(30));
         add(userTypeBox);
         add(Box.createVerticalStrut(10));
 
