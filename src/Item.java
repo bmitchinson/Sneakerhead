@@ -283,7 +283,7 @@ public class Item implements Serializable {
             nameLabel = new JLabel(getItemName());
             nameLabel.setAlignmentX(CENTER_ALIGNMENT);
 
-            costLabel = new JLabel("Cost: " + getCost());
+            costLabel = new JLabel("Cost: $" + getCost());
             costLabel.setAlignmentX(RIGHT_ALIGNMENT);
             costLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
@@ -433,7 +433,7 @@ public class Item implements Serializable {
             JLabel conditionLabel = new JLabel("Condition: " + getCondition());
             JLabel sizeLabel = new JLabel("Size: " + getShoeSize() + " " + getGender());
             JLabel colorLabel = new JLabel("Color: " + getColor());
-            JLabel priceLabel = new JLabel("Price: " + getCost());
+            JLabel priceLabel = new JLabel("Price: $" + getCost());
             JLabel sellerLabel = new JLabel("Seller: " + getSeller());
             quantityLabel = new JLabel("Quantity: " + getQuantity());
 
