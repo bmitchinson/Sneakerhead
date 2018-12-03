@@ -404,38 +404,38 @@ public class Item implements Serializable {
             descriptionText.setLineWrap(true);
             descriptionText.setWrapStyleWord(true);
             descriptionText.setEditable(false);
-
-            quantityLabel = new JLabel("Quantity: " + getQuantity());
+            //descriptionText.setSize(descriptionText.getPreferredSize());
 
             //JPanel itemDetails = new JPanel();
             //itemDetails.setLayout(new GridLayout(10,1));
             itemDetails.setLayout(new BoxLayout(itemDetails,BoxLayout.PAGE_AXIS));
-            //itemDetails.setPreferredSize(new Dimension(400,450));
+            itemDetails.setPreferredSize(new Dimension(400,450));
             itemDetails.setBackground(color);
-            itemDetails.add(new JLabel("Description: " ));
-            itemDetails.add(Box.createHorizontalStrut(5));
+
+            JLabel descripLabel = new JLabel("Description: ");
+            JLabel conditionLabel = new JLabel("Condition: " + getCondition());
+            JLabel sizeLabel = new JLabel("Size: "+ getShoeSize() + " " + getGender());
+            JLabel colorLabel = new JLabel("Color: "+ getColor());
+            JLabel priceLabel = new JLabel("Price: " + getCost());
+            JLabel sellerLabel = new JLabel("Seller: " + getSeller());
+            quantityLabel = new JLabel("Quantity: " + getQuantity());
+
+            itemDetails.add(leftJustify(descripLabel));
             itemDetails.add(descriptionText);
-            itemDetails.add(Box.createHorizontalStrut(5));
-            itemDetails.add(new JLabel("Condition: " + getCondition()));
-            itemDetails.add(Box.createHorizontalStrut(5));
-            itemDetails.add(new JLabel("Size: "+ getShoeSize() + " " + getGender()));
-            itemDetails.add(Box.createHorizontalStrut(5));
-            itemDetails.add(new JLabel("Color: "+ getColor()));
-            itemDetails.add(Box.createHorizontalStrut(5));
-            itemDetails.add(new JLabel("Price: " + getCost()));
-            itemDetails.add(Box.createHorizontalStrut(5));
-            itemDetails.add(quantityLabel);
-            itemDetails.add(Box.createHorizontalStrut(5));
-            itemDetails.add(new JLabel("Seller: " + getSeller()));
-            itemDetails.add(Box.createHorizontalStrut(5));
+            itemDetails.add(leftJustify(conditionLabel));
+            itemDetails.add(leftJustify(sizeLabel));
+            itemDetails.add(leftJustify(colorLabel));
+            itemDetails.add(leftJustify(priceLabel));
+            itemDetails.add(leftJustify(quantityLabel));
+            itemDetails.add(leftJustify(sellerLabel));
             itemDetails.add(new JLabel(""));
-            itemDetails.add(Box.createHorizontalStrut(5));
             itemDetails.add(buyButton);
-            itemDetails.add(Box.createHorizontalGlue());
+
 
             //add all components
             boxedFrame.add(pic);
             boxedFrame.add(itemDetails);
+
             mainPanel.add(name,BorderLayout.NORTH);
             mainPanel.add(boxedFrame,BorderLayout.CENTER);
             add(mainPanel);
@@ -464,6 +464,15 @@ public class Item implements Serializable {
                 JOptionPane.showMessageDialog(null,"Error buying item please try again.", "Error", JOptionPane.ERROR_MESSAGE);
             }
             quantityLabel.setText("Quantity: " + getQuantity());
+        }
+
+        private Component leftJustify( JLabel label )  {
+            Box  b = Box.createHorizontalBox();
+            b.add( label );
+            b.add( Box.createHorizontalGlue() );
+            // (Note that you could throw a lot more components
+            // and struts and glue in here.)
+            return b;
         }
     }
 }
