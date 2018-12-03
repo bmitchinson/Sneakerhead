@@ -115,7 +115,11 @@ public class Database {
             Statement statement = connection.createStatement();
             ResultSet quantity = statement.executeQuery("SELECT Quantity FROM Items WHERE ID =" + itemID);
             quantity.next();
-            int q = quantity.getInt(1)-1;
+            int q = quantity.getInt(1);
+            if (q == 0){
+                return false;
+            }
+            q--;
             String query = "UPDATE Items SET Quantity =" + q + " WHERE ID =" + itemID;
             statement.executeUpdate(query);
             return true;
