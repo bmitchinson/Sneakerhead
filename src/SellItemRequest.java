@@ -1,5 +1,7 @@
 import Requests.Request;
 
+// extends the Serializable object Request to send a request to "sell" an item through the output stream
+
 public class SellItemRequest extends Request {
     private Item item;
 
