@@ -8,23 +8,29 @@ import java.util.concurrent.Executors;
 public class MainDemo {
     public static void main(String[] args){
 
+        // Enter however many clients you would like to use
+        int CLIENT_COUNT = 3;
+
         ExecutorService worker = Executors.newCachedThreadPool();
         worker.execute(new ServerRunnable());
 
-        HomeFrame client_one = new HomeFrame();
-        HomeFrame client_two = new HomeFrame();
+        HomeFrame[] clients = new HomeFrame[CLIENT_COUNT];
 
+        for (int i = 0; i < CLIENT_COUNT; i++){
+            clients[i] = new HomeFrame();
+        }
+
+        // Every 20 seconds, the clients will update their info in order to stay
+        // up to date.
         /*while(true){
-            System.out.println("Waiting 15 seconds to see if there's an update " +
-                    "to client_one");
             try {
-                Thread.sleep(15000);
+                Thread.sleep(20000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("Calling update");
-            client_one.updateAllItems();
-            client_two.updateAllItems();
+            for (int i = 0; i < CLIENT_COUNT; i++){
+                clients[i].updateAllItems();
+            }
         }*/
     }
 }
