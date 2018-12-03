@@ -158,7 +158,7 @@ public class Database {
             String insertColor = "'"+ item.getColor() + "'";
             String insertGender = "'"+ item.getGender() + "'";
             String insertURL = "'"+ item.getImageURL() + "'";
-            String insertSize = "'" + item.getSize() + "'";
+            String insertSize = "'" + item.getShoeSize() + "'";
             String insertCost = "'" + item.getCost() + "'";
             String user = "'" + username + "'";
             ResultSet result = statement.executeQuery("SELECT ID FROM Users WHERE Username =" + user);

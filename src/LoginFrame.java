@@ -114,7 +114,8 @@ public class LoginFrame extends JFrame {
                 }
 
                 else{
-                    JOptionPane.showMessageDialog(null, "Invalid Username/Password. Please check your entries and try again.");
+                    JOptionPane.showMessageDialog(null, "Invalid Username/Password. Both Username and Password are case sensitive so," +
+                            " please check your entries and try again.");
                     SwingUtilities.invokeLater(() -> {
                         passwordField.setText("");
                     });
