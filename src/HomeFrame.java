@@ -19,7 +19,7 @@ public class HomeFrame extends JFrame {
     private ArrayList<Item> items;
     private final Color color1 = new Color(245, 245, 245);
     private final Color color2 = new Color(240, 248, 255);
-    private final ServerRequester serverRequester;
+    private static ServerRequester serverRequester = new ServerRequester("localhost");
     private boolean isBuyer = false;
     private boolean isSeller = false;
 
@@ -29,8 +29,6 @@ public class HomeFrame extends JFrame {
         if (!serverRequester.start()) {
             System.exit(0);
         }
-
-        Item.setHomeFrame(this);
 
         getContentPane().setBackground(color1);
         postItem = new JButton("Post Item");
@@ -104,6 +102,7 @@ public class HomeFrame extends JFrame {
             itemPanel.setLayout(new GridLayout(items.size(), 1));
 
             for (int i = 0; i < items.size(); i++) {
+                items.get(i).setHomeFrame(this);
                 itemPanel.add(items.get(i).getItemTile());
             }
             itemPanel.revalidate();
@@ -125,6 +124,10 @@ public class HomeFrame extends JFrame {
 
     public boolean isSeller() {
         return isSeller;
+    }
+
+    public ServerRequester getServerRequester() {
+        return serverRequester;
     }
 
     private HomeFrame getThis() {

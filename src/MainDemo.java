@@ -12,6 +12,9 @@ public class MainDemo {
         worker.execute(new ServerRunnable());
 
         HomeFrame client_one = new HomeFrame();
+        HomeFrame client_two = new HomeFrame();
+        HomeFrame client_three = new HomeFrame();
+        HomeFrame client_four = new HomeFrame();
 
         /*while(true){
             System.out.println("Waiting 15 seconds to see if there's an update " +
