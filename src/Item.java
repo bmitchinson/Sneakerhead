@@ -381,10 +381,10 @@ public class Item implements Serializable {
             mainPanel.setLayout(new BorderLayout());
             mainPanel.setBorder(new EmptyBorder(10,10,10,10));
             mainPanel.setPreferredSize(new Dimension(590,500));
-            mainPanel.setBackground(new Color(245,245,245));
+            mainPanel.setBackground(color);
 
             //add name label to top of border layout
-            JLabel name = new JLabel(getName());
+            JLabel name = new JLabel(this.getName());
             name.setHorizontalAlignment(SwingConstants.CENTER);
             name.setFont(new Font("Helvetica", Font.BOLD, 18));
 
