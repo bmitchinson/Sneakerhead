@@ -25,8 +25,6 @@ Other accounts can be freely created
 
 #### Server Info
 Our SQL Tables are availible at https://s-l112.engr.uiowa.edu/phpMyAdmin
-Username: "engr_class037"
-Password: "mbs123"
 
 #### Git Branching
 Our team used branching heavily throughout development in order to work in paralell
