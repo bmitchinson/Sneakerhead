@@ -1,6 +1,6 @@
-Team 37's E-Commerce Solution: "Sneakerhead". Completed in 3 days as the final project for Software Design. 
-
-[Details available on my blog post](https://mitchinson.dev/Software-Design/)
+# E-Commerce Solution: "Sneakerhead"
+### Completed in 3 days as the final project for Software Design. 
+### [Details available on my blog post](https://mitchinson.dev/Software-Design/)
 
 ![](https://res.cloudinary.com/dheqbiqti/image/upload/v1560616223/Projects/SWD/Demo.png)
 
